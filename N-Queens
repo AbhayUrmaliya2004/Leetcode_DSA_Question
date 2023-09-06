@@ -1,0 +1,87 @@
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>>ans = new ArrayList<>();
+        char[][]board = new char[n][n];
+        for(int i=0 ; i<n ; i++){
+            for(int j=0 ; j<n ;j++){
+                board[i][j] = '.' ;
+            }
+        }
+        nQueens(ans,0,board);
+        return ans ;
+    }
+    public void nQueens(List<List<String>>ans,int row,char[][]board){
+        int n = board.length ;
+        
+        if(row == n){
+            List<String> list = new ArrayList<>();
+            for(int i=0 ; i<n ; i++){
+                StringBuilder sb = new StringBuilder();
+                for(int j=0 ; j<n ; j++){
+                    sb.append(board[i][j]);
+                }
+                list.add(sb.toString());
+            }
+            ans.add(list);
+        }
+        
+        for(int j=0 ; j<n ; j++){
+            if(isSafe(row,j,board)){
+                board[row][j] = 'Q' ;
+                nQueens(ans,row+1,board);
+                board[row][j] = '.' ;
+            }
+        }
+        return ;
+    }
+    public boolean isSafe(int row, int col,char[][]board){
+        // check row and col
+        int n = board.length ;
+//        System.out.println(row+" "+col);
+        for(int i=0 ; i<n ; i++){
+            if(board[i][col]=='Q')return false ;
+        }
+        
+        for(int j=0 ; j<n ; j++){
+            if(board[row][j]=='Q')return false ;
+        }
+        int i = row ;
+        int j = col ;
+        // Checking North-East Direction
+        
+        while(i>=0 && j<n){
+            if(board[i][j]=='Q')return false ;
+            i-- ;
+            j++ ;
+        }
+        
+        // Checking North-West Direction
+        
+        i = row ;
+        j = col ;
+        while(i>=0 && j>=0){
+            if(board[i][j]=='Q')return false ;
+            i-- ;
+            j-- ;
+        }
+        
+        //checking South-West direction
+        i = row ;
+        j = col ;
+        while(i<n && j>=0){
+            if(board[i][j]=='Q')return false ;
+            i++ ;
+            j-- ;
+        }
+        
+        // checking South-East direction 
+        i = row ;
+        j = col ;
+        while(i<n && j<n){
+            if(board[i][j]=='Q')return false ;
+            i++ ;
+            j++ ;
+        }
+        return true ;
+    }
+}
