@@ -1,0 +1,71 @@
+class Solution {
+    public int totalNQueens(int n) {
+        int count = 0 ;
+        char[][]board = new char[n][n];
+        return nQueens(count,0,board);
+        
+    }
+    public int nQueens(int count,int row,char[][]board){
+        int n = board.length ;
+        if(row == n)return 1;
+        int ans = 0 ;   
+        for(int j=0 ; j<n ; j++){
+            if(isSafe(row,j,board)){
+                board[row][j] = 'Q' ;
+                ans += nQueens(count,row+1,board);
+                board[row][j] = '.' ;
+            }
+        }
+        return ans ;
+    }
+    public boolean isSafe(int row, int col,char[][]board){
+        // check row and col
+        int n = board.length ;
+//        System.out.println(row+" "+col);
+        for(int i=0 ; i<n ; i++){
+            if(board[i][col]=='Q')return false ;
+        }
+        
+        for(int j=0 ; j<n ; j++){
+            if(board[row][j]=='Q')return false ;
+        }
+        int i = row ;
+        int j = col ;
+        // Checking North-East Direction
+        
+        while(i>=0 && j<n){
+            if(board[i][j]=='Q')return false ;
+            i-- ;
+            j++ ;
+        }
+        
+        // Checking North-West Direction
+        
+        i = row ;
+        j = col ;
+        while(i>=0 && j>=0){
+            if(board[i][j]=='Q')return false ;
+            i-- ;
+            j-- ;
+        }
+        
+        //checking South-West direction
+        i = row ;
+        j = col ;
+        while(i<n && j>=0){
+            if(board[i][j]=='Q')return false ;
+            i++ ;
+            j-- ;
+        }
+        
+        // checking South-East direction 
+        i = row ;
+        j = col ;
+        while(i<n && j<n){
+            if(board[i][j]=='Q')return false ;
+            i++ ;
+            j++ ;
+        }
+        return true ;
+    }
+}
