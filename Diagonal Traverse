@@ -1,5 +1,46 @@
-// LeetCode-(498)
-// Method-1 :-
+// LeetCode-(498) 2-Approaches 
+//T.C. - ~O(m*n)~ total no. of elements m*n
+//Faster Than 98.11%
+public int[] findDiagonalOrder(int[][] mat) {
+        int []ans = new int[mat.length*mat[0].length];
+        ans[0] = mat[0][0];
+        fillArray(mat,ans, 1, 0, 1);
+        return ans ;
+    }
+    public void fillArray(int[][]mat,int[]ans, int idx, int row, int col){
+        int m = mat.length ;
+        int n = mat[0].length ;
+        boolean upright = true ;
+        while(idx < m*n){
+            if(upright && row>=0){
+                while(col>=0 && row<m){
+                    if(row<m && col<n)ans[idx++] = mat[row][col];
+                    row++ ;
+                    col-- ;
+//                    System.out.println(ans[idx-1]);
+                }
+                if(row>=m){
+                    col += 2;
+                    row = m-1 ;
+                }else col = 0 ;//row itself reached on correct position
+                upright = false ;
+            }else{
+                while(row>=0 && col<n){
+                    if(row<m && col<n)ans[idx++] = mat[row][col];
+                    row-- ;
+                    col++ ;
+                }
+                if(col>=n){
+                    row += 2;
+                    col = n-1;
+                }else row = 0 ;
+                upright = true ;
+            }
+        }
+    }
+}
+
+// Method-2 :-
 class Solution {
     public int[] findDiagonalOrder(int[][] mat) {
         int []ans = new int[mat.length*mat[0].length];
