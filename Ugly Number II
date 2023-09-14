@@ -1,0 +1,18 @@
+//LeetCode :- Ugly Number II(264)
+class Solution {
+    public int nthUglyNumber(int n) {
+        int[]ans = new int[n];
+        ans[0] = 1 ;
+        int a=0, b=0 , c=0 ;
+        int factor2=2, factor3=3, factor5 = 5 ;
+        for(int i=1 ; i<n ; i++){
+            int next_val = Math.min(Math.min(factor2,factor3),factor5);
+            ans[i] = next_val ;
+//            System.out.println(next_val);
+            if(factor2 == next_val)factor2=2*ans[++a];
+            if(factor3 == next_val)factor3=3*ans[++b];
+            if(factor5 == next_val)factor5=5*ans[++c];
+        }
+        return ans[n-1];
+    }
+}
