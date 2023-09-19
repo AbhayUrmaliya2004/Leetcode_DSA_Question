@@ -1,0 +1,51 @@
+//LeetCode - (129) faster than 100%
+// Take less space than 82.70%
+// Method - (I)
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        helper(list, root, 0);
+        int sum = 0 ;
+        for(Integer i : list){
+            sum += i ;
+        }
+        return sum ;
+    }
+    public void helper(List<Integer> list, TreeNode root, int num){
+        if(root.left == null && root.right == null){
+            num = num*10 + root.val ;
+            list.add(num);
+        }
+        
+        if(root.left != null){
+            helper(list, root.left, num*10+root.val);
+        }
+        if(root.right != null){
+            helper(list, root.right, num*10+root.val);
+        }
+    }
+}
+
+//Method-(II)
+
+// Instead of creating list we can create a global variable sum 
+class Solution {
+    int sum = 0 ;
+    public int sumNumbers(TreeNode root) {
+        helper(root, 0);
+        return sum ;
+    }
+    public void helper(TreeNode root, int num){
+        if(root.left == null && root.right == null){
+            num = num*10 + root.val ;
+            sum += num ;
+        }
+        
+        if(root.left != null){
+            helper(root.left, num*10+root.val);
+        }
+        if(root.right != null){
+            helper(root.right, num*10+root.val);
+        }
+    }
+}
