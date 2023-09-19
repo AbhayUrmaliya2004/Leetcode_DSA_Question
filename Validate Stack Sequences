@@ -1,0 +1,26 @@
+// LeetCode-(946)
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        if(pushed.length == 0 || pushed.length==1)return true ;
+        Stack<Integer> st = new Stack<>();
+        int i=0 , j=0 ;
+        while(i<popped.length){
+            if(st.size()>0 && st.peek() == popped[i]){
+                st.pop();
+                i++ ;
+            }else{
+                 if(j>=pushed.length)return false ;
+                 while(pushed[j] != popped[i]){ 
+                     st.push(pushed[j]);
+                     j++ ;
+                     if(j>=pushed.length)break ;
+                 }
+                 j++ ;
+                 i++ ;
+            }
+//            System.out.println(i+" "+j);
+//            System.out.println(st);
+        }
+        return true ;
+    }
+}
