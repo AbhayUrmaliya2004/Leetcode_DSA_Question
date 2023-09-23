@@ -1,0 +1,25 @@
+// LeetCode-(199)
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        int level = height(root)+1 ;
+        List<Integer> list = new ArrayList<>();
+        if(root == null)return list ;
+        // adding elements to make arraylist size 
+        for(int i=0 ; i<level ; i++){
+            list.add(0);
+        }
+        preOrder(root, 1, list);
+        return list ;
+    }
+     public void preOrder(TreeNode root, int level, List<Integer> list){
+         if(root == null)return ;
+         list.set(level-1,root.val);
+         preOrder(root.left, level+1, list);
+         preOrder(root.right, level+1, list);
+     }
+    
+    public int height(TreeNode root){
+        if(root == null || (root.left == null && root.right == null))return 0;
+        return 1+Math.max(height(root.left),height(root.right));
+    }
+}
