@@ -1,0 +1,15 @@
+//LeetCode-(392)
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int j=0 ;
+        for(int i=0 ; i<s.length() ; i++){
+            if(j>=t.length())return false ;
+            while(s.charAt(i) != t.charAt(j)){
+                j++ ;
+                if(j>=t.length())return false ;
+            }
+            j++ ;
+        }
+        return true ;
+    }
+}
