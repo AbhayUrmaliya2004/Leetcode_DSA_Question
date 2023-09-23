@@ -1,0 +1,40 @@
+// LeetCode - (103)
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        if(root == null)return list ;
+        int level = height(root)+1;
+        
+        for(int i=1 ; i<=level ; i++){
+            List<Integer> al = new ArrayList<>();
+            if(i%2 != 0)preOrder1(root, i, al);
+            else preOrder2(root, i, al);
+            if(al.size()>0)list.add(al);
+        }
+        return list ;
+    }
+    
+    public void preOrder1(TreeNode root, int n,List<Integer> al){
+        if(root == null)return ;
+        if(n == 1){
+            al.add(root.val) ;
+            return ;
+        }
+        if(root.left != null)preOrder1(root.left, n-1,al);
+        if(root.right != null)preOrder1(root.right, n-1,al);
+    }
+    
+    public void preOrder2(TreeNode root, int n,List<Integer> al){
+        if(root == null)return ;
+        if(n == 1){
+            al.add(root.val) ;
+            return ;
+        }
+        if(root.right != null)preOrder2(root.right, n-1,al);
+        if(root.left != null)preOrder2(root.left, n-1,al);
+    }
+    public int height(TreeNode root){
+        if(root == null ||(root.left == null && root.right == null))return 0;
+        return 1+Math.max(height(root.left),height(root.right));
+    }
+}
