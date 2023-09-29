@@ -1,0 +1,27 @@
+//LeetCode-515
+class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        if(root == null)return ans ;
+        int level = height(root)+1 ;
+        for(int i=0 ; i<level ; i++){
+            ans.add(Integer.MIN_VALUE);
+        }
+        helper(root, 0, level-1, ans);
+        return ans ;
+    }
+    public void helper(TreeNode root, int currLevel, int level, List<Integer>ans){
+        //base case
+        if(root == null || currLevel > level)return ;
+        // work 
+        if(ans.get(currLevel) < root.val)ans.set(currLevel, root.val);
+        
+        if(root.left != null)helper(root.left, currLevel+1, level, ans);
+        if(root.right != null)helper(root.right, currLevel+1, level, ans);
+    }
+    
+    public int height(TreeNode root){
+        if(root == null || (root.left == null && root.right == null))return 0;
+        return Math.max(height(root.left),height(root.right))+1 ;
+    }
+}
