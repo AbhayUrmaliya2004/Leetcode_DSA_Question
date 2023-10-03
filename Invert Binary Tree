@@ -1,0 +1,20 @@
+// LeetCode-226
+   public TreeNode invertTree(TreeNode root) {
+        if(root == null)return root ;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(q.size()>0){
+            TreeNode temp = q.peek();
+            TreeNode leftNode = temp.left ;
+            TreeNode rightNode = temp.right ;
+            
+            if(temp.left != null)q.add(leftNode);
+            if(temp.right != null)q.add(rightNode);
+            
+            temp.left = rightNode ;
+            temp.right = leftNode ;
+            
+            q.remove();
+        }
+        return root;
+    }
