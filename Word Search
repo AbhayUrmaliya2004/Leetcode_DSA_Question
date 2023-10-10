@@ -1,0 +1,58 @@
+--> LeetCode-(79)
+--> Better than 96% in memory and takes less space than 95% - O(m*n), where m is row and n is col
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        int m = board.length ;
+        int n = board[0].length ;
+        boolean[][]isVisited = new boolean[m][n];
+        
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(board[i][j] == word.charAt(0)){
+//                    System.out.println("Starting from "+i+" row and "+j+" col");
+                    if(helper(board, i, j, word, 0, isVisited))return true ;
+                }
+            }
+        }
+        return false ;
+    }
+    
+    public boolean helper(char[][]board, int row, int col,String word, int idx, boolean[][]isVisited){
+        if(idx == word.length()-1)return true ;
+        int m = board.length ;
+        int n = board[0].length ;
+        
+        //checking left 
+        if(col-1 >= 0 && isVisited[row][col-1] != true && board[row][col-1]==word.charAt(idx+1)){
+//            System.out.println("row : "+row+" col: "+(col-1)+" char : "+board[row][col-1]);
+            isVisited[row][col] = true ;
+            if(helper(board, row, col-1, word, idx+1, isVisited))return true ;
+            isVisited[row][col] = false ;// Backtracking
+        }
+        
+        //checking right
+        if(col+1 < n && isVisited[row][col+1] != true && board[row][col+1]==word.charAt(idx+1)){
+//           System.out.println("row : "+row+" col: "+(col+1)+" char : "+board[row][col+1]);
+            isVisited[row][col] = true ;
+            if(helper(board, row, col+1, word, idx+1, isVisited))return true ;
+            isVisited[row][col] = false ;// Backtracking
+        }
+        
+        //checking up
+         if(row-1 >= 0 && isVisited[row-1][col] != true && board[row-1][col]==word.charAt(idx+1)){
+//          System.out.println("row : "+(row-1)+" col: "+col+"char : "+board[row-1][col]);
+            isVisited[row][col] = true ;
+            if(helper(board, row-1, col, word, idx+1, isVisited))return true ;
+            isVisited[row][col] = false ;// Backtracking
+        }
+        
+        //checking down
+         if(row+1 < m && isVisited[row+1][col] != true && board[row+1][col]==word.charAt(idx+1)){
+//          System.out.println("row : "+(row+1)+" col: "+col+" char : "+board[row+1][col]);
+            isVisited[row][col] = true ;
+            if(helper(board, row+1, col, word, idx+1, isVisited))return true ;
+            isVisited[row][col] = false ;// Backtracking
+        }
+        return false ;
+    }
+}
