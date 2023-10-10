@@ -1,0 +1,29 @@
+//LeetCode-22
+-->Method-(1)
+class Solution {
+    
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        String str = "" ;
+        helper(ans, str, n, 0, 0);
+        return ans ;
+    }
+    
+    public void helper(List<String>ans, String str, int n, int leftP, int rightP){
+        int len = str.length();
+        if(len == 2*n){
+            ans.add(str);
+            return ;
+        }
+        if(len==0){
+             helper(ans, str+'(', n, leftP+1, rightP);
+        }
+        else if(str.charAt(len-1)=='('){
+            if(leftP<n ) helper(ans, str+'(', n, leftP+1, rightP);
+            if(rightP<n && rightP<leftP) helper(ans, str+')', n, leftP, rightP+1);
+        }else{  // case where last character is ')'
+            if(leftP<n) helper(ans, str+'(', n, leftP+1, rightP);
+            if(rightP<n && rightP<leftP) helper(ans, str+')', n, leftP, rightP+1);
+        }
+    }
+}
