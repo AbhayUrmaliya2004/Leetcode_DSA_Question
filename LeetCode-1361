@@ -1,0 +1,42 @@
+-->Validate Binary Tree Node 
+-->Method-(1)
+-->O(n) solution 
+class Solution {
+    public boolean validateBinaryTreeNodes(int n, int[] leftChild, int[] rightChild) {
+        int root = findRoot(leftChild, rightChild);
+        if(root == -1)return false ;
+        Stack<Integer> st = new Stack<>();
+        Set<Integer> set = new HashSet<>();// object is seen or not 
+        st.push(root);
+        set.add(root);
+        while(st.size()>0){
+            int node = st.pop();
+            if(leftChild[node] != -1){
+                if(set.contains(leftChild[node]))return false ;
+                st.push(leftChild[node]);
+                set.add(leftChild[node]);
+            }
+            if(rightChild[node] != -1){
+                if(set.contains(rightChild[node]))return false ;
+                st.push(rightChild[node]);
+                set.add(rightChild[node]);
+            }
+        }
+        if(set.size() == n)return true ;
+        return false ;
+    }
+    public int findRoot(int[]left, int[]right){
+        Set<Integer> set = new HashSet<>();
+        for(int i : left){
+            set.add(i);
+        }
+        for(int i : right){
+            set.add(i);
+        }
+        int n = left.length ;
+        for(int i=0 ; i<n ; i++){
+            if(!set.contains(i))return i;
+        }
+        return -1 ;
+    }
+}
