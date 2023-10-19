@@ -1,0 +1,24 @@
+--> LeetCode-(107)
+--> O(n)-Faster than 100% S.C.-O(n)better than 88%
+class Solution {
+    public int height(TreeNode root){
+        if(root == null || (root.left == null && root.right == null))return 0 ;
+        return 1+Math.max(height(root.left),height(root.right));
+    }
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        if(root == null)return new ArrayList<>();
+        int level = height(root)+1 ;
+        List<List<Integer>> ans = new ArrayList<>();
+        for(int i=0 ; i<level ; i++){
+            ans.add(new ArrayList<>());
+        }
+        levelOrderTraversal(root, ans, 0, level-1);
+        return ans ;
+    }
+    public void levelOrderTraversal(TreeNode root, List<List<Integer>>ans,int cl, int level){
+        if(root == null)return ;
+        levelOrderTraversal(root.left, ans, cl+1, level);
+        levelOrderTraversal(root.right, ans, cl+1, level);
+        ans.get(level-cl).add(root.val);
+    }
+}
