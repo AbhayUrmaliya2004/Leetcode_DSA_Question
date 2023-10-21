@@ -1,0 +1,17 @@
+--> LeetCode-(933)
+--> O(n)
+class RecentCounter {
+    int count, curr ;
+    Queue<Integer> q= new LinkedList<>();
+    public RecentCounter() {
+        count = 0 ;
+    }
+    
+    public int ping(int t) {
+        q.add(t);
+        while(q.size() > 0 && q.peek() < t-3000){
+            q.remove();
+        }
+        return q.size();
+    }
+}
