@@ -1,0 +1,41 @@
+--> LeetCode-(2191)
+--> O(nlogn)faster than 37.65%
+/*
+The problem will take less time if not extra list to be formed and array is sorted by lambda function 
+*/
+class Solution {
+    public int[] sortJumbled(int[] mapping, int[] nums) {
+        Map<Integer,Integer> mp = new HashMap<>();
+        for(int i=0 ; i<nums.length ; i++){
+            int dec = decoding(nums[i],mapping);
+            mp.put(nums[i],dec);
+        }
+//        System.out.println(nums[0]+" "+ decoding(nums[0],mapping));
+        
+        List<Integer> list = new ArrayList<>();
+        for(int i=0 ; i<nums.length ; i++){
+            list.add(nums[i]);
+        }
+//        System.out.println(mp);
+//        System.out.println(list);
+        list.sort((i, j) -> mp.get(i) - mp.get(j));
+//        System.out.println(list);
+        for(int i=0 ; i<nums.length ; i++){
+            nums[i] = list.get(i);
+        }
+        return nums ;
+    }
+    public int decoding(int n,int[] mapping){
+        if(n == 0)return mapping[0];
+        int m = 0 ;
+        int place = 1 ;
+        while(n != 0){
+            int rem = n%10 ;
+            if(place != 1) m = mapping[rem]*place + m ;
+            else m = mapping[rem] ;
+            place *= 10 ;
+            n = n/10 ;
+        }
+        return m ;
+    }
+}
