@@ -1,0 +1,23 @@
+--> LeetCode-2909
+--> O(n) Faster than 100% and better than 100% in memory 
+# prefix and suffix sum 
+public int minimumSum(int[] a) {
+			int n = a.length;
+			int[] mins = new int[n];
+			for(int i = 0;i < n;i++){
+				mins[i] = i == 0 ? a[0] : Math.min(mins[i-1], a[i]);
+			}
+			int[] minb = new int[n];
+			for(int i = n-1;i >= 0;i--){
+				minb[i] = i == n-1 ? a[n-1] : Math.min(minb[i+1], a[i]);
+			}
+			int ret = Integer.MAX_VALUE;
+			for(int i = 1;i < n-1;i++){
+				int l = mins[i-1];
+				int r = minb[i+1];
+				if(l < a[i] && r < a[i]){
+					ret = Math.min(ret, l + r + a[i]);
+				}
+			}
+			return ret == Integer.MAX_VALUE ? -1 : ret;
+}
