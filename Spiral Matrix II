@@ -1,0 +1,36 @@
+--> LeetCode-(59)
+--> O(n), n->number of elements 
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] ans = new int[n][n];
+        helper(ans);
+        return ans ;
+    }
+    public void helper(int[][] ans){
+        int n = ans.length, num = 1 ;
+        int left = 0, right = n-1 , up = 0, down = n-1 ;
+        while(left <= right){
+            //going right
+            for(int i=left ; i<=right ; i++){
+                ans[up][i] = num++ ;
+            }
+            up++ ;
+            // going down 
+            for(int i=up ; i<=down ; i++){
+                ans[i][right] = num++ ;
+            }
+            right-- ;
+//            if(up > down)break ;
+            // going left 
+            for(int i=right ; i>=left ; i--){
+                ans[down][i] = num++ ;
+            }
+            down-- ;
+            //going up 
+            for(int i=down ; i>=up ; i--){
+                ans[i][left]= num++ ;
+            }
+            left++ ;
+        }
+    }
+}
