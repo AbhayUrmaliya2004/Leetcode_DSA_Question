@@ -1,0 +1,20 @@
+--> LeetCode-(701)
+--> O(log(n))
+class Solution {
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if(root == null) return new TreeNode(val);
+            
+        if(val > root.val){
+            if(root.right == null){
+                TreeNode temp = new TreeNode(val);
+                root.right = temp ;
+            } else insertIntoBST(root.right, val);
+        }else{
+            if(root.left == null){
+               TreeNode temp = new TreeNode(val);
+               root.left = temp ; 
+            }else insertIntoBST(root.left, val);
+        }
+        return root ;
+    }
+}
