@@ -1,0 +1,10 @@
+--> LeetCode-(700)
+--> O(log(n))
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        if(root == null)return null ;
+        if(root.val == val)return root ; // going left 
+        if(root.val > val) return searchBST(root.left , val);// going right 
+        else return searchBST(root.right, val);
+    }
+}
