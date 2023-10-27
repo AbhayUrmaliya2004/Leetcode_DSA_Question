@@ -1,0 +1,21 @@
+--> LeetCode-(230)
+--> O(n) faster than 100%, no extra array 
+class Solution {
+    int count = 0, num = -1 ;   // for counting 
+    public int kthSmallest(TreeNode root, int k) {
+        inOrderTraversal(root,k);
+        return num ;
+    }
+    public void inOrderTraversal(TreeNode root, int k){
+        if(root == null)return ;
+        if(count == k)return ;
+        inOrderTraversal(root.left, k);
+        if(count >= k)return ;
+        if(root != null){
+            count++ ;
+            num = root.val ;
+        }
+        if(count >= k)return ;
+        inOrderTraversal(root.right, k);
+    }
+}
