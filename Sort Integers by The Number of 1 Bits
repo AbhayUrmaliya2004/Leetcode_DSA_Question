@@ -1,0 +1,35 @@
+--> LeetCode-(1356)
+import java.util.* ;
+class Solution {
+    public int[] sortByBits(int[] arr) {
+        Map<Integer,Integer> mp = new HashMap<>();
+        for(int i=0 ; i<arr.length ; i++){
+            int bits = noOfBits(arr[i]);
+            mp.put(arr[i],bits);
+        }
+//        System.out.println(mp);
+        // sorting arr according to bits
+        List<Integer>list = new ArrayList<>();
+        for(int i=0 ; i<arr.length ; i++){
+            list.add(arr[i]);
+        }
+        Collections.sort(list,(o1, o2) -> {
+            if(mp.get(o1)-mp.get(o2)>0)return 1 ;
+            else if(mp.get(o1) == mp.get(o2))return o1-o2 ;
+            else return -1 ;
+        });
+        for(int i=0 ; i<arr.length ; i++){
+            arr[i] = list.get(i);
+        }
+        return arr;
+    }
+    public int noOfBits(int n){
+        if(n==0)return 0 ;
+        int count = 0 ;
+        while(n != 0){
+            if(n%2==1)count++ ;
+            n/=2 ;
+        }
+        return count ;
+    }
+}
