@@ -1,0 +1,22 @@
+--> LeetCode - (1305)
+--> O(nlogn) faster than 80%
+/*
+Intuition is to travel all the element and store in a list and then sort the list
+O(n) for traversal
+O(nlogn) for sorting 
+*/
+class Solution {
+    public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        List<Integer>list = new ArrayList<>();
+        preOrder(root1,list);
+        preOrder(root2,list);
+        Collections.sort(list);
+        return list ;
+    }
+    public void preOrder(TreeNode root, List<Integer> list){
+        if(root == null)return ;
+        list.add(root.val);
+        preOrder(root.left, list);
+        preOrder(root.right, list);
+    }
+}
