@@ -1,0 +1,28 @@
+--> LeetCode -(501)
+class Solution {
+    public int[] findMode(TreeNode root) {
+        Map<Integer, Integer>mp = new HashMap<>();
+        preOrder(root, mp);
+        int maxFre = -1 ;
+        for(Integer i : mp.values()){
+            if(i > maxFre)maxFre = i ;
+        }
+        List<Integer>list = new ArrayList<>();
+        for(Integer i : mp.keySet()){
+            if(mp.get(i)==maxFre)list.add(i);
+        }
+        int[] ans = new int[list.size()];
+        for(int i=0 ; i<list.size() ; i++)ans[i]=list.get(i);
+        return ans ;
+    }
+    public void preOrder(TreeNode root, Map<Integer, Integer>mp){
+        if(root == null)return ;
+        preOrder(root.left, mp);
+        // frequency in map
+        if(mp.containsKey(root.val)){
+            mp.put(root.val, mp.get(root.val)+1);
+        }else mp.put(root.val, 1);
+        // traversing
+        preOrder(root.right, mp);
+    }
+}
