@@ -1,0 +1,9 @@
+-->LeetCode - (222)
+--> O(n), faster than 100%
+--> O(h), better than 67%
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null)return 0 ;
+        return 1+countNodes(root.left)+countNodes(root.right);
+    }
+}
