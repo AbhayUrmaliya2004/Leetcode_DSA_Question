@@ -1,0 +1,18 @@
+LeetCode - (1441)
+class Solution {
+    public List<String> buildArray(int[] target, int n) {
+        List<String> ans = new ArrayList<>();
+        int k= 0 ;
+        for(int i=1 ; i<=n ; i++){
+            if(target[k] == i){
+                ans.add("Push");
+                k++ ;
+            }else{
+                ans.add("Push");
+                ans.add("Pop");
+            }
+            if(k == target.length)break ;
+        }
+        return ans ;
+    }
+}
