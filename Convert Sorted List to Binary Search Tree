@@ -1,0 +1,32 @@
+-->LeetCode - (109)
+-->T.C - O(n), S.C - O(n)
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        int size = 0 ;
+        ListNode temp = head ;
+        while(temp != null){
+            size++ ;
+            temp = temp.next ;
+        }
+        int[] nums = new int[size];
+        temp = head ;
+        for(int i=0 ; i<nums.length ; i++){
+            nums[i] = temp.val ;
+            temp = temp.next ;
+        }
+        // function calling
+        return constructBST(nums, 0, size-1);
+    }
+    public TreeNode constructBST(int[] nums, int st, int end){
+        if(st>end)return null ;
+        int mid = (st+end)/2 ;
+        TreeNode root = new TreeNode(nums[mid]);
+        // making left and right bst using recursion
+        TreeNode leftBST = constructBST(nums, st, mid-1);
+        TreeNode rightBST = constructBST(nums, mid+1, end);
+        // join left and right subTree with root 
+        root.left = leftBST ;
+        root.right = rightBST ;
+        return root ;
+    }
+}
