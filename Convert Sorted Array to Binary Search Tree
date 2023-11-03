@@ -1,0 +1,20 @@
+--> LeetCode - (108)
+--> T.C.- O(n), faster than 100%
+--> S.C.- O(H), H-height of tree
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return constructBST(nums, 0, nums.length-1);
+    }
+    public TreeNode constructBST(int[] nums, int st, int end){
+        if(st>end)return null ;
+        int mid = (st+end)/2 ;
+        TreeNode root = new TreeNode(nums[mid]);
+        // making left and right bst using recursion
+        TreeNode leftBST = constructBST(nums, st, mid-1);
+        TreeNode rightBST = constructBST(nums, mid+1, end);
+        // join left and right subTree with root 
+        root.left = leftBST ;
+        root.right = rightBST ;
+        return root ;
+    }
+}
