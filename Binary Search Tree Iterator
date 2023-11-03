@@ -1,0 +1,63 @@
+--> LeetCode - (173)
+//Solution Using Stack 
+--> O(n), faster than 70% and takes less space than 89%
+class BSTIterator {
+    Stack<TreeNode> stack;
+    public BSTIterator(TreeNode root) {
+        stack = new Stack();
+          pushNode(root);
+    }
+    void pushNode(TreeNode node){
+        if(node==null){
+            return;
+        }
+        pushNode(node.right);
+        stack.push(node);
+        pushNode(node.left);
+    }
+
+    /**
+     *
+     * @return Next smallest number
+     */
+    public int next() {
+        return stack.pop().val;
+    }
+
+    /**
+     *
+     * @return true if stack is not empty
+     */
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+}
+
+
+// My Solution using ArrayList
+--> O(n)
+class BSTIterator {
+    int idx = -1;
+    List<Integer>list = new ArrayList<>();
+    
+    public BSTIterator(TreeNode root) {
+        traversal(root);
+    }
+    
+    public int next() {
+        return list.get(++idx);
+    }
+    
+    public boolean hasNext() {
+        if(idx < list.size()-1)return true ;
+        return false ;
+    }
+    
+    public void traversal(TreeNode root){
+        if(root == null)return ;
+        // this is in order traversal
+        traversal(root.left);
+        System.out.println(idx+" "+root.val);
+        list.add(root.val);
+        traversal(root.right);
+    }
