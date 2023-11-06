@@ -1,0 +1,27 @@
+--> LeetCode - (1382)
+--> Faster than 95%
+class Solution {
+    public TreeNode balanceBST(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        InOrder(root, list);
+//        Collections.sort(list);
+//        System.out.println(list);
+        return CreateTree(list,0, list.size()-1); 
+    }
+    public TreeNode CreateTree(List<Integer>list, int st, int end){
+        if(st > end)return null;
+        int mid = (st+end)/2 ;
+        TreeNode temp = new TreeNode(list.get(mid));
+        TreeNode leftNode = CreateTree(list, st, mid-1);
+        TreeNode rightNode = CreateTree(list, mid+1, end);
+        temp.left = leftNode ;
+        temp.right = rightNode;
+        return temp ;
+    }
+    public void InOrder(TreeNode root, List<Integer>list){
+        if(root == null)return ;
+        InOrder(root.left, list);
+        list.add(root.val);
+        InOrder(root.right, list);
+    }
+}
