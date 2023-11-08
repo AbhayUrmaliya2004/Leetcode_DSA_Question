@@ -1,0 +1,19 @@
+--> LeetCode - (530)
+class Solution {
+    public int getMinimumDifference(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        helper(root, list);
+        int minDiff = Integer.MAX_VALUE, diff = 0 ;
+        for(int i=1 ; i<list.size() ; i++){
+            diff = list.get(i)-list.get(i-1) ;
+            if(diff < minDiff)minDiff = diff ;
+        }
+        return minDiff ;
+    }
+    public void helper(TreeNode root, List<Integer> list){ // Inorder Traversal
+        if(root == null)return ;
+        helper(root.left, list);
+        list.add(root.val);
+        helper(root.right, list);
+    }
+}
