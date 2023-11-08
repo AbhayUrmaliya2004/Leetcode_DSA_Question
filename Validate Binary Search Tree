@@ -1,0 +1,12 @@
+--> LeetCode - (98)
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        double dmax = 2147483648d;
+        double dmin = -2147483649d;
+        return helper(root, dmin, dmax);
+    }
+    public boolean  helper(TreeNode root, double min, double max){
+        if(root==null) return true;
+        return root.val>min && root.val<max && helper(root.left,min,(double)root.val) && helper(root.right,(double)root.val,max);
+    }
+}
