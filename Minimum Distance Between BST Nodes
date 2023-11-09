@@ -1,0 +1,17 @@
+--> LeetCode-(783)
+class Solution {
+    int min = Integer.MAX_VALUE;
+    TreeNode pre = null;
+    public int minDiffInBST(TreeNode root) {
+        dfs(root);
+        return min ;
+    }
+    public void dfs(TreeNode root){
+        if(root == null) return;
+        dfs(root.left);
+        if(pre != null)min = Math.min(root.val - pre.val, min);
+        pre = root;
+        dfs(root.right);
+    }
+
+}
