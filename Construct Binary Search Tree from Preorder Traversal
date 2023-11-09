@@ -1,0 +1,23 @@
+--> LeetCode-(1008)
+class Solution {
+    public TreeNode bstFromPreorder(int[] preorder) {
+        return constructBST(preorder, 0, preorder.length-1);
+    }
+    public TreeNode constructBST(int[]arr, int st, int end){
+        if(st == end){
+            return new TreeNode(arr[st]);
+        }
+        if(st > end)return null ;
+        TreeNode root = new TreeNode(arr[st]);
+        int val = arr[st], i = st+1 ;
+        while(i<arr.length && arr[i] < val){
+            i++ ;
+        }
+//        System.out.println(st + " " + end+" "+i);
+        TreeNode leftBST = constructBST(arr, st+1, i-1);
+        TreeNode rightBST = constructBST(arr, i, end);
+        root.left = leftBST ;
+        root.right = rightBST ;
+        return root ;
+    }
+}
