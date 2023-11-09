@@ -1,0 +1,17 @@
+-->LeetCode-(653)
+class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        if(root.left == null && root.right == null)return false ;
+        Set<Integer>set = new HashSet<>();
+        return helper(root, k, set);
+    }
+    public boolean helper(TreeNode root, int k, Set<Integer>set){
+        if(root == null)return false ;
+        if(set.contains(k-root.val)){
+            System.out.println(root.val);
+            return true ;
+        }
+        set.add(root.val);
+        return helper(root.left, k, set) || helper(root.right, k, set);
+    }
+}
