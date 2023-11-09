@@ -1,4 +1,6 @@
 --> LeetCode-(1008)
+--> O(h), faster than 100%
+-->O(n), better than 61% in memory
 class Solution {
     public TreeNode bstFromPreorder(int[] preorder) {
         return constructBST(preorder, 0, preorder.length-1);
