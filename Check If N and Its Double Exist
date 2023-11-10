@@ -1,0 +1,17 @@
+--> LeetCode - (1346)
+--> O(n)
+class Solution {
+    public boolean checkIfExist(int[] arr) {
+        Set<Integer> set = new HashSet<>();
+        int countZeroes = 0 ;
+        for(int i : arr){
+            set.add(i);
+            if(i == 0)countZeroes++ ;
+        }
+        if(countZeroes > 1)return true ;
+        for(int i : arr){
+            if(i != 0 && set.contains(2*i))return true ;
+        }
+        return false ;
+    }
+}
