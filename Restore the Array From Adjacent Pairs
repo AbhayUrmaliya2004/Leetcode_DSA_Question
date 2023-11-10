@@ -1,0 +1,52 @@
+--> LeetCode - (1743)
+--> O(m*n), m and n are row and column of integers
+class Solution {
+    public int[] restoreArray(int[][] adjacentPairs) {
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        Set<Integer> seen = new HashSet<>();
+        
+        //FILLING THE ADJACENT ELEMNTS
+        for(int[]arr : adjacentPairs){
+            adj.putIfAbsent(arr[0], new ArrayList<>());
+            adj.get(arr[0]).add(arr[1]);
+            
+            adj.putIfAbsent(arr[1], new ArrayList<>());
+            adj.get(arr[1]).add(arr[0]);
+        }
+        
+        // FINDING START AND END ELEMENT
+        int st = Integer.MIN_VALUE, end = Integer.MIN_VALUE ;
+        for(Map.Entry<Integer,List<Integer>> ent : adj.entrySet()){
+            if(ent.getValue().size() == 1){
+                if(st == Integer.MIN_VALUE){
+                    st = ent.getKey();
+                }else{
+                    end = ent.getKey();
+                }
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        ans.add(st);
+        seen.add(st);
+        
+        int curr = st ;
+        int len = adjacentPairs.length+1 ;
+        while(ans.size() < len){
+            // TEMPORARY LIST 
+            List<Integer> temp = adj.get(curr);
+            for(int val : temp){
+                if(seen.contains(val))continue ;
+                ans.add(val);
+                seen.add(val);
+                curr = val ;
+            }
+        }
+        // FINALLY RETURNING ANSWER AS AN ARRAY
+        int[]result = new int[ans.size()];
+        for(int i=0 ; i<result.length ; i++){
+            result[i] = ans.get(i);
+        }
+        
+        return result ; 
+    }
+}
