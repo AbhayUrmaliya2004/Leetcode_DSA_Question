@@ -1,0 +1,36 @@
+-->LeetCode-(2933)
+class Solution {
+    public List<String> findHighAccessEmployees(List<List<String>> access_times) {
+        List<String> ans = new ArrayList<>();
+        Map<String, List<Integer>> mp = new HashMap<>();
+        for(List<String>l : access_times){
+            if( !mp.containsKey(l.get(0))){
+                mp.put(l.get(0), new ArrayList<>());
+            }
+            mp.get(l.get(0)).add(decode(l.get(1)));
+        } 
+        System.out.println(mp);
+        for(Map.Entry<String, List<Integer>>ent : mp.entrySet()){
+            if(ent.getValue().size() >= 3){
+                List<Integer> temp = ent.getValue();
+                Collections.sort(temp);
+                for(int i=0 ; i<temp.size()-2 ; i++){
+                    if(temp.get(i+1) - temp.get(i) < 60 && temp.get(i+2)-temp.get(i) < 60){
+                        ans.add(ent.getKey());
+                        break ;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+    public int decode(String str){
+        int hour1 = Integer.parseInt(""+str.charAt(0));
+        int hour2 = Integer.parseInt(""+str.charAt(1));
+        int hours = hour1*10 + hour2 ;
+        int min1 = Integer.parseInt(""+str.charAt(2));
+        int min2 = Integer.parseInt(""+str.charAt(3));
+        int mins = min1*10 + min2 ;
+        return hours*60 + mins ;
+    }
+}
