@@ -1,0 +1,28 @@
+--> LeetCode-(2785)
+class Solution {
+    public String sortVowels(String s) {
+ //       LinkedList<Integer> idxOfVowel = new LinkedList<Integer>();
+        Stack<Integer> idxOfVowel = new Stack<>();
+        List<Character> vowels = new ArrayList<>();
+        char[] charArr = s.toCharArray();
+        for(int i = 0 ; i < s.length() ; i++){
+            if(charArr[i]=='a'||charArr[i]=='e'||charArr[i]=='i'||charArr[i]=='o'||charArr[i]=='u'||
+               charArr[i]=='A'||charArr[i]=='O'||charArr[i]=='I'||charArr[i]=='E'||charArr[i]=='U'){
+                vowels.add(charArr[i]);
+                idxOfVowel.push(i);
+            }
+        }
+        Collections.sort(vowels);
+   //     System.out.println(vowels);
+        int size = vowels.size();
+        for(int i = size-1 ; i>= 0 ; i--){
+            charArr[idxOfVowel.pop()] = vowels.get(i);
+        }
+/*        StringBuilder sb = new StringBuilder("");
+        for(char ch : charArr){
+            sb.append(ch);
+        }
+        return sb.toString(); */
+        return String.valueOf(charArr);
+    }
+}
