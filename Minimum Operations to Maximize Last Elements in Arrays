@@ -1,0 +1,29 @@
+--> LeetCode-(2934)
+--> O(n),faster than 100%
+--> S.C.:-O(1)
+class Solution {
+    public int minOperations(int[] nums1, int[] nums2) {
+        int last = nums1.length-1 ;
+        int optionalSwap = 0 ;
+        int mandatorySwap = 0 ;
+        for(int i=last-1 ; i>=0 ; i--){
+            //if max of curr two numbers is greater than max of tails, return -1
+            if(Math.max(nums1[i],nums2[i]) > Math.max(nums1[last],nums2[last])){
+                return -1 ;
+            }
+            //if both the current numbers are smaller than min of tails, return -1
+            if(nums1[i]>Math.min(nums1[last],nums2[last]) && nums2[i]>Math.min(nums1[last],nums2[last])){
+                return -1 ;
+            }
+            //if curr element is greater than last element it is necessary to swap 
+            if(nums1[i]>nums1[last] || nums2[i]>nums2[last]){
+                mandatorySwap++ ;
+            }
+            // both elements are smaller then it is optinal to swap 
+            if(nums1[i]<=Math.min(nums1[last],nums2[last]) && nums2[i]<=Math.min(nums1[last],nums2[last])){
+                optionalSwap++ ;
+            }
+        }
+        return Math.min(mandatorySwap, nums1.length-mandatorySwap-optionalSwap);
+    }
+}
