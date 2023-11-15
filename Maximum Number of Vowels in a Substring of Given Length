@@ -1,0 +1,25 @@
+--> LeetCode-(1456)
+-->O(n)
+APPROACH :- sliding window and checking each time the value of max no. of vowel in a string 
+
+class Solution {
+    public int maxVowels(String s, int k) {
+        int max = 0;
+        int n = s.length(), cntVowel = 0;
+        Queue<Character> q = new LinkedList<>();
+        for(int i=0 ; i<n ; i++){
+            char ch = s.charAt(i);
+            q.add(ch);
+            if(ch=='a'|| ch=='e'||ch=='i'||ch=='o'||ch=='u')cntVowel++ ;
+            
+            // check size of substring is k or not
+            if(q.size()==k){
+                max = Math.max(max, cntVowel);
+                char ch1 = q.remove();
+                if(ch1=='a'|| ch1=='e'||ch1=='i'||ch1=='o'||ch1=='u')cntVowel-- ;
+            }
+            if(cntVowel == k)return k ;
+        }
+        return max ;
+    }
+}
