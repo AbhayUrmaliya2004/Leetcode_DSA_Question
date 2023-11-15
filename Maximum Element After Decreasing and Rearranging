@@ -1,0 +1,14 @@
+-->LeetCode - (1846)
+# Method-(1), T.C.-O(nlogn), beacuse sorting is used. TRY WITH HASMAP WILL SET ITS COMPLEXITY TO O(N)
+class Solution {
+    public int maximumElementAfterDecrementingAndRearranging(int[] arr) {
+        Arrays.sort(arr);
+        int[] ans = new int[arr.length];
+        ans[0] = 1;
+        for(int i=1 ; i<arr.length ; i++){
+            if(arr[i]-ans[i-1]<=1)ans[i] = arr[i];
+            else ans[i] = ans[i-1]+1 ;
+        }
+        return ans[ans.length-1];
+    }
+}
