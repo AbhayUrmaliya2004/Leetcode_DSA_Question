@@ -1,5 +1,5 @@
 --> LeetCode - (1887)
---> T.C. :- O(n) linear loop
+--> T.C. :- O(NlogN) as sorting used 
 approach :- second largest element take 1 to become equal to largest 
 class Solution {
     public int reductionOperations(int[] nums) {
