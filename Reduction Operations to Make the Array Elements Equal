@@ -1,0 +1,21 @@
+--> LeetCode - (1887)
+--> T.C. :- O(n) linear loop
+approach :- second largest element take 1 to become equal to largest 
+class Solution {
+    public int reductionOperations(int[] nums) {
+        if(nums.length == 1)return 0;
+        Arrays.sort(nums);
+        int[]presum = new int[nums.length];
+        for(int i=1 ; i<nums.length ; i++){
+            if(nums[i]==nums[i-1]){
+                presum[i]=presum[i-1];
+            }else{
+                presum[i] = presum[i-1]+1 ;
+            }
+        }
+        for(int i=1 ; i<nums.length ; i++){
+            presum[i] += presum[i-1];
+        }
+        return presum[presum.length-1];
+    }
+}
