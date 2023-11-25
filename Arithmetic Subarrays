@@ -1,0 +1,26 @@
+// LeetCode-(1630)
+class Solution {
+    public List<Boolean> checkArithmeticSubarrays(int[] nums, int[] l, int[] r) {
+        List<Boolean>ans = new ArrayList<>();
+        
+        for(int i=0 ; i<l.length ; i++){
+            boolean bool = helper(l[i], r[i], nums);
+            ans.add(bool);
+        }
+        return ans ;
+    }
+    public boolean  helper(int l, int r, int[]nums){
+        if(r-l<2)return true ;
+        int[]arr = new int[r-l+1];
+        int k=0 ;
+        for(int i=l ; i<=r ; i++){
+            arr[k++] = nums[i];
+        }
+        Arrays.sort(arr);
+        int diff = arr[1]-arr[0] ;
+        for(int i=1; i<arr.length ; i++){
+            if(arr[i]-arr[i-1] != diff)return false ;
+        }
+        return true ; 
+    }
+}
