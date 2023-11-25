@@ -1,0 +1,25 @@
+// LeetCode-(2943)
+--> O(nlogn)faster than 100% in memory 
+--> O(1) better than 100% in memory 
+class Solution {
+    public int maximizeSquareHoleArea(int n, int m, int[] hBars, int[] vBars) {
+
+        Arrays.sort(hBars);
+        Arrays.sort(vBars);
+        
+        int hl = findMaxGap(hBars);
+        int vl = findMaxGap(vBars);
+        int min = Math.min(vl, hl);
+        
+        return min*min;
+    }
+    public int findMaxGap(int []bars){
+        int prev = 1, count = 1, res = 1;
+        for(int i = 0; i < bars.length ; ++i) {
+           count = (prev+1 == bars[i])? count + 1: 2;
+           prev = bars[i];
+           res = Math.max(res, count);
+        }
+        return res;
+    }
+}
