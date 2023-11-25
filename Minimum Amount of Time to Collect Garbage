@@ -1,0 +1,43 @@
+// LeetCode-(2391)
+// TRY TO OPTIMISE IN SINGLE FOR LOOP 
+--> T.C.:- O(nlogn)
+class Solution {
+    public int garbageCollection(String[] garbage, int[] travel) {
+        int P=0, M=0, G=0;
+        int lastp=-1, lastg=-1, lastm=-1 ;
+        // bp --> bool paper etc. 
+        boolean bp=false, bg=false,bm=false ;
+        for(int i=0; i<garbage.length ; i++){
+            String temp = garbage[i];
+            int j=0 ;
+            bp=false; bg=false; bm=false ;
+            // added only minutes to take garbage 
+            while(j < temp.length()){
+                char ch = temp.charAt(j);
+                if(ch == 'P'){
+                    lastp = i;
+                    P+=1 ;
+                    bp = true ;
+                }
+                if(ch == 'M'){
+                    lastm=i ;
+                    M += 1 ;
+                    bm = true ;
+                }
+                if(ch == 'G'){
+                    lastg = i;
+                    G += 1;
+                    bg = true ;
+                }
+                j++ ;
+            }
+        }
+        // adding travel time to last house having particular garbage
+        for(int i=1 ; i<garbage.length ; i++){
+            if(i<=lastp)P+=travel[i-1];
+            if(i<=lastm)M+=travel[i-1];
+            if(i<=lastg)G+=travel[i-1];
+        }
+        return P+M+G ;
+    }
+}
