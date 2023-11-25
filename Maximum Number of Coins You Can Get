@@ -1,0 +1,17 @@
+// LeetCode-(1561)
+T.C. :- O(NlogN)
+S.C. :- O(1)
+class Solution {
+    public int maxCoins(int[] piles) {
+        int count = 0;
+        Arrays.sort(piles);
+        int st = 0;
+        int end = piles.length-1 ;
+        while(st<end){
+            count += piles[end-1];
+            st++ ; 
+            end -= 2 ;
+        }
+        return count ;
+    }
+}
