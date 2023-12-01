@@ -1,0 +1,68 @@
+// LeetCode - (99)
+--> T.C. :- O(n*2),Faster than 100%
+--> S.C. :- constantO (1)
+class Solution {
+    public void recoverTree(TreeNode root) {
+        if(root == null)return ;
+        
+        TreeNode min = new TreeNode(Integer.MAX_VALUE) ;
+        TreeNode max = new TreeNode(Integer.MIN_VALUE) ;
+        TreeNode min1 = min, max1 = max ;
+        TreeNode smaller = smaller(root, root.right, min);
+        TreeNode larger = larger(root, root.left, max);
+        
+        if(smaller != null && larger != null){
+            swap(smaller, larger);
+            return ;
+        }
+        if(smaller != null){
+            swap(root, smaller);
+            return ;
+        }
+        if(larger != null){
+            swap(root, larger);
+            return ;
+        }
+        min = min1 ;
+        min.val = Integer.MAX_VALUE ;
+        max = max1 ;
+        max.val = Integer.MAX_VALUE ;
+        
+        recoverTree(root.left);
+        recoverTree(root.right);  
+    }
+    
+    public void swap(TreeNode t1, TreeNode t2){
+        int temp = t1.val ;
+        t1.val = t2.val ;
+        t2.val = temp ;
+    }
+    
+    public TreeNode smaller(TreeNode top, TreeNode root, TreeNode min){
+        if(root == null)return null;
+        if(root.val < top.val && root.val < min.val)min = root ;
+        
+        TreeNode left = smaller(top, root.left, min) ;
+        TreeNode right = smaller(top, root.right, min);
+        
+        if(left != null && left.val < min.val)min = left ;
+        if(right != null && right.val < min.val)min = right ;
+        
+        if(min.val != Integer.MAX_VALUE)return min ;
+        return null ;
+    }
+    
+     public TreeNode larger(TreeNode top, TreeNode root, TreeNode max){
+        if(root == null)return null;
+        if(root.val > top.val && root.val > max.val)max = root ;
+        
+        TreeNode left = larger(top, root.left, max) ;
+        TreeNode right = larger(top, root.right, max);
+        
+        if(left != null && left.val > max.val)max = left ;
+        if(right != null && right.val > max.val)max = right ;
+         
+        if(max.val != Integer.MIN_VALUE)return max ;
+        return null ;
+    }
+}
