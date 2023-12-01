@@ -1,13 +1,17 @@
 // LeetCode - (99)
 --> T.C. :- O(n*2),Faster than 100%
 --> S.C. :- constantO (1)
+/* Approach for each node check if greater value exist in left and smaller value exist in right if both true swap left greater and right smaller IF any
+   one case is correct swap it with current root node and traverse each node to check above conditions */
 class Solution {
     public void recoverTree(TreeNode root) {
         if(root == null)return ;
-        
+
+        // TO FIND THE GREATEST AND SMALLEST VALUE MIN AND MAX VARIABLE MAINTAIN IS REQUIRED
         TreeNode min = new TreeNode(Integer.MAX_VALUE) ;
         TreeNode max = new TreeNode(Integer.MIN_VALUE) ;
         TreeNode min1 = min, max1 = max ;
+
         TreeNode smaller = smaller(root, root.right, min);
         TreeNode larger = larger(root, root.left, max);
         
