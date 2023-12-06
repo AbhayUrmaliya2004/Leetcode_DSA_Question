@@ -1,0 +1,119 @@
+// LeetCode - (57)
+--> O(n), faster than 99.39%
+--> S.C. :- O(1)
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        if(intervals.length == 0){
+            int[][]ans = {{newInterval[0], newInterval[1]}};
+            return ans ;
+        }
+        if(intervals.length == 1){
+
+            if(intervals[0][0] > newInterval[1]){
+                int[][] ans = new int[2][2];
+                ans[0][0] = newInterval[0];
+                ans[0][1] = newInterval[1];
+                
+                ans[1][0] = intervals[0][0] ;
+                ans[1][1] = intervals[0][1] ;
+                return ans ;
+            }
+            if(intervals[0][1] < newInterval[0]){
+                int[][] ans = new int[2][2];
+                ans[0][0] = intervals[0][0];
+                ans[0][1] = intervals[0][1];
+                
+                ans[1][0] = newInterval[0];
+                ans[1][1] = newInterval[1];
+                return ans ;
+            }
+            // this is else part 
+            int[][] ans = new int[1][2] ;
+            ans[0][0] = Math.min(intervals[0][0], newInterval[0]);
+            ans[0][1] = Math.max(intervals[0][1], newInterval[1]);
+            return ans ;
+        }
+        List<int[]> list = new ArrayList<>();
+        int insertingIdx = 1;
+        // finding index for newInterval to be inserted 
+        for(int i=0 ; i<intervals.length ; i++){
+            if(intervals[i][0] <= newInterval[0])insertingIdx = i+1 ;
+            else break ;
+        }
+        // storing array lesser value than inserting index 
+        for(int i=0 ; i<insertingIdx-1 ; i++){
+            list.add(intervals[i]);
+        }
+//        System.out.println(list);
+        // checking for either overlapping or only inserting 
+        int idx = 0 ;
+        if(intervals[0][0] > newInterval[1]){
+//            System.out.println("condition 1");
+            list.add(newInterval);
+            idx = 0 ;
+        }else if(intervals[0][0] > newInterval[0]){
+//             System.out.println("condition 2");
+            int i = 0 ;
+            boolean move = false ;
+            while(i<intervals.length && intervals[i][1] <= newInterval[1]){
+                i++ ;
+                move = true ;
+            }
+            if(move) i-- ;
+            int []temp = new int[]{Math.min(intervals[0][0], newInterval[0]),
+                                   Math.max(intervals[i][1],newInterval[1])};
+            list.add(temp);
+            idx = i+1 ;
+            
+        }else if(intervals[insertingIdx-1][1] >= newInterval[0]){ // like [3,5] and [4,8]
+            // finding how many elements to be merged
+ //            System.out.println("condition 3");
+            int i=insertingIdx-1 ;
+            while(i < intervals.length && intervals[i][0] <= newInterval[1])i++ ;
+            i-- ;// to get the actual interval
+//            System.out.println(i);
+        
+            int[]temp = {Math.min(intervals[insertingIdx-1][0], newInterval[0]),
+                        Math.max(intervals[i][1], newInterval[1])};
+//            System.out.println(temp[0]+" "+temp[1]);
+            list.add(temp);     // merged interval
+            // inserting the left elements
+            i++ ;
+//            System.out.println(i);
+            idx = i ;
+            
+        }else if(intervals[insertingIdx-1][0] > newInterval[1] ){
+//             System.out.println("condition 4");
+            list.add(intervals[insertingIdx-1]);
+            list.add(newInterval);
+            
+            idx = insertingIdx ;
+            
+        }else { // merging right side 
+//             System.out.println("condition 5");
+            list.add(intervals[insertingIdx-1]);
+            
+            int i = insertingIdx ; 
+            while(i<intervals.length && intervals[i][0] <= newInterval[1])i++ ;
+            i-- ;
+            int[]temp = {newInterval[0], Math.max(newInterval[1],intervals[i][1])};
+            list.add(temp);
+            i++ ;
+            // adding all other elments 
+            idx = i ;
+        }
+        
+        for(int i = idx ; i<intervals.length ; i++){
+            list.add(intervals[i]);
+        }
+        // converting list to array 
+        int[][]ans = new int[list.size()][2];
+        for(int i=0 ; i<list.size() ; i++){
+            for(int j=0 ; j<2 ; j++){
+                ans[i][j] = list.get(i)[j] ;
+            }
+        }
+        return ans ;
+    }
+}
