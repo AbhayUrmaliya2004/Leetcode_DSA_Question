@@ -1,0 +1,32 @@
+// LeetCode - (2661)
+--> O(N), N-> size of arr and N = m*n 
+S.C. :- O(m+n)
+
+class Solution {
+    public int firstCompleteIndex(int[] arr, int[][] mat) {
+        Map<Integer, int[]> mp = new HashMap<>();
+        // to check row and col in constant time 
+        for(int i=0 ; i<mat.length ; i++){
+            for(int j=0 ; j<mat[0].length ; j++){
+                // no need to check condition as unique element exist 
+                int[] temp = {i,j};
+                mp.put(mat[i][j], temp);  
+            }
+        }
+        // frequency arr 
+        int m = mat.length ;
+        int n = mat[0].length ;
+        int[] row = new int[m];
+        int[] col = new int[n];
+        
+        for(int i=0 ; i<arr.length ; i++){
+            int[] temp = mp.get(arr[i]);
+            
+            row[temp[0]]++ ;
+            col[temp[1]]++ ;
+            
+            if(row[temp[0]] == n || col[temp[1]] == m) return i ;
+        }
+        return 0 ;
+    }
+}
