@@ -1,0 +1,20 @@
+// LeetCode-(538)
+T.C. :- O(n) faster than 100 %
+S.C. :- O(H), H -> height of tree
+
+class Solution {
+    int sum = 0;
+    public TreeNode convertBST(TreeNode root) {
+        if(root == null)return null ;
+        TreeNode ans = root ;
+        helper(root);
+        return root ;
+    }
+    public void helper(TreeNode root){
+        if(root == null)return ;
+        helper(root.right);
+        sum += root.val ;
+        root.val = sum ;
+        helper(root.left);
+    }
+}
