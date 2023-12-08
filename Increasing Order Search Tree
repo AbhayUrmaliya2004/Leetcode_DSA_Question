@@ -1,0 +1,28 @@
+// LeetCode - (897)
+--> T.C.:- O(n), faster than 100
+--> S.C. :- O(n)
+class Solution {
+    public TreeNode increasingBST(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
+        preorder(root, q);
+        TreeNode head = q.remove();
+        TreeNode temp = head, t ;
+        // making connections
+        while(q.size() > 0){
+            t = q.remove();
+            temp.right = t ;
+            temp = t ;
+        }
+        return head ;
+    }
+    void preorder(TreeNode root, Queue<TreeNode> q){
+        if(root == null)return ;
+        preorder(root.left, q);
+        q.add(root);
+        preorder(root.right, q);
+
+        // removing connection to avoid cycle in linked list(TREE)
+        root.left = null ;
+        root.right = null ;
+    }
+}
