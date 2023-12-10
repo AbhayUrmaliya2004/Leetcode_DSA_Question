@@ -1,0 +1,16 @@
+//LeetCode-(867)
+--> T.C. :- O(n), n-m*n , better than 100%
+-->S.C> :- O(n), n-> m*n
+
+class Solution {
+    public int[][] transpose(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length ;
+        int[][]ans = new int[n][m];
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                ans[j][i] = matrix[i][j];
+            }
+        }
+        return ans ;
+    }
+}
