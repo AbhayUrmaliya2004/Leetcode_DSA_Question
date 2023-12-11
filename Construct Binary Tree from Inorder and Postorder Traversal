@@ -1,0 +1,22 @@
+// LeetCode-(106)
+--> O(n)
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        int n = postorder.length ;
+        return helper(inorder, 0, n-1, postorder, 0, n-1);
+    }
+    public TreeNode helper(int[] inorder, int inSt, int inEnd, int[] postorder,int poSt,int poEnd){
+        if(inSt > inEnd)return null ;
+        TreeNode root = new TreeNode(postorder[poEnd]);
+        int idx = 0 ;
+        for(int i=inSt ; i<=inEnd ; i++){
+            if(inorder[i] == root.val){idx = i; break ;}
+        }
+    
+        TreeNode left = helper(inorder, inSt, idx-1, postorder, poSt, poEnd-1-inEnd+idx);
+        TreeNode right = helper(inorder, idx+1, inEnd, postorder, poSt, poEnd-1);
+        root.left = left ;
+        root.right = right ;
+        return root ;
+    }
+}
