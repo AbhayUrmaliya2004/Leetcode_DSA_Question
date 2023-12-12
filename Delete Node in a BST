@@ -1,0 +1,64 @@
+// LeetCode - (450)
+T.C. :- O(logn), searching like binary search, faster than 100%
+S.C.:- O(1)
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null)return null;
+        TreeNode temp = new TreeNode(Integer.MAX_VALUE);
+        temp.left = root ;
+        helper(temp, key);
+        return temp.left ;
+    }
+    public void helper(TreeNode root, int key){
+        if(root == null)return ;
+        if(root.left != null && root.left.val == key){
+//            System.out.println("1st case , Root : "+ root.val);
+            TreeNode l = root.left ;
+            if(l.left == null && l.right == null){ // no child case
+                root.left = null ;
+                return ;
+            }else if(l.left == null || l.right == null){// one child case 
+                TreeNode temp ;
+                if(l.left != null)temp = l.left ;
+                else temp = l.right ;
+                
+                root.left = temp ;
+                return ;
+            }else{   // Two Child Case
+                TreeNode tempLeft = l.left ;
+                TreeNode temp = l.right ;
+                root.left = temp ;
+                while(temp.left != null)temp = temp.left ;
+                temp.left = tempLeft ;
+                return ;
+            }
+        }else if(root.right != null && root.right.val == key){
+//            System.out.println("2nd case , Root : "+ root.val);
+            TreeNode r = root.right ;
+            if(r.left == null && r.right == null){ // no child case
+                root.right = null ;
+                return ;
+            }else if(r.left == null || r.right == null){// one child case 
+                TreeNode temp ;
+                if(r.left != null)temp = r.left ;
+                else temp = r.right ;
+                
+                root.right = temp ;
+                return ;
+            }else{   // Two Child Case
+                TreeNode tempLeft = r.left ;
+                TreeNode temp = r.right ;
+                root.right = temp ;
+                while(temp.left != null)temp = temp.left ;
+                temp.left = tempLeft ;
+                return ;
+            }
+        }
+        // Traversing
+        if(root.val > key) {
+//            System.out.println("going left , root.val : "+ root.left.val);
+            helper(root.left, key);
+        }
+        else helper(root.right, key);
+    }
+}
