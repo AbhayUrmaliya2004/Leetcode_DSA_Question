@@ -1,0 +1,3 @@
+// LeetCode - (1582)
+--> T.C.:-  O(N), N->(m*n)no. of elements 
+--> S.C. :- O(N)
