@@ -1,0 +1,26 @@
+// LeetCode - (2966) 
+T.C. :- O(nlogn), for sorting 
+S.C. :- O(1)
+class Solution {
+    public int[][] divideArray(int[] nums, int k){
+        Arrays.sort(nums);
+        int [][]ans = new int[nums.length/3][3];
+        int i=0, j=0 ;
+        for(int idx=0 ; idx<nums.length ; idx++){
+            if(j == 0){
+                ans[i][j++] = nums[idx];
+            }else{
+                if(nums[idx]-ans[i][0] <= k){
+                    ans[i][j++] = nums[idx];
+                }else{
+                    return new int[][]{}; 
+                }
+            }
+            if(j==3){
+                i += 1 ;
+                j = 0 ;
+            }
+        }
+        return ans ;
+    }
+}
