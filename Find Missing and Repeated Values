@@ -1,0 +1,26 @@
+// LeetCode-(2965)
+--> T.C. :- O(n)
+--> S.C. :- O(N), N-> n*n no of elements
+class Solution {
+    public int[] findMissingAndRepeatedValues(int[][] grid) {
+        int n = grid.length ;
+        boolean[]check = new boolean[n*n + 1];
+        int[] ans = new int[2];
+        for(int i=0 ; i<n ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(check[grid[i][j]] == false){
+                    check[grid[i][j]] = true ;
+                }else{
+                    ans[0] = grid[i][j] ;
+                }
+            }
+        }
+        for(int i=1 ; i<n*n +1 ; i++){
+            if(check[i] == false){
+                ans[1] = i;
+                return ans;
+            }
+        }
+        return ans ;
+    }
+}
