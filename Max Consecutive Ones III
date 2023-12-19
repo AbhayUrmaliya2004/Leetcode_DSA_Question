@@ -1,0 +1,40 @@
+/// LeetCode - (1004)
+
+# Method-(1)
+--> O(n)
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        Deque<Integer> q = new ArrayDeque<>();
+        int j = 0 , countZeroes = 0;
+        int max = 0 ;
+        while(j <= nums.length){
+            while(j < nums.length && countZeroes < k){
+                if(nums[j]==0)countZeroes++ ;
+                q.add(nums[j++]) ;
+            }
+            
+            while(j < nums.length && nums[j] == 1){
+                q.add(nums[j++]);
+            }
+            max = Math.max(max, q.size());
+            if(j == nums.length){
+//                System.out.println("j : "+j+" \n q : "+q+" \n max :" +max);
+                if(countZeroes < k && max+k-countZeroes<=nums.length )return max+k-countZeroes ;
+                return max ;
+            }
+            
+            if(q.size()==0)j++ ;
+            
+            if(q.size()>0 && q.peek()==0){
+              /*   while(q.size() > 0 && q.peek() != 1){
+                     if(q.remove()==0)countZeroes-- ;
+                 } */
+                q.remove();
+                countZeroes-- ;
+            }else{ // q.peek() = 1
+                while(q.size()>0 && q.peek() != 0)q.remove();
+            } 
+        }
+        return max ;
+    }
+}
