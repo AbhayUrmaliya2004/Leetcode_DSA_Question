@@ -1,0 +1,25 @@
+// LeetCode-(1496)
+--> O(n)
+
+class Solution {
+    public boolean isPathCrossing(String path) {
+        int x = 0 ;
+        int y = 0 ;
+        Set<String> set = new HashSet<>();
+        String initial = 0 + "_" + 0;
+        set.add(initial);
+        for(int i=0 ; i<path.length() ; i++){
+            char ch = path.charAt(i);
+            if(ch == 'E')x++ ;
+            else if(ch == 'W')x-- ;
+            else if(ch == 'N')y++ ;
+            else y-- ;
+            
+            String temp = x + "_" + y ;
+            if(set.contains(temp))return true ;
+//            System.out.println("i : "+" temp : "+ temp +" set : "+set);
+            set.add(temp);
+        }
+        return false ;
+    }
+}
