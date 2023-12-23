@@ -1,0 +1,49 @@
+// LeetCode - (380)
+--> O(1)
+
+import java.util.*;
+class RandomizedSet {
+    int a[]= new int[100001];
+    int top=-1;
+
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if(top!=-1){
+            for(int i=0;i<=top;i++){
+                if(a[i]==val)return false;
+            }
+        }
+        top++;
+        a[top]=val;
+        return true;
+        
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        for(int i=0;i<=top;i++){
+            if(a[i]==val){
+                for(int j=i;j<=top;j++){
+                    a[j]=a[j+1];
+                }
+                top--;
+                return true;
+            }
+        }
+        return false;
+        
+        
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        Random rnd= new Random();
+        int sol= rnd.nextInt(top+1);
+        return a[sol];
+    }
+}
