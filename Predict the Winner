@@ -1,0 +1,24 @@
+// LeetCode - (486)
+--> recursive approach 
+
+class Solution {
+    public int ok(int[]nums, int i, int j, boolean bool){
+        if(i > j)return 0;
+        
+        if(bool){
+            return Math.max(nums[i]+ok(nums, i+1, j, false), nums[j]+ok(nums, i, j-1, false));
+        }else{
+            return Math.min(ok(nums, i+1, j, true), ok(nums, i, j-1, true));
+        }
+    }
+    public boolean predictTheWinner(int[] nums) {
+        int n = nums.length ;
+        long two = 0 ;
+        for(int i=0 ; i<n ; i++)
+            two += (long)nums[i]; // two contains sum of array
+        long one = 0 ;
+        one += (long)ok(nums, 0, n-1, true);
+        two -= one ; // two contains its own value 
+        return one >= two ;
+    }
+}
