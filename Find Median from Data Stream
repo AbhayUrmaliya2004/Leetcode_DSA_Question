@@ -1,0 +1,34 @@
+// LeetCode - (295)
+--> T.C. :- for adding an element in the stream O(logn)
+--> T.C.:- for finding median O(1)
+
+class MedianFinder {
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    public MedianFinder() {
+        
+    }
+    
+    public void addNum(int num) {
+        if(maxHeap.size() == 0 || maxHeap.peek() >= num){
+            maxHeap.add(num);
+        }else {
+            minHeap.add(num);
+        }
+        
+        // checking min heap and max heap size to sort out median 
+        if(maxHeap.size() > minHeap.size()+1){
+            minHeap.add(maxHeap.poll());
+        }
+        else if(maxHeap.size() < minHeap.size()){
+            maxHeap.add(minHeap.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if(minHeap.size() == maxHeap.size()){
+            return (minHeap.peek()+maxHeap.peek())/2.0 ;
+        }
+        return maxHeap.peek();
+    }
+}
