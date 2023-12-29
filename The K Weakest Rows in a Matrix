@@ -1,5 +1,5 @@
 // LeetCode-(1337)
---> T.C. :- O(NlogN)
+--> T.C. :- O(NlogN), Faster than 82% users
 --> S.C. :- O(N)
 class Solution {
     
