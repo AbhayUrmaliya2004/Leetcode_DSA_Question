@@ -1,0 +1,28 @@
+// LeetCode - (91)
+--> Recursive Solution
+class Solution {
+    public int numDecodings(String s) {
+       if(s == null || s.charAt(0)=='0')return 0; 
+        return bruteForce(s,0);
+    }
+    
+    	private int bruteForce(String s, int i) {
+		// if i reaches end add 1 to answer
+		if (i == s.length()) {
+			return 1;
+		}
+		// if current character is 0 return 0
+		if (s.charAt(i) == '0') {
+			return 0;
+		}
+		// call for individual element consideration
+		int res = bruteForce(s, i + 1);
+		// check if by combining two elements together can result in number under 26
+		if (i < s.length() - 1 && (s.charAt(i) == '1' || (s.charAt(i) < '3' && s.charAt(i + 1) < '7'))) {
+			// if yes, call again by skipping next character.
+			res += bruteForce(s, i + 2);
+		}
+		// return final result
+		return res;
+	}
+}
