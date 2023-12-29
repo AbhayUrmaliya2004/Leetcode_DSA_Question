@@ -1,0 +1,22 @@
+// LeetCode - (1046)
+--> T.C. :- O(NlogN)
+--> S.C. :- O(N), // for making prioityqueue 
+class Solution {
+    public int lastStoneWeight(int[] stones) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        // adding stones to the priority queue 
+        for(int stone : stones){
+            pq.add(stone);
+        }
+        
+        // doing operations
+        while(pq.size()>1){
+            int x = pq.poll();
+            int y = pq.poll();
+            
+            // if x == y then both are destroyed 
+            if(x != y)pq.add(x-y);
+        }
+        return pq.size()==0 ? 0:pq.poll();
+    }
+}
