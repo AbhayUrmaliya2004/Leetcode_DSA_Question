@@ -1,0 +1,48 @@
+// LeetCode - (451)
+/*
+Intuition :- created a frequency class which stores frequency of a character such that at a time no need to find the character with frequency 
+             created a hashmap to store the frequency of a character -->  O(N), space - O(N)
+             created a PRIORITY QUEUE to get the character with max freqency at any instant -->O(NlogN), space O(N)
+             created a StringBuilder to append the answer -->O(N), space - O(N)
+*/
+--> T.C. :- O(NlogN)
+--> S.C. :- O(N)
+// Method - (1)
+class Solution {
+    class Frequency{
+        char ch ;
+        int fre ;
+        public Frequency(char ch, int fre){
+            this.ch = ch ;
+            this.fre = fre ;
+        }
+    }
+    public String frequencySort(String s) {
+        PriorityQueue<Frequency> pq = new PriorityQueue<>((f1,f2)-> (f1.fre>f2.fre)?-1:1);
+        Map<Character, Integer>mp = new HashMap<>();
+        // counting frequency 
+        for(int i=0 ; i<s.length() ; i++){
+            char ch = s.charAt(i);
+            if(!mp.containsKey(ch))
+                mp.put(ch, 1);
+            else 
+                mp.put(ch, mp.get(ch)+1);
+        }
+        // putting into priority queue 
+        for(char ch : mp.keySet()){
+            pq.add(new Frequency(ch, mp.get(ch)));
+        }
+        // fitting ans into StringBuilder
+        StringBuilder sb = new StringBuilder();
+        while(pq.size() > 0){
+            char ch = pq.peek().ch ;
+            int n = pq.peek().fre ;
+            pq.poll() ;
+            
+            for(int i=1 ; i<=n ;i++){
+                sb.append(ch+"");
+            }
+        }
+        return sb.toString() ;
+    }
+}
