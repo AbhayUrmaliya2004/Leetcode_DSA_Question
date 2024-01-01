@@ -1,0 +1,24 @@
+// LeetCode-(455)
+--> O(NlogN)
+--> O(1)
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        
+        int maxNum = 0;
+        int childIndex = g.length-1 ; 
+        int cookieIndex = s.length-1 ;
+        
+        while(cookieIndex>=0 && childIndex>=0){
+            if(s[cookieIndex] >= g[childIndex]){
+                maxNum++ ;
+                cookieIndex-- ;
+                childIndex-- ;
+            }else{
+                childIndex-- ;
+            }
+        }
+        return maxNum; 
+    }
+}
