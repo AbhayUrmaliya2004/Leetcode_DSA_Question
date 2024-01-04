@@ -1,0 +1,50 @@
+// Coding Ninjas - (GREEDY ALGORITHM)
+--> T.C. :- o(NlogN), for sorting 
+--> S.C.:- O(N), for extra space 
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class Solution {
+    public static class Activity {
+        int st;
+        int end;
+
+        public Activity(int st, int end) {
+            this.st = st;
+            this.end = end;
+        }
+
+        public String toString() {
+            return st + " " + end;
+        }
+    }
+
+    public static int maximumActivities(List<Integer> start, List<Integer> end) {
+        List<Activity> list = new ArrayList<>();
+        int n = start.size();
+        for (int i = 0; i < n; i++) {
+            list.add(new Activity(start.get(i), end.get(i)));
+        }
+
+        // sorting activities on the basis of end time
+        list.sort(new Comparator<Activity>() {
+            @Override
+            public int compare(Activity a1, Activity a2) {
+                return Integer.compare(a1.end, a2.end);
+            }
+        });
+
+        int noOfActivity = 1; // one activity is always done by the student
+        Activity prev = list.get(0), curr;
+        for (int i = 1; i < n; i++) {
+            curr = list.get(i);
+            if (curr.st >= prev.end) {
+                prev = curr;
+                noOfActivity++;
+            }
+        }
+        return noOfActivity;
+    }
+}
