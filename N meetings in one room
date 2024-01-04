@@ -1,5 +1,6 @@
 // Geeks For Geeks
-
+--> T.C.:- O(NlogN), for sorting
+--> S.C.:- O(N)
 class Solution 
 {
     //Function to find the maximum number of meetings that can
