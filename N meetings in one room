@@ -1,0 +1,44 @@
+// Geeks For Geeks
+
+class Solution 
+{
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    public static class Meeting{
+        int start ;
+        int end ;
+        public Meeting(int start, int end){
+            this.start = start ;
+            this.end = end ;
+        }
+        public String toString(){
+            return start + " " + end;
+        } 
+    }
+    public static int maxMeetings(int start[], int end[], int n)
+    {
+          List<Meeting> list = new ArrayList<>();
+          for(int i=0 ; i<n ; i++){
+              list.add(new Meeting(start[i], end[i]));
+          }
+          list.sort(new Comparator<Meeting>(){
+              public int compare(Meeting m1, Meeting m2){
+                  if(m1.end > m2.end)return 1 ;
+                  else return -1 ;
+              }
+          });
+          
+//          System.out.println(list);
+       
+          int noOfMeetings = 1; // first meeting is always done 
+          Meeting prev = list.get(0) ;
+          for(int i=1 ; i<n ; i++){
+              Meeting curr = list.get(i);
+              if(prev.end < curr.start){
+                  prev = curr ;
+                  noOfMeetings++ ;
+              }
+          }
+          return noOfMeetings ;
+    }
+}
