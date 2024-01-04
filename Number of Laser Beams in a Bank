@@ -1,0 +1,25 @@
+// LeetCode - (2125)
+--> T.C. :- O(m*n), better than 98%, m->bank.length , n-> bank[i].length 
+--> S.C. :- O(1)
+class Solution {
+    public int numberOfBeams(String[] bank) {
+        int noOfLaser = 0;
+        int prevPoints = countOnes(bank[0]);
+        int currPoints = 0;
+        for(int i=1 ; i<bank.length ; i++){
+            currPoints = countOnes(bank[i]);
+            if(currPoints > 0){
+                noOfLaser += currPoints*prevPoints ;
+                prevPoints = currPoints ;
+            }
+        }
+        return noOfLaser ;
+    }
+    public int countOnes(String s){
+        int count = 0;
+        for(int i=0 ; i<s.length(); i++){
+            if(s.charAt(i)=='1')count++ ;
+        }
+        return count ;
+    }
+}
