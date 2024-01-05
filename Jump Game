@@ -1,0 +1,17 @@
+// LeetCode -(55)
+--> T.C. :- O(N)
+--> S.C. :- O(1)
+
+class Solution {
+    public boolean canJump(int[] nums) {
+        return jump(nums,0);
+    }
+    public boolean jump(int[]nums,int idx){
+        if(idx+nums[idx] >= nums.length-1)return true ;
+        if(idx >= nums.length)return false ;
+        for(int i=idx+1 ; i<=nums[idx]+idx ;i++){
+            if(jump(nums,i))return true ;
+        }
+        return false ;
+    }
+}
