@@ -1,0 +1,74 @@
+// LeetCode - ()
+--> T.C :- O(1), because at max 8 square are moved by a pawn
+--> S.C :- O(1)
+
+/* (a,b) are coordinates of ROOK, (c,d) are coordinates of BISHOP, (e,f) are coordinates of QUEEN */
+class Solution {
+    public int minMovesToCaptureTheQueen(int a, int b, int c, int d, int e, int f) {
+        // checking, can rook knock out queen in one go  
+        int x = a, y = b ;
+        // upper 
+        while(y > 0){
+            y-- ;
+            if(x == c && y == d)break ; // KYA BISHOP ROUTE KE BEECH ME AA RAHA 
+            if(x==e && y == f)return 1 ;
+        }
+        // down 
+        x = a; y = b ;
+        while(y < 8){
+            y++ ;
+            if(x == c && y == d)break ;
+            if(x==e && y == f)return 1 ;
+        }
+        // left 
+         x = a; y = b ;
+        while(x > 0){
+            x-- ;
+            if(x == c && y == d)break ;
+            if(x==e && y == f)return 1 ;
+        }
+        // right 
+        x = a; y = b ;
+        while(x < 8){
+            x++ ;
+            if(x == c && y == d)break ;
+            if(x==e && y == f)return 1 ;
+        }
+        
+        // checking, can BISHOP knock out QUEEN in one go  
+        x = c ; y = d ;
+        // upper left 
+        while(x > 0 && y > 0){
+            x-- ;
+            y-- ;
+            if(x==a && y==b)break ; // KYA ROOK BISHOP KE ROUTE ME AA RAHA 
+            if(x==e && y==f)return 1;
+        }
+        // upper right 
+        x = c ; y = d ;
+        while(x < 8 && y > 0 ){
+            x++ ;
+            y-- ;
+            if(x==a && y==b)break ;
+            if(x==e && y==f)return 1;
+        }
+        // lower left
+        x = c ; y = d ;
+        while( x > 0 && y < 8){
+            x-- ;
+            y++ ;
+            if(x==a && y==b)break ;
+            if(x==e && y==f)return 1;
+        }
+        
+        // lower right 
+        x = c ; y = d ;
+        while(x < 8 && y < 8){
+            x++ ;
+            y++ ;
+            if(x==a && y==b)break ;
+            if(x == e && y == f)return 1;
+        }
+        return 2; // AGAR BISHOP AUR ROOK QUEEN KO KNOCK NAHI KAR PAYE TO DO MOVES ME ROOK, QUEEN KO SURELY KNOCK KAR DEGA 
+    }
+}
