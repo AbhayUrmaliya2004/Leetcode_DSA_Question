@@ -1,0 +1,22 @@
+// LeetCode -()
+--> T.C.:- O(N)
+--> S.C.:- O(1)
+
+class Solution {
+    public int areaOfMaxDiagonal(int[][] dimensions) {
+        int area  = 0 ;
+        double diagonal = 0, root ;
+        for(int i=0 ; i<dimensions.length ; i++){
+            int l = dimensions[i][0];
+            int b = dimensions[i][1];
+            
+            root = Math.sqrt(l*l + b*b);
+            
+            if(root > diagonal || (root == diagonal && l*b > area)){
+                diagonal = root ;
+                area = l*b ;
+            }
+        }
+        return area ;
+    }
+}
