@@ -7,8 +7,9 @@
 5. Now we can push s[i] in stack
 6. Finally just join the characters in stack to form the result
 */
---> T.C :- O(N)
+--> T.C :- O(N), faster than 98%
 --> S.C :- O(N)
+
 class Solution {
     public String removeDuplicateLetters(String s) {
         int n = s.length() ;
