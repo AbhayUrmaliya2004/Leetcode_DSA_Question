@@ -1,0 +1,45 @@
+// LeetCode - (316)
+/*
+1. We traverse sequentially on the string
+2. For each s[i], we check whether it's already in stack or not
+3. if its not in the stack, we need to push it to the stack. But we need to check another condition before pushing.
+4. If s[i] is not in the stack (we can check using this in O(1) using a set), and it is smaller than previous elements in stack (lexicographically), and those elements are repeating in future (can check with last_occ), we need to pop these elements
+5. Now we can push s[i] in stack
+6. Finally just join the characters in stack to form the result
+*/
+--> T.C :- O(N)
+--> S.C :- O(N)
+class Solution {
+    public String removeDuplicateLetters(String s) {
+        int n = s.length() ;
+        boolean []visited = new boolean[26] ;
+        int[] lastIndex = new int[26] ;
+        
+        // finding last index 
+        for(int i=0 ; i<n ; i++){
+            lastIndex[s.charAt(i)-'a'] = i ;
+        }
+        
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i=0 ; i<s.length() ; i++){
+            int ch = s.charAt(i) - 'a' ;
+            if(visited[ch]) continue ;
+            
+            visited[ch] = true ;
+            
+            while(st.size()>0 && st.peek()>ch && lastIndex[st.peek()] > i){
+                visited[st.pop()] = false ;
+            }
+            
+            st.push(ch);
+        }
+        StringBuilder ans = new StringBuilder();
+        
+        for(Integer i : st){
+            ans.append((char)(i + 'a'));
+        }
+        
+        return ans.toString() ;
+    }
+}
