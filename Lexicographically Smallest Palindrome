@@ -1,0 +1,20 @@
+// LeetCode - (2697)
+
+class Solution {
+    public String makeSmallestPalindrome(String s) {
+        // i aur j me jo chhota hai waisa hi dusre ko bhi bana do 
+        int i=0, j=s.length()-1 ;
+        char[] arr = s.toCharArray();
+        
+        while(i<j){
+            if((int)arr[i] > (int)arr[j]){
+                arr[i] = arr[j] ;
+            }else{
+                arr[j] = arr[i] ;
+            }
+            i++ ;
+            j-- ;
+        }
+        return String.valueOf(arr);
+    }
+}
