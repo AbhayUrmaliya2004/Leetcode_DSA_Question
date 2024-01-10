@@ -1,0 +1,52 @@
+// LeetCode - (435)
+--> T.C :- O(NlogN), for sorting
+--> S.C :- O(N), for creating arraylist
+class Solution {
+    public class Interval{
+        int stTime ;
+        int endTime ;
+        public Interval(int st, int end){
+            this.stTime = st ;
+            this.endTime = end ;
+        }
+        public String toString(){
+            return stTime+"-"+endTime ;
+        }
+    }
+    public int eraseOverlapIntervals(int[][] intervals) {
+        List<Interval> list = new ArrayList<>();
+        // add intervals to list
+        for(int i=0 ; i<intervals.length ; i++){
+            list.add(new Interval(intervals[i][0], intervals[i][1]));
+        }
+        // sorting on the basis of stTime 
+        list.sort(new Comparator<Interval>(){
+            public int compare(Interval i, Interval j){
+                if(i.stTime > j.stTime)
+                    return 1 ;
+                else if(i.stTime < j.stTime)
+                    return -1 ;
+                else 
+                    return 0;
+            }
+        });
+        
+        int removeCount = 0 ;
+        Interval prev = list.get(0), curr ;
+        for(int i=1 ; i<list.size() ; i++){
+            curr = list.get(i);
+            if(curr.stTime < prev.endTime){// overlapping interval
+                removeCount++ ;
+                if(prev.endTime > curr.endTime){
+                    prev = curr ;
+                }
+            }else{
+                prev = curr ;
+            }
+        }
+        return removeCount ;
+    }
+}
+
+
+
