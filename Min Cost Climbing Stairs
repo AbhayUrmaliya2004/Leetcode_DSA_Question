@@ -1,0 +1,23 @@
+// LeetCode - (746)
+Approach :- Dynamic Programming
+--> T.C :- O(N)
+--> S.C :- O(N)
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int[] dp = new int[cost.length+1];
+        for(int i=0 ; i<dp.length ; i++){
+            dp[i] = -1 ;
+        }
+        return dp[cost.length] = Math.min(helper(cost.length-1, cost, dp),helper(cost.length-2, cost, dp));
+    }
+    private int helper(int idx, int[] cost, int[] dp){
+        // base case
+        if(idx == 0 || idx == 1)return dp[idx] = cost[idx];
+        
+        if(dp[idx] != -1)return dp[idx] ;
+        // find min of both path
+        int min = cost[idx] + Math.min(helper(idx-1, cost, dp), helper(idx-2, cost, dp));
+        
+        return dp[idx] = min ;
+    }
+}
