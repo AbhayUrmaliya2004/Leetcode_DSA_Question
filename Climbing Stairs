@@ -1,6 +1,6 @@
 // LeetCode - (70)
 --> Approach :- Dynamic Programming
---> T.C :- O(N)
+--> T.C :- O(N), faster than 100%
 --> S.C :- O(N), for array and extra stack
 class Solution {
     public int climbStairs(int n) {
