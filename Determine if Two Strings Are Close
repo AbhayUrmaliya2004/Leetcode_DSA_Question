@@ -1,0 +1,38 @@
+// LeetCode - (1657)
+T.C :- O(N), for traversing strings O(N), for sorting O(NlogN) takes typically but here frequency arr are of fixed length(26) so, O(1)
+             so, O(N)+O(1) ~= O(N)
+S.C :- O(1), for frequency array
+
+class Solution {
+    public boolean closeStrings(String word1, String word2) {
+        if(word1.length() != word2.length())return false ;
+        int[] fre1 = new int[26];
+        int[] fre2 = new int[26];
+        
+        for(int i=0 ; i<word1.length() ; i++){
+            // for frequency of word1
+            fre1[word1.charAt(i)-'a']++ ;
+            // for frequency of word2
+            fre2[word2.charAt(i)-'a']++ ;
+        }
+        
+        // agar koi character ek me hai aur dusre me nahi toh string nahi ban sakti
+        for(int i=0 ; i<26 ; i++){
+            if((fre1[i]>0 && fre2[i]==0) || fre1[i]==0 && fre2[i]>0){
+                return false ; 
+            }
+        }
+        
+        //to find that strings can be converted or not, sort the value
+        Arrays.sort(fre1);
+        Arrays.sort(fre2);
+        
+        for(int i=0; i<26 ; i++){
+            if(fre1[i] != fre2[i]){
+                return false ;
+            }
+        }
+        
+        return true ;
+    }
+}
