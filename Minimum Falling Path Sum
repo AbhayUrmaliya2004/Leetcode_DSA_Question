@@ -1,0 +1,50 @@
+// LeetCode - (931)
+Approach :- dynamic programming with memoisation 
+--> T.C :- O(N), N - m*n , size of matrix 
+--> S.C :- O(N), N - m*n
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int[][]dp = new int[matrix.length][matrix[0].length];
+        int min = Integer.MAX_VALUE ;
+        for(int i=0 ; i<matrix.length ; i++){
+            for(int j=0 ; j<matrix[0].length ; j++){
+                dp[i][j] = Integer.MAX_VALUE ;
+            }
+        }
+        for(int i=0 ; i<matrix.length ; i++){
+           min = Math.min(min, helper(matrix, dp, 0, i));
+        }
+        // returning minimum of first row 
+        return min ;
+    }
+    public int helper(int[][]mat, int[][]dp, int row, int col){
+        // base case
+        if(row == mat.length-1){
+            return mat[row][col];
+        }
+        // dp work 
+        if(dp[row][col] != Integer.MAX_VALUE){
+            return dp[row][col];
+        }
+        // recursive work
+        int left = Integer.MAX_VALUE ;
+        if(row+1<mat.length && col-1>=0){
+            left = helper(mat, dp, row+1, col-1);
+        }
+        
+        int down = Integer.MAX_VALUE ;
+        if(row+1<mat.length){
+            down = helper(mat, dp, row+1, col);
+        }
+        
+        int right = Integer.MAX_VALUE ;
+        if(row+1<mat.length && col+1<mat[0].length){
+            right = helper(mat, dp, row+1, col+1);
+        }
+        
+        int min = Math.min(down,Math.min(left,right));
+        
+        if(min == Integer.MAX_VALUE)return dp[row][col] = mat[row][col] ;  
+        return dp[row][col] = mat[row][col]+min;  
+    }
+}
