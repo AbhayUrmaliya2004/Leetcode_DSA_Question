@@ -1,0 +1,40 @@
+// LeetCode = (1289)
+/* Intuition :- Same as path sum but only difference is that two adjacent row choosen element should not
+                be in same column so remove the down calculating value, rest is same. 
+*/
+
+# Method - (1) with memoisation can optimise further with tabulation
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int[][]dp = new int[matrix.length][matrix[0].length];
+        int min = Integer.MAX_VALUE ;
+        for(int i=0 ; i<matrix.length ; i++){
+            for(int j=0 ; j<matrix[0].length ; j++){
+                dp[i][j] = Integer.MAX_VALUE ;
+            }
+        }
+        for(int i=0 ; i<matrix.length ; i++){
+           min = Math.min(min, helper(matrix, dp, 0, i));
+        }
+        // returning minimum of first row 
+        return min ;
+    }
+     public int helper(int[][]mat, int[][]dp, int row, int col){
+        // base case
+        if(row == mat.length-1){
+            return mat[row][col];
+        }
+        // dp work 
+        if(dp[row][col] != Integer.MAX_VALUE){
+            return dp[row][col];
+        }
+        // recursive work
+        int min = Integer.MAX_VALUE ;
+        for(int j=0 ; j<mat.length ; j++){
+            if(j != col){
+                min = Math.min(min, helper(mat, dp, row+1, j)); // j is column except adjacent 
+            }
+        }
+        return dp[row][col] = mat[row][col]+min ;
+    }  
+}
