@@ -1,0 +1,61 @@
+// LeetCode :- (907)
+/*
+* Intuition :- finding next smaller and next greater element to find length of 
+* subarray and the just multiplying it with curr integer that assuming that this 
+* arr[i] is the smallest value in that subarray and calculating result then 
+* returning result with modulo 1e9+7 ;
+*/
+T.C :- O(N),
+S.C :- O(N), for next and prev smaller subarrays
+class Solution {
+    public int sumSubarrayMins(int[] arr) {
+        int[] nextSm = nextSmaller(arr);
+        int[] prevSm = prevSmaller(arr);
+        int mod = 1000000007 ;
+        long result = 0 ;
+        // calculating values
+        for(int i=0 ; i<arr.length ; i++){
+            int left = i-prevSm[i];
+            int right = nextSm[i]-i;
+            long prod = (left*right)%mod ;
+            prod = (prod*arr[i])%mod ;
+            
+            result = (result%mod+prod)%mod ;
+        }
+        return (int) result ;
+    }
+    private int[] nextSmaller(int[]arr){
+        int[] ans = new int[arr.length];
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i=arr.length-1 ; i>=0 ; i--){
+            while(!st.isEmpty() && arr[st.peek()]>=arr[i]){
+                st.pop();
+            }
+            if(st.isEmpty()){
+                ans[i] = arr.length ;
+            }else{
+                ans[i] = st.peek();
+            }
+            st.push(i);
+        }
+        return ans ;
+    }
+    private int[] prevSmaller(int[]arr){
+        int[] ans = new int[arr.length];
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i=0 ; i<arr.length ; i++){
+            while(!st.isEmpty() && arr[st.peek()]>arr[i]){
+                st.pop();
+            }
+            if(st.isEmpty()){
+                ans[i] = -1 ;
+            }else{
+                ans[i] = st.peek();
+            }
+            st.push(i);
+        }
+        return ans ;
+    }
+}
