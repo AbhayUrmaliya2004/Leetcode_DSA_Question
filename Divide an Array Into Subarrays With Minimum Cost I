@@ -1,0 +1,22 @@
+/*
+* LeetCode - (3010)
+* Intuition, just finding two smallest elements and third element will be arr[0] for array to be contiguous 
+* and sum of all number is result
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int minimumCost(int[] arr) {
+        int first = 51;
+        int second = 51 ;
+        for(int i=1 ; i<arr.length ; i++){
+            if(arr[i] < first){
+                second = first ;
+                first = arr[i];
+            }else if(arr[i] < second ){
+                second = arr[i];
+            }
+        }
+        return arr[0]+first+second ;
+    }
+}
