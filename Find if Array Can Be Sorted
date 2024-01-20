@@ -1,0 +1,47 @@
+/*
+* LeetCode :- (3011)
+* Intuition :- Just like bubble sort check whether 
+*/
+class Solution {
+    public boolean canSortArray(int[] nums) {
+        // counting no. of setBits
+        Map<Integer, Integer> mp = new HashMap<>();
+        for(int i=0 ; i<nums.length ; i++){
+            if(!mp.containsKey(nums[i])){
+                mp.put(nums[i], countBits(nums[i]));
+            }
+        }
+        // basic approach like bubble sort, checking whether elements can be sorted or not  
+        for(int i=0 ; i<nums.length ; i++){
+            boolean bool = true ;
+            for(int j=0 ; j<nums.length-1 ; j++){
+                if(nums[j] > nums[j+1]){
+                    if(mp.get(nums[j]) != mp.get(nums[j+1])){ // checking no. of setBits 
+                        return false ;
+                    }else{
+                        swap(nums, j, j+1);
+                    }
+                    
+                    bool = false ; // swapped 
+                }
+            }
+            if(bool == true)return true ;
+        }
+        
+        return true ;
+    }
+    public void swap(int[]nums , int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp ;
+    }
+    public int countBits(int n){
+        int count = 0, rem ;
+        while(n != 0){
+            rem = n%2 ;
+            if(rem == 1)count++ ;
+            n/=2 ;
+        }
+        return count ;
+    }
+}
