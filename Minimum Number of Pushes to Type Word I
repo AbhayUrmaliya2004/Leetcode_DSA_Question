@@ -1,0 +1,22 @@
+/*
+* LeetCode - (3014)
+* T.C :- log(n), faster than 100%
+* S.C :- O(1), better than 100%
+*/
+class Solution {
+    public int minimumPushes(String word) {
+        int count = 0 ;
+        int n = word.length() ;
+        int pos = 1;
+        while(n >= 8){
+            n -= 8 ;
+            count += pos*8 ;
+            pos++ ;
+        }
+        
+        if(n > 0){
+            count += pos*n ;
+        }
+        return count ;
+    }
+}
