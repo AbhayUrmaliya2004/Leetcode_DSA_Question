@@ -1,0 +1,50 @@
+/*
+* LeetCode - (3016)
+* Intuition :- characters which need to be typed more should be placed at 1st position and then other
+*/
+Minimum Number of Pushes to Type Word I, had only distinct elements
+class Solution {
+    public int minimumPushes(String word) {
+        if(word.length() <= 8)return  word.length();
+
+        // mapping according to frequencies
+        Map<Character ,Integer> freq = new HashMap<>();
+        for(int i=0 ; i<word.length() ; i++){
+            char ch = word.charAt(i);
+            if(!freq.containsKey(ch)){
+                freq.put(ch,1);
+            }else{
+                freq.put(ch, freq.get(ch)+1);
+            }
+        }
+
+        // adding char to list to sort acc to freq
+        List<Character> list = new ArrayList<>();
+        for(char ch : freq.keySet()){
+            list.add(ch);
+        }
+
+        // Sorting characters according to frequencies
+        Collections.sort(list,(ch1, ch2)->freq.get(ch2)-freq.get(ch1));
+
+        // Mapping characters with their efficient positions
+        Map<Character, Integer>mp = new HashMap<>();
+        int cnt = 0, pos = 1;
+        for(int i=0 ; i<list.size() ; i++){
+            cnt++ ;
+            if(cnt == 9){
+                cnt = 1;
+                pos++ ;
+            }
+            mp.put(list.get(i), pos);
+        }
+
+        // counting, minimum no of times keys to be typed
+        int result = 0 ;
+        for(int i=0 ; i<word.length() ; i++){
+            char ch = word.charAt(i);
+            result += mp.get(ch);
+        }
+        return result ;
+    }
+}
