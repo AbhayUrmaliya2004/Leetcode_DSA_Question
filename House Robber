@@ -1,0 +1,31 @@
+/*
+* LeetCode :- (198)
+* Dynamic Programming 
+* Intuition :- finding max either by selecting current element or next current element
+* T.C :- O(N), faster than 100%
+* S.C :- O(N), O(N) for call stack + O(N) for dp[] array 
+* space complexity can be optimised by tabulation
+*/
+class Solution {
+    public int rob(int[] nums) {
+        int[] dp = new int[nums.length+1];
+        Arrays.fill(dp, -1);
+        return dp[nums.length] = helper(nums, nums.length-1, dp);
+    }
+    public int helper(int[] nums, int idx, int[] dp){
+        if(idx < 0)return 0;
+        if(idx == 0){
+            return nums[0];
+        }
+        
+        if(dp[idx] != -1){
+            return dp[idx]; // this has already been calculated
+        }
+        
+        int pick = 0 ;
+        if(idx > 0)pick = helper(nums, idx-2, dp) + nums[idx] ;
+        int not_pick = helper(nums, idx-1, dp);
+        
+        return dp[idx] = Math.max(pick, not_pick);
+    }
+}
