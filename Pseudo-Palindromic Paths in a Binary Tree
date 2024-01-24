@@ -1,0 +1,34 @@
+/*
+* LeetCode-(1457) 
+* T.C :- O(N), for traversing all nodes 
+* S.C :- O(N), N for call stack + O(1) for creating array 
+*/
+class Solution {
+    public int pseudoPalindromicPaths (TreeNode root) {
+        int[] dp = new int[10];
+        return helper(root, dp);
+    }
+    public int helper(TreeNode root, int[] dp){
+        dp[root.val]++ ;
+        if(root.left == null && root.right == null){ // check if this is pseudo palindrome 
+            boolean odd = false ;
+            for(int i=0 ; i<10 ; i++){
+                if(dp[i]%2 != 0 && odd==true){
+                    dp[root.val]-- ;
+                    return 0; // there cant be two odd integer in frequency
+                }
+                if(dp[i]%2 != 0)odd=true ;
+            }
+            dp[root.val]-- ;
+            return 1 ;
+        }
+        
+        int left = 0;
+        if(root.left != null)left = helper(root.left, dp);
+        int right = 0;
+        if(root.right != null)right = helper(root.right, dp);
+        dp[root.val]-- ;
+        
+        return left+right ;
+    }
+}
