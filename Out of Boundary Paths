@@ -1,6 +1,8 @@
 /*
 * LeetCode - (576)
 * MEMOISATION Method (1)
+* T.C :- O(M*N)
+* S.C :- O(M*N*MaxMoves)
 */
 class Solution {
     int M = 1000000007 ;
