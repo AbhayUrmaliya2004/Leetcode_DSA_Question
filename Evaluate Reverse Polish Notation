@@ -1,0 +1,22 @@
+/*
+* LeetCode - (150)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> st = new Stack<>();
+        for(int i=0 ; i<tokens.length ; i++){
+            if(tokens[i].equals("+") || tokens[i].equals("-") || tokens[i].equals("*") || tokens[i].equals("/")){
+                int v2 = st.pop();
+                int v1 = st.pop();
+                String ch = tokens[i];
+                if(ch.equals("+"))st.push(v1+v2);
+                if(ch.equals("-"))st.push(v1-v2);
+                if(ch.equals("*"))st.push(v1*v2);
+                if(ch.equals("/"))st.push(v1/v2);
+            }else st.push(Integer.parseInt(tokens[i]));
+        }
+        return st.pop();
+    }
+}
