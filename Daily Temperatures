@@ -1,0 +1,25 @@
+/*
+* LeetCode - (739)
+* Intuition :- finding next greater element
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int[] dailyTemperatures(int[]arr) {
+        Stack<Integer>st = new Stack<>();
+        int[]ans = new int[arr.length];
+        st.push(arr.length-1);
+        for(int i=arr.length-2 ; i>=0 ;i--){
+            while(!st.isEmpty()&&arr[st.peek()]<=arr[i]){
+                st.pop();
+            }
+            if(st.isEmpty()){
+                ans[i]=0 ;
+            }else{
+                ans[i]=st.peek()-i;
+            }
+            st.push(i);
+        }
+        return ans ;
+    }
+}
