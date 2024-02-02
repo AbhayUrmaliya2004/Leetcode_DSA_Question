@@ -1,0 +1,24 @@
+/*
+* LeetCode - (1291)
+* T.C :- O(1), even if high == 1e9, then loop iterates 9+8+7+....+1 which is constant 
+* S.C :- O(1), no extra space used 
+*/
+class Solution {
+    public List<Integer> sequentialDigits(int low, int high) {
+        List<Integer> list = new ArrayList<>();
+        for(int i=1 ; i<9 ; i++){
+            int num = i ;
+            int curr = i;
+            while(num <= high){
+                curr++ ;
+                if(curr > 9)break ;
+                num = num*10+curr ;// getting new number
+                if(num>=low && num<=high){
+                    list.add(num);
+                }
+            }
+        }
+        Collections.sort(list);
+        return list ;
+    }
+}
