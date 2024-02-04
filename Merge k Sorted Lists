@@ -1,0 +1,29 @@
+/*
+* LeetCode - (23)
+* T.C :- O(nlogn)
+* S.C :- O(n), n -> no. of nodes
+CAN BE OPTIMISE USING PRIORITY QUEUE THEN T.C.:-O(NLOGK)
+*/
+/* METHOD - (1) */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        List<Integer>arr = new ArrayList<>();
+        for(int list=0 ; list<lists.length ; list++){
+            ListNode temp = lists[list];
+            while(temp != null){
+                arr.add(temp.val);
+                temp=temp.next ;
+            }
+        }
+        Collections.sort(arr);
+        
+        ListNode head = new ListNode(0);
+        ListNode temp = head ;
+        for(int i=0; i<arr.size() ; i++){
+            ListNode t = new ListNode(arr.get(i));
+            temp.next = t ; 
+            temp = temp.next ;
+        }
+        return head.next ;
+    }
+}
