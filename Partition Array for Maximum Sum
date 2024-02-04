@@ -1,0 +1,28 @@
+/*
+* LeetCode - (1043)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        int[]dp = new int[arr.length];
+        Arrays.fill(dp,-1);
+        return helper(0, arr, k, dp);
+    }
+    public int helper(int idx, int[]nums, int k, int[]dp){
+        int n = nums.length ;
+        if(idx == n)return 0;
+        if(dp[idx] != -1)return dp[idx];
+        
+        int maxi = Integer.MIN_VALUE ;
+        int ans = Integer.MIN_VALUE ;
+        int len = 0;
+        for(int i=idx; i<Math.min(n,idx+k); i++){
+            len++ ; 
+            maxi = Math.max(maxi, nums[i]);
+            int sum = maxi*len + helper(i+1, nums, k, dp);
+            ans = Math.max(ans,sum);
+        }
+        return dp[idx]=ans ;
+    }
+}
