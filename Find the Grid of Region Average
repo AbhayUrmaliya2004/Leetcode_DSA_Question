@@ -1,0 +1,72 @@
+/*
+* LeetCode - (3030)
+* T.C :- O(m*n)
+* S.C :- O(m*n), for count[][] array 
+* Intuition :- check all 3*3 grid does this form image and for how many region it is common 
+*/
+class Solution {
+    public int[][] resultGrid(int[][] image, int threshold) {
+        int m = image.length ;
+        int n = image[0].length ;
+        int[][]res = new int[m][n];
+        int[][]count = new int[m][n] ;
+        for(int i=0 ; i<=m-3 ; i++){
+            for(int j=0; j<=n-3 ; j++){
+                int avg = canFormImage(image, threshold, i, j);
+   //             System.out.println(i +" "+j + " "+avg);
+                if( avg != -1){ // fit all elements to avg res
+                    for(int row = i ; row<i+3 ; row++){
+                        for(int col=j ; col<j+3 ; col++){
+                            res[row][col] += avg ;
+                            count[row][col]++ ;
+                        }
+                    }
+                } 
+            }
+        }
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(count[i][j] != 0){
+                    res[i][j] /= count[i][j];
+                }else{
+                    res[i][j] = image[i][j] ;
+                }
+            }
+        }
+        return res ;
+    }
+    public int canFormImage(int[][]image, int threshold, int i, int j){
+        int avg = 0 ;
+        
+        for(int row=i ; row<i+3 ; row++){
+            for(int col=j ; col<j+3 ; col++){
+                if(!isThreshold(image, row, col, threshold,i , i+2, j, j+2))return -1;
+                avg += image[row][col]; 
+            }
+        }
+        return avg/9 ;
+    }
+    public boolean isThreshold(int[][]image, int i, int j, int threshold, int ms, int me,int ns, int ne){
+        // check upper
+        if(i>ms && Math.abs(image[i][j]-image[i-1][j])>threshold){
+ //           System.out.println("false 1 : "+image[i][j]);
+            return false ;
+        }
+        // down
+        if(i<me && Math.abs(image[i][j]-image[i+1][j])>threshold){
+ //          System.out.println("false 2 : "+image[i][j]);
+            return false ;
+        }
+        // left 
+        if(j>ns && Math.abs(image[i][j]-image[i][j-1])>threshold){
+ //           System.out.println("false 3 : "+image[i][j]);
+            return false ;
+        }
+        // right
+        if(j<ne && Math.abs(image[i][j]-image[i][j+1])>threshold){
+ //           System.out.println("false 4 : "+image[i][j]+" "+image[i][j+1]);
+            return false ;
+        }
+        return true ;
+    }
+}
