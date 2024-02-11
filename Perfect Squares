@@ -1,0 +1,29 @@
+/*
+* LeetCode - (279)
+*/
+class Solution {
+    Map<Integer,Integer> memo = new HashMap<>();
+    public int numSquares(int n) {
+        if(n==0){
+            return 0;
+        }
+
+        if(memo.containsKey(n)){
+            return memo.get(n);
+        }
+
+
+        int minNum = Integer.MAX_VALUE;
+
+
+        for(int i=1;i*i<=n;i++){
+            int remainingSquareCount = numSquares(n-i*i);
+            memo.put(n-i*i, remainingSquareCount);
+            if(minNum>remainingSquareCount+1){
+                minNum = remainingSquareCount+1;
+            }
+        }
+        return minNum;
+        
+    }
+}
