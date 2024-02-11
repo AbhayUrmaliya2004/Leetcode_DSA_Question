@@ -1,0 +1,21 @@
+/*
+* LeetCode - (49)
+* T.C :- O(NlogN), N->strs.length 
+* S.C :- O(N)
+*/
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>>mp = new HashMap<>();
+        for(int i=0 ; i<strs.length ; i++){
+            char[] chars = strs[i].toCharArray();
+            Arrays.sort(chars);
+            String sorted = new String(chars);
+            if(! mp.containsKey(sorted)){
+                mp.put(sorted,new ArrayList<String>());
+            }
+            //adding string to the list of anagrams 
+            mp.get(sorted).add(strs[i]);
+        }
+        return new ArrayList<>(mp.values());
+    }
+}
