@@ -1,0 +1,47 @@
+/*
+* LeetCode :- (72)
+* Approach DP 
+--> replacing a character (i--, j--)
+--> inserting a character (i, j--)
+--> deleting a character (i--, j)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int i = word1.length() ;
+        int j = word2.length() ;
+        int[][]dp = new int[i][j];
+        for(int row=0 ; row<i ; row++){
+            for(int col=0 ; col<j ; col++){
+                dp[row][col] = -1;
+            }
+        }
+        return helper(i-1, j-1, word1, word2, dp);
+    }
+    public int helper(int i, int j, String str1, String str2, int[][]dp){
+        // base case 
+        if(i == -1){
+            return j+1 ; // required steps for inserting all characters
+        }
+        if(j == -1){
+            return i+1 ; // required steps for deleting all characters 
+        }
+        // memoisation 
+        if(dp[i][j] != -1){
+            return dp[i][j] ;
+        }
+        
+        if(str1.charAt(i) == str2.charAt(j)){
+            return dp[i][j] = helper(i-1, j-1, str1, str2, dp);
+        }
+        int min = Integer.MAX_VALUE ;
+        // inserting a character 
+        min = Math.min(min, helper(i, j-1, str1, str2, dp));
+        // deleting a character 
+        min = Math.min(min, helper(i-1, j, str1, str2, dp));
+        // replacing a charcater
+        min = Math.min(min, helper(i-1, j-1, str1, str2, dp));
+        return dp[i][j] = min+1 ;
+    }
+}
