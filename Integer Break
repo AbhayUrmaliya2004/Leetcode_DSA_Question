@@ -1,0 +1,42 @@
+/*
+* LeetCode-(343)
+* Memoisation 
+* S.C :- O(N)
+*/
+class Solution {
+    public int integerBreak(int n) {
+        int[]dp = new int[n+1];
+        Arrays.fill(dp, -1);
+        return helper(n, dp);
+    }
+    public int helper(int n, int[]dp){
+        if (n == 0)
+			return 0;
+		if (n == 2)
+			return 1;
+		if (n == 3)
+			return 2;
+		if (n == 4)
+			return 4;
+		if (n == 5)
+			return 6;
+		if (n == 6)
+			return 9;
+		if (n == 7)
+			return 12;
+		if (n == 8)
+			return 18;
+		if (n == 9)
+			return 27;
+		if (dp[n] != -1)
+			return dp[n];
+        
+        int max = Integer.MIN_VALUE ;
+        for(int i=1 ; i<n ; i++){
+            int prod = helper(i, dp)*helper(n-i, dp);
+            
+            max = Math.max(max, prod);
+        }
+        return dp[n] = max ;
+    }
+}
