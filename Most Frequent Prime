@@ -1,0 +1,83 @@
+/*
+* LeetCode - (3044)
+* T.C :- O(M*N*Max)+O(klogk), M*N for traversing and Max(M,N) for diagonal traverse, k->no. of element k->m*n
+* S.C :- O(N)for hasmap+O(N)for set+ O(N) for list = O(N)
+*/
+class Solution {
+    public int mostFrequentPrime(int[][] mat) {
+        Map<Integer, Integer> prime = new HashMap<>();
+        Set<Integer> not_prime = new HashSet<>();
+        
+        for(int i=0 ; i<mat.length ; i++){
+            for(int j=0 ; j<mat[0].length ; j++){
+                helper(mat, prime, not_prime, 0, i, j, "none");
+            }
+        }
+        // work
+        if(prime.size() == 0)return -1 ;
+        List<Integer> list = new ArrayList<>(prime.keySet());
+        Collections.sort(list, new Comparator<Integer>(){
+            public int compare(Integer a, Integer b){
+                if(prime.get(a) > prime.get(b)){
+                    return -1 ;
+                }else if(prime.get(a) < prime.get(b)){
+                    return 1 ;
+                }else{
+                    return b-a ;
+                }
+            }
+        });
+  //      System.out.println(list+"\n"+prime+"\n"+not_prime);
+        return list.get(0);
+    }
+    public void helper(int[][]mat, Map<Integer, Integer>prime, Set<Integer>not_prime, int curr, int i, int j, String direction){
+        
+        if(curr > 10 && isPrime(curr, not_prime, prime)) prime.put(curr, prime.getOrDefault(curr, 0)+1);
+        else not_prime.add(curr);
+        
+        if(i>=mat.length || j>=mat[0].length || i<0 || j<0)return ;
+        
+        // go all direction
+        // upper
+        if(direction.equals("none") || direction.equals("up")){ 
+            helper(mat, prime, not_prime, curr*10+mat[i][j], i-1, j, "up");
+        }
+        // upper right 
+        if(direction.equals("none") || direction.equals("ur")){
+             helper(mat, prime, not_prime, curr*10+mat[i][j], i-1, j+1,"ur");
+        }
+        // upper left 
+        if(direction.equals("none") || direction.equals("ul")) {
+            helper(mat, prime, not_prime, curr*10+mat[i][j], i-1, j-1, "ul");
+        }
+        // right 
+        if(direction.equals("none") || direction.equals("r")){
+            helper(mat, prime, not_prime, curr*10+mat[i][j], i, j+1,"r");
+        }
+        // down right
+        if(direction.equals("none") || direction.equals("rd")){
+            helper(mat, prime, not_prime, curr*10+mat[i][j], i+1, j+1, "rd");
+        }
+        // down 
+        if(direction.equals("none") || direction.equals("d")){
+            helper(mat, prime, not_prime, curr*10+mat[i][j], i+1, j, "d");
+        }
+        // down left 
+        if(direction.equals("none") || direction.equals("dl")){
+            helper(mat, prime, not_prime, curr*10+mat[i][j], i+1, j-1, "dl");
+        }
+        // left 
+        if(direction.equals("none") || direction.equals("l")){
+            helper(mat, prime, not_prime, curr*10+mat[i][j], i, j-1,"l");
+        }
+        
+    }
+    public boolean isPrime(int n, Set<Integer>set, Map<Integer, Integer>mp){
+        if(set.contains(n))return false ;
+        if(mp.containsKey(n))return true ;
+        for(int i=2 ; i<n/2 ; i++){
+            if(n%i == 0)return false ;
+        }
+        return true ;
+    }
+}
