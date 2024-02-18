@@ -1,0 +1,30 @@
+/* LeetCode - (3039)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public String lastNonEmptyString(String s) {
+        Map<Character, Integer>lastIdx = new HashMap<>();
+        Map<Character, Integer>freq = new HashMap<>();
+        int maxFreq = 0;
+        
+        int n = s.length();
+        for(int i=0 ; i<n ; i++){
+            char ch = s.charAt(i);
+            lastIdx.put(ch, i);
+            // frequency 
+            freq.put(ch, freq.getOrDefault(ch,0)+1);
+            maxFreq = Math.max(maxFreq, freq.get(ch));
+        }
+        
+        String ans = "" ;
+        for(int i=0 ; i<n ; i++){
+            char ch = s.charAt(i);
+            
+            if(freq.get(ch) == maxFreq && i == lastIdx.get(ch)){
+                ans += ch ;
+            }
+        }
+        return ans ;
+    }
+}
