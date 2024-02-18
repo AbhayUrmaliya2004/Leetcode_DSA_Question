@@ -1,0 +1,52 @@
+/*
+* LeetCode - (3040)
+Given an array of integers called nums, you can perform any of the following operation while nums contains at least 2 elements:
+Choose the first two elements of nums and delete them.
+Choose the last two elements of nums and delete them.
+Choose the first and the last elements of nums and delete them.
+
+* Approach :- Memoisation, check all possible combination and memoise them 
+* S.C :- O(N), for extra space dp map
+*/
+
+class Solution {
+    public int maxOperations(int[] nums) {
+        int n = nums.length ;
+        Map<String, Integer>dp = new HashMap<>();
+        int firstTwo = helper(nums, 2, n-1, nums[0]+nums[1], dp);
+        int lastTwo = helper(nums, 0, n-3, nums[n-1]+nums[n-2], dp);
+        int other = helper(nums, 1, n-2, nums[0]+nums[n-1], dp);
+        
+//        System.out.println(dp);
+        return Math.max(other, Math.max(firstTwo, lastTwo))+1;
+    }
+    public int helper(int[]nums, int i, int j, int score,Map<String, Integer>dp){
+        if(i>=j)return 0;
+        String s = i+" "+j+" "+score ;
+        if(dp.containsKey(s))return dp.get(s);
+        
+        int curr ;
+        int firstTwo = 0;
+        int lastTwo = 0;
+        if(j-i >= 2){
+            curr = nums[i]+nums[i+1];
+            if(curr == score){
+                firstTwo = 1+helper(nums, i+2, j, score, dp);
+            }
+            
+            curr = nums[j]+nums[j-1] ;
+            if(curr == score){
+                lastTwo = 1+helper(nums, i, j-2, score, dp);
+            }
+        }
+        int other = 0 ;
+        curr = nums[i]+nums[j];
+        if(curr == score){
+            other = 1+helper(nums, i+1, j-1, score, dp);
+        }
+        
+        int fre = Math.max(other, Math.max(firstTwo, lastTwo));
+        dp.put(s, dp.getOrDefault(s, 0)+fre);
+        return dp.get(s);
+    }
+}
