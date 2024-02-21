@@ -1,0 +1,36 @@
+/*
+* LeetCode - (1547)
+* T.C :- O(N^2)
+* S.C :- O(N)
+*/
+class Solution {
+    public int minCost(int n, int[] cuts) {
+        Arrays.sort(cuts);
+        Map<String, Integer>dp = new HashMap<>();
+        int c = cuts.length ;
+        List<Integer>cut = new ArrayList<>();
+        cut.add(0);
+        for(int i : cuts){
+            cut.add(i); 
+        }
+        cut.add(n);
+        // stick length
+        Collections.sort(cut);
+        return helper(1, c, cut, dp);
+    }
+    public int helper(int i, int j, List<Integer>cuts, Map<String, Integer>dp){
+        if(i > j)return 0;
+        String s = i+" "+j;
+        if(dp.containsKey(s))return dp.get(s);
+        
+        int min = Integer.MAX_VALUE ;
+        for(int k=i ; k<=j ; k++){
+            int cost = helper(i, k-1, cuts, dp)+
+                       helper(k+1, j, cuts, dp)+
+                    cuts.get(j+1)-cuts.get(i-1);
+            min = Math.min(min, cost);
+        }
+        dp.put(s,min) ;
+        return min ;
+    }
+}
