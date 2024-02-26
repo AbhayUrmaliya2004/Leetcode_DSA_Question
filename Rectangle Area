@@ -1,0 +1,30 @@
+/*
+* LeetCode - (223)
+* T.C :- O(1)
+* S.C :- O(1)
+*/
+// Approach :-  total area covered by rectangles is area1+area2-intersection_area
+class Solution {
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        // finding intersection area 
+        int min_x = Math.max(ax1, bx1);
+        int min_y = Math.max(ay1, by1);
+        
+        int max_x = Math.min(ax2, bx2);
+        int max_y = Math.min(ay2, by2);
+        
+        int intersection_area = 0;
+        if(max_x > min_x && max_y > min_y){
+            int len_x = max_x-min_x ;
+            int len_y = max_y-min_y ;
+//            System.out.println(max_x+" "+min_x+" "+max_y+" "+min_y);
+            intersection_area = len_x*len_y ;
+        }
+        
+        int area1 = (ay2-ay1)*(ax2-ax1);
+        int area2 = (by2-by1)*(bx2-bx1);
+        
+//        System.out.println(area1+" "+area2+" "+intersection_area);
+        return area1+area2-intersection_area ;
+    }
+}
