@@ -1,7 +1,7 @@
 /*
 * LeetCode - (513)
-* T.C :- O(N)
-* S.C :- O(N), for call stack
+* T.C :- O(N), faster than 100%
+* S.C :- O(N), for call stack, better than 83%
 * Note :- we can't pass a variable by reference then we can create a array of size 1 which will act as pass by reference 
 */
 class Solution {
