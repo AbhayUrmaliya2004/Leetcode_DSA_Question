@@ -1,0 +1,35 @@
+/*
+* LeetCode - (513)
+* T.C :- O(N)
+* S.C :- O(N), for call stack
+* Note :- we can't pass a variable by reference then we can create a array of size 1 which will act as pass by reference 
+*/
+class Solution {
+    boolean check = false ;
+    public int findBottomLeftValue(TreeNode root) {
+        int level = findHeight(root)+1;
+//        System.out.println("level : "+level);
+        int[]ans = new int[1];
+        ans[0] = root.val ;
+        helper(root, level-1, ans);
+        return ans[0] ;
+    }
+    public void helper(TreeNode root, int level, int[]ans){
+        if(root == null)return ;
+        if(level == 0){
+            ans[0] = root.val ;
+            check = true;
+        }
+        
+        helper(root.left, level-1, ans);
+        if(check) return ;
+        helper(root.right, level-1, ans);
+        if(check)return ;
+    }
+    public int findHeight(TreeNode root){
+        if(root == null || root.left == null && root.right == null)return 0;
+        int leftTreeHeight = findHeight(root.left);
+        int rightTreeHeight = findHeight(root.right);
+        return 1+Math.max(leftTreeHeight, rightTreeHeight);
+    }
+}
