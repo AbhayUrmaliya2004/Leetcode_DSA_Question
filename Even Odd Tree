@@ -1,0 +1,51 @@
+/*
+LeetCode - (1609)
+T.C :- O(logN*N), logN->height of tree, N is the maximum no. of nodes in one level
+S.C :- O(M), M-> No. of Nodes
+
+Better Aprroach :- Instead of Storing list and traversing, make a list of integer and check required condition at that particular level 
+
+For every even-indexed level, all nodes at the level have odd integer values in strictly increasing order (from left to right).
+For every odd-indexed level, all nodes at the level have even integer values in strictly decreasing order (from left to right).
+*/
+
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        helper(root, 0, list);
+//        System.out.println(list);
+        // important condition checking
+        for(int i=0 ; i<list.size() ; i++){
+            List<Integer> arr = list.get(i);
+            
+            // even level , should be strictly increasing and node value should be odd 
+            if(i%2 == 0){
+                for(int j=0 ; j<arr.size()-1 ; j++){
+                    if(arr.get(j)%2 == 0 || arr.get(j) >= arr.get(j+1))return false ;
+                }
+                if(arr.get(arr.size()-1)%2 == 0)return false ;
+            }else{
+            // odd level, should be strictly decreasing and node value should be even
+                for(int j=0 ; j<arr.size()-1 ; j++){
+                    if(arr.get(j)%2 != 0 || arr.get(j) <= arr.get(j+1))return false ;
+                }
+                // last index checking that value is even or not
+                if(arr.get(arr.size()-1)%2 != 0)return false ;
+            } 
+        }
+        return true ;
+    }
+    public void helper(TreeNode root, int level, List<List<Integer>>list){
+        if(root == null)return ;
+        if(list.size() <= level){
+            list.add(new ArrayList<>());
+        }
+        
+        // self work 
+        List<Integer>temp = list.get(level);
+        temp.add(root.val);
+        // recursive work
+        helper(root.left, level+1, list);
+        helper(root.right, level+1, list);
+    }
+}
