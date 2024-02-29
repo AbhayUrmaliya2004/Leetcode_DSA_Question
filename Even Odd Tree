@@ -1,5 +1,46 @@
 /*
-LeetCode - (1609)
+* Leetcode - (1609)
+* T.C :- O(N), no extra traversal 
+* S.C :- O(logN) and for skewed tree O(N)
+*/
+
+// Method - (1)
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        boolean ans = helper(root, 0, list);
+        return ans ;
+    }
+    public boolean helper(TreeNode root, int level, List<Integer>list){
+        if(root == null)return true;
+        
+        if(level%2==0){// even level
+             if(root.val%2 == 0) return false ;
+        }else{ // level is odd
+                if(root.val%2 != 0) return false ;
+        }
+        
+        
+        if(list.size() <= level){
+            list.add(root.val);
+        }else{
+            // checking important condition 
+            if(level%2 == 0){ // even level
+                 // should be strictly incrasing
+                 if(root.val <= list.get(level))return false ;
+                 list.set(level, root.val);
+            }else{ // odd level
+                 if(root.val >= list.get(level))return false ;
+                 list.set(level, root.val);
+            }
+        }
+        // recursive work
+        return helper(root.left, level+1, list) && helper(root.right, level+1, list);
+    }
+}
+
+/*
+Method - (2)
 T.C :- O(logN*N), logN->height of tree, N is the maximum no. of nodes in one level
 S.C :- O(M), M-> No. of Nodes
 
