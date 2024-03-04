@@ -1,0 +1,14 @@
+/*
+* Leetcode - (3065)
+* T.C :- O(NlogN),  for sorting NlogN + O(N) for traversing 
+*/
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        Arrays.sort(nums);
+        int i=nums.length-1 ;
+        while(i>=0 && nums[i] >= k){
+            i-- ;
+        }
+        return i+1 ;
+    }
+}
