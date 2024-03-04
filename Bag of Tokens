@@ -1,0 +1,33 @@
+/*
+* Leetcode - (948)
+* T.C :- O(NlogN)faster than 98%
+* S.C :- O(1)
+Approach :- Jyada wale token ko bechkar power badhayenge agar score >=1 nahi toh power loss karke score ko
+increase karenge 
+*/
+class Solution {
+    public int bagOfTokensScore(int[] tokens, int power) {
+        
+        Arrays.sort(tokens);
+        int i=0, j=tokens.length-1 ;
+        
+        int score = 0 ;
+        while(i<=j){
+            // 25,34,60,68,85
+            if(power >= tokens[i]){
+                power -= tokens[i];
+                score++ ;
+                i++ ;
+            }else{
+                if(i<j && score >= 1){
+                    power += tokens[j];
+                    score-- ;
+                    j-- ;
+                }else{
+                    break ;
+                }
+            }
+        }
+        return score ;
+    }
+}
