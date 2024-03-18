@@ -1,0 +1,36 @@
+/*
+* Leetcode - (3083)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public boolean isSubstringPresent(String s) {
+        Set<String> s1 = new HashSet<>();
+        Set<String> s2 = new HashSet<>();
+        
+        getSubstring(s, s1);
+        char[] ch = s.toCharArray();
+        int i=0 ; 
+        int j=s.length()-1;
+        while(i<j){
+            char t = ch[i];
+            ch[i] = ch[j];
+            ch[j] = t ;
+            i++ ;
+            j-- ;
+        }
+        
+        getSubstring(String.valueOf(ch), s2);
+        
+        for(String sub : s1){
+            if(s2.contains(sub))return  true ;
+        }
+        return false ;
+    }
+    void getSubstring(String s, Set<String> set){
+        int n = s.length();
+        for(int i=0 ; i<n-1 ; i++){
+            set.add(s.substring(i, i+2));
+        }
+    }
+}
