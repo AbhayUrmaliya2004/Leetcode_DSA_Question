@@ -1,0 +1,62 @@
+/*
+* Leetcode - (3080)
+* T.C :- O(NlogN)
+* S.C :- O(N)
+*/
+
+class Solution {
+    public long[] unmarkedSumArray(int[] nums, int[][] queries) {
+        List<Long> res = new ArrayList<>();
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        boolean[] bool = new boolean[nums.length];
+        long sum ;
+        sum = 0;
+        Map<Integer, List<Integer>> mp = new HashMap<>();
+        for(int i=0 ; i<nums.length ; i++){
+            if(!mp.containsKey(nums[i])){
+                mp.put(nums[i], new ArrayList<>());
+            }
+            List<Integer>t = mp.get(nums[i]);
+            t.add(i);
+            mp.put(nums[i], t);
+            
+            sum += nums[i];
+            pq.add(nums[i]);
+        }
+        
+        for(int i=0 ; i<queries.length ; i++){
+            int idx = queries[i][0];
+            int count = queries[i][1];
+            
+            if(!bool[idx]){
+                sum -= nums[idx];
+                pq.remove(nums[idx]);
+                bool[idx] = true ;
+            }
+            
+            while(count>0 && pq.size()>0){
+                int num = pq.poll();
+                List<Integer> t = mp.get(num);
+                int index ;
+                for(int k=0 ; k<t.size() ; k++){
+                    index = t.get(k);
+                    if(!bool[index]){
+                        bool[index] = true ;
+                        break ;
+                    }
+                }
+                sum -= num ;
+                count-- ;
+            }
+            
+            res.add(sum);
+        }
+        
+        long[] ans = new long[res.size()];
+        for(int i=0 ; i<ans.length ; i++){
+            ans[i] = res.get(i);
+        }
+        return ans ;
+    }
+}
