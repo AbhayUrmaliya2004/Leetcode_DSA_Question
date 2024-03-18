@@ -1,0 +1,45 @@
+/*
+* Leetcode - (2545)
+* T.C :- O(NlogN)
+* S.C :- O(1)
+*/
+/* METHOD - (1)*/
+class Solution {
+    public int[][] sortTheStudents(int[][] score, int k) {
+        Arrays.sort(score,(int[] a,int[] b)-> Integer.compare(b[k],a[k]));
+        return score;
+    }
+}
+
+/*
+* METHOD - (2)
+* T.C :- O(NlogN)
+* S.C :- O(N)
+*/
+class Solution {
+    public int[][] sortTheStudents(int[][] score, int k) {
+        
+        List<List<Integer>> arr = new ArrayList<>();
+        
+        for(int i=0 ; i<score.length ; i++){
+            arr.add(new ArrayList<>());
+            for(int j=0 ; j<score[0].length ; j++){
+                List<Integer> temp = arr.get(i);
+                temp.add(score[i][j]);
+            }
+        }
+        
+        Collections.sort(arr, new Comparator<>(){
+           public int compare(List<Integer> a, List<Integer> b){
+               return b.get(k)-a.get(k);
+           } 
+        });
+        
+        for(int i=0 ; i<score.length ; i++){
+            for(int j=0 ; j<score[0].length ; j++){
+                score[i][j] = arr.get(i).get(j);
+            }
+        }
+        return score;
+    }
+}
