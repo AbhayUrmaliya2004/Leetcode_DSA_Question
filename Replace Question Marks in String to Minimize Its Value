@@ -1,0 +1,73 @@
+/*
+* Leetcode - (3081)
+* T.C :- O(NlogN)
+* S.C :- O(N), O(N) for priority queue + O(N)for list
+*/
+class Solution {
+    public class Node{
+        char ch ; 
+        int fre ;
+        public Node(char ch, int fre){
+            this.ch = ch ;
+            this.fre = fre ;
+        }
+    }
+    public String minimizeStringValue(String s) {
+        PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<>(){
+            public int compare(Node a, Node b){
+                if(a.fre > b.fre){
+                    return 1;
+                }else if(a.fre < b.fre){
+                    return -1 ;
+                }else{ // same frequency
+                    if(a.ch > b.ch) return 1;
+                    else return -1;
+                }
+            }
+        });
+         
+        int[] count = new int[26];
+        char[]arr = s.toCharArray();
+        
+        // calculating fre
+        int queMark = 0;
+        for(char ch : arr){
+            if(ch == '?'){
+                queMark++ ;
+                continue ;
+            }
+            count[ch-'a']++ ;
+        }
+        
+        // filling in arr
+        for(char ch='a' ; ch<='z' ; ch++){
+            int fre = count[ch-'a'];
+            
+            Node temp = new Node(ch, fre);
+            pq.add(temp);
+        }
+        
+        List<Character> list = new ArrayList<>();
+        for(int i=0 ;i<arr.length ; i++){
+            if(arr[i] == '?'){
+                Node temp = pq.poll();
+                
+                list.add(temp.ch) ;
+                temp.fre = temp.fre+1 ;
+                
+                pq.add(temp);
+            }
+        }
+        Collections.sort(list);
+        int i=0 , k=0; 
+        while(queMark > 0){
+            if(arr[i] == '?'){
+                arr[i] = list.get(k);
+                k++ ;
+                queMark-- ;
+            }
+            i++ ;   
+        }
+        return String.valueOf(arr);
+    }
+}
