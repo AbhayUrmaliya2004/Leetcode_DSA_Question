@@ -1,0 +1,42 @@
+/*
+* Leetcode - (1171)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public ListNode removeZeroSumSublists(ListNode head) {
+        int preSum = 0 ;
+        Map<Integer, ListNode>mp = new HashMap<>();
+        ListNode dummyNode = new ListNode(0);
+        mp.put(0, dummyNode);
+        
+        dummyNode.next = head ;
+        
+        while(head != null){
+            preSum += head.val ;
+            
+            if(mp.containsKey(preSum)){ // delete the middle nodes
+                ListNode prev = mp.get(preSum);
+                ListNode temp = prev ;
+                
+                int pSum = preSum ;
+                while(temp != head){
+                    
+                    temp = temp.next ;
+                    pSum += temp.val ;
+                    
+                    if(temp != head)
+                       mp.remove(pSum);
+                }
+                
+                prev.next = head.next ;
+                
+            }else{
+                mp.put(preSum, head);
+            }
+            
+            head = head.next ;
+        }
+        return dummyNode.next ;
+    }
+}
