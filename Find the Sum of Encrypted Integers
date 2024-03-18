@@ -1,0 +1,32 @@
+/*
+* Leetcode - (3079)
+* T.C :- O(N)
+* S.C:- O(1)
+*/
+class Solution {
+    public int sumOfEncryptedInt(int[] nums) {
+        int ans = 0 ;
+        for(int i=0 ; i<nums.length ; i++){
+            ans += encrypt(nums[i]);
+        }
+        return ans ;
+    }
+    public int encrypt(int n){
+        if(n < 10)return n ;
+        
+        int count=0 ;
+        int max = 1 ;
+        while(n > 0){
+            int rem = n%10 ;
+            if(rem > max)max = rem ;
+            count++ ;
+            n /= 10 ;
+        }
+        
+        n = 0 ;
+        for(int i=1 ; i<= count ; i++){
+            n = n*10+max ;
+        }
+        return n ;
+    }
+}
