@@ -1,0 +1,46 @@
+/*
+* Leetcode - (791)
+* T.C :- O(N)
+* S.C :- O(N), O(N) for list "not_in_order" + O(26) for boolean + O(26) for freq "arr"
+*/
+class Solution {
+    public String customSortString(String order, String s) {
+        List<Character> not_in_order = new ArrayList<>();
+        
+        boolean[] present_in_order = new boolean[26];
+        
+        // mark all the characters that are present in order
+        for(int i=0 ; i<order.length() ; i++){
+            char ch = order.charAt(i);
+            present_in_order[ch-'a'] = true ;
+        }
+        
+        // seperate characters present in order
+        
+        // arr contains characters present in order and in s
+        int[] arr = new int[26];
+        
+        for(int i=0 ; i<s.length() ; i++){
+            char ch = s.charAt(i);
+            if(present_in_order[ch-'a']) arr[ch-'a']++ ;
+            else not_in_order.add(ch);
+        }
+        
+        // make permutation ans 
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i=0 ; i<order.length() ; i++){
+            char ch = order.charAt(i);
+            while(arr[ch-'a']>0){
+                sb.append(ch+"");
+                arr[ch-'a']-- ;
+            }
+        }
+        
+        for(char ch : not_in_order){
+            sb.append(ch+"");
+        }
+        
+        return sb.toString();
+    }
+}
