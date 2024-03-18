@@ -1,0 +1,33 @@
+/*
+* Leetcode - (238)
+* T.C :- O(N)
+* S.C :- O(1) because we itself haven't created any extra space return type is array 
+*/
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int product = 1, zeroes = 0;
+        for(int i : nums){
+            if(i != 0)product = product*i ;
+            else zeroes++ ;
+        }
+        if(zeroes > 1){
+            for(int i=0 ; i<nums.length ; i++){
+                nums[i] = 0 ;
+            }
+            return nums ;
+        }
+    //  ELSE PART WILL EXECUTE 
+        else if(zeroes == 0){ 
+            for(int i=0 ; i<nums.length ; i++){
+                nums[i] = product/nums[i];
+            }
+            return nums ;
+        }
+        // case where no of zeroes is 1
+        for(int i=0 ; i<nums.length ; i++){
+            if(nums[i] == 0)nums[i] = product ;
+            else nums[i]=0 ;
+        }
+        return nums ;
+    }
+}
