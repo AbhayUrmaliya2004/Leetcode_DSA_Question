@@ -1,0 +1,41 @@
+/*
+* Leetcode - (3085)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int minimumDeletions(String word, int k) {
+        Map<Character, Integer> mp = new HashMap<>();
+        for(int i=0 ; i<word.length() ; i++){
+            char ch = word.charAt(i);
+            mp.put(ch, mp.getOrDefault(ch, 0)+1);
+        }
+        
+        List<Integer> list = new ArrayList<>(mp.values());
+    
+        int min = Integer.MAX_VALUE ;
+        for(int i=0;i<list.size();i++)
+        {
+            int data=list.get(i);
+            int count=0;
+            for(int j:list)
+            {
+                if(j>(data + k))
+                {
+                    count += j-(data + k);
+                }
+                else if(j<data)
+                { // meri ye condition galat thi jisme negative means data-k ko delete nahi kiya tha 
+                    count += j;
+                }
+            }
+            min=Math.min(count, min);
+            if(min == 0)
+            {
+                break;
+            }
+        }
+
+        return min;
+    }
+}
