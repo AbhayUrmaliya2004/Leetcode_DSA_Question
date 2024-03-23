@@ -1,0 +1,42 @@
+/*
+* Leetcode = (221)
+* T.C :- O(m*n)
+* S.C :- O(m*n)
+*/
+class Solution {
+    int maximum = 0;
+    public int maximalSquare(char[][] matrix) {
+        maximum = 0 ;
+        int row = matrix.length ;
+        int col = matrix[0].length ;
+        int[][]dp = new int[row][col];
+        
+        for(int i=0 ; i<row ; i++){
+            for(int j=0 ; j<col ; j++){
+                dp[i][j] = -1;
+            }
+        }
+        
+        for(int i=0 ; i<row ; i++){
+            for(int j=0 ; j<col ; j++){
+                helper(matrix, i, j, dp);
+            }
+        }
+        return maximum*maximum ;
+    }
+    public int helper(char[][]matrix, int row, int col,int[][]dp){
+        if(row >= matrix.length || col >= matrix[0].length)return 0;
+        if(matrix[row][col] == '0')return 0;
+        if(dp[row][col] != -1)return dp[row][col];
+        
+        int right = helper(matrix, row, col+1, dp);
+        int diagonal = helper(matrix, row+1, col+1, dp);
+        int down = helper(matrix, row+1, col, dp);
+        
+        dp[row][col] = 1+Math.min(diagonal, Math.min(right, down));
+        
+        maximum = Math.max(maximum, dp[row][col]);
+//        System.out.println(row+" "+col+" max : "+maximum);
+        return dp[row][col];
+    }
+}
