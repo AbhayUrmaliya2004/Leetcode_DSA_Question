@@ -1,0 +1,41 @@
+/*
+* Leecode - (1312)
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach - Dynamic Programming with Memoisation
+*/
+class Solution {
+    public int minInsertions(String s) {
+        Map<String, Integer> dp = new HashMap<>();
+        return helper(0, s.length()-1, s, dp);
+    }
+    public int helper(int i, int j, String s, Map<String, Integer>dp){
+        if(i >= j)return 0;
+        String idx = i+"_"+j ;
+        
+        if(dp.containsKey(idx)){
+            return dp.get(idx);
+        }
+        
+        
+        char left = s.charAt(i), right=s.charAt(j);
+        
+        int ans = Integer.MAX_VALUE ;
+        if(left == right){
+            ans = helper(i+1, j-1, s, dp);
+            dp.put(idx, ans);
+            return dp.get(idx);
+        }else{
+            int min = Integer.MAX_VALUE ;
+            // left jaisa insert kardo 
+            ans = 1+helper(i, j-1, s, dp);
+            min = Math.min(min, ans);
+            // right jaisa insert karna hai
+            ans = 1+helper(i+1, j, s, dp);
+            min = Math.min(min, ans);
+            
+            dp.put(idx, min);
+            return dp.get(idx);
+        }
+    }
+}
