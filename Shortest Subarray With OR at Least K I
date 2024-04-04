@@ -1,0 +1,20 @@
+/*
+* Leetcode :- O(3095)
+* T.C :- O(n^3), beacause of small test cases it got submitted but need to optimise it 
+* S.C :- O(1)
+*/
+class Solution {
+    public int minimumSubarrayLength(int[] nums, int k) {
+        
+        for(int window=1 ; window<=nums.length ; window++){
+            for(int i=0 ; i<nums.length-window+1 ; i++){
+                int ans = nums[i] ;
+                for(int j=i+1 ; j<i+window ; j++){
+                    ans = ans | nums[j];
+                }
+                if(ans >= k)return window ;
+            }
+        }
+        return -1 ;
+    }
+}
