@@ -1,0 +1,26 @@
+/*
+* Leetcode - (3100)
+* T.C :- O(numExchange) , i.e. O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int maxBottlesDrunk(int numBottles, int numExchange) {
+        int drinkBottles = numBottles ;
+        int emptyBottles = numBottles ;
+        numBottles = 0 ;
+        
+        while(emptyBottles >= numExchange){
+            emptyBottles -= numExchange ;
+            drinkBottles++ ;
+            // khali bottle badh gayi pani peene ke baad
+            emptyBottles++ ;
+            numExchange++ ;
+        }
+        return drinkBottles ;
+    }
+}
+
+
+
+
+
