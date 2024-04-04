@@ -1,0 +1,35 @@
+/*
+* Leetcode - (992)
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- No of subarray with atMostK elements - no of subarrays with atMost(K-1) *             subarrays 
+*/
+class Solution {
+    public int subarraysWithKDistinct(int[] nums, int k){
+        int AtMostK = noOfSubarrays(nums, k);
+        int AtMostK_minus_1 = noOfSubarrays(nums, k-1);
+        
+        return AtMostK-AtMostK_minus_1 ;
+    }
+    public int noOfSubarrays(int[] nums, int k){
+        int left = 0 ;
+        int right = 0 ;
+        int subarrays = 0 ;
+        Map<Integer, Integer> mp = new HashMap<>() ;
+        
+        for(left=0, right=0 ; right < nums.length ; right++){
+            mp.put(nums[right], mp.getOrDefault(nums[right], 0)+1);
+            
+            while(mp.size() > k){
+                if(mp.get(nums[left]) == 1){
+                    mp.remove(nums[left]);
+                }else{
+                    mp.put(nums[left], mp.get(nums[left])-1);
+                }
+                left++ ;
+            }
+            subarrays += (right-left+1) ;
+        }
+        return subarrays ;
+    }
+}
