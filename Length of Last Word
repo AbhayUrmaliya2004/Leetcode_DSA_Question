@@ -1,0 +1,18 @@
+/*
+* Leetcode - (58)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public static int lengthOfLastWord(String st) {
+		 int n = st.length();
+         int count = 0 ;
+         int k = n-1 ;
+         while( k >= 0 && st.charAt(k) == ' ') k-- ;          
+	     for( int i = k ; i>= 0 && st.charAt(i) != ' ' ; i--){
+            if( st.charAt(i) == ' ') return count ;
+            count++ ;
+         }  
+         return count ;
+	}
+}
