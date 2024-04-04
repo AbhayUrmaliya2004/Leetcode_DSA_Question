@@ -1,0 +1,27 @@
+/*
+* Leetcode - (2958)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int maxSubarrayLength(int[] nums, int k) {
+        // this keep traces of frequency
+        Map<Integer, Integer>mp = new HashMap<>();
+        
+        int max = 0 ;
+        int i=0, j=0 , n=nums.length;
+        while(j < n){
+            mp.put(nums[j] ,mp.getOrDefault(nums[j], 0)+1);
+            int fre = mp.get(nums[j]);
+            
+            while(fre > k){
+                mp.put(nums[i], mp.get(nums[i])-1);
+                i++ ;
+                fre = mp.get(nums[j]);
+            }
+            max = Math.max(max, j-i+1);
+            j++ ;
+        }
+        return max ;
+    }
+}
