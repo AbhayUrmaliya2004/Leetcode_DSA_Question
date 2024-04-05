@@ -1,0 +1,29 @@
+/*
+* Coding Ninjas - Find Nth Root Of M
+* T.C :- O(logM)
+* S.C :- O(1)
+*/
+public class Solution {
+    public static int NthRoot(int n, int m) {
+        
+        double num = 0 ;
+        int left = 1, right = m, x=0 ;
+
+        while(left <= right){
+            x = (left+right)/2 ;
+
+            num = Math.pow(x, n);
+
+            if(num == (double)m)return x ;
+            if(num > (double)m){
+                right = x-1 ;
+            }else{
+                left = x+1 ;
+            }
+        }
+         
+         if(num == (double)m)return x ;
+         return -1 ;
+
+    }
+}
