@@ -1,0 +1,37 @@
+/*
+* Geeks For Geeks
+* Rat in a Maze Problem - I
+*/
+
+// mat is the given matrix and n is the order of matrix
+class Solution {
+    public static ArrayList<String> findPath(int[][] mat, int n) {
+        if(mat[0][0] == 0){
+            return new ArrayList<String>();
+        }
+        
+        ArrayList<String> ans = new ArrayList<>();
+        boolean[][]visited = new boolean[mat.length][mat[0].length] ;
+        helper(mat, 0, 0, "", ans, visited);
+        return ans ;
+    }
+    public static void helper(int[][] mat, int i, int j, String s, ArrayList<String> ans, boolean[][]visited){
+        if(i<0 || j<0 || i==mat.length || j==mat[0].length || mat[i][j] == 0 || visited[i][j]) return ;
+        if(i==mat.length-1 && j==mat[0].length-1){
+            ans.add(s);
+            return ;
+        }
+
+        visited[i][j] = true ;
+        // go right
+        helper(mat, i, j+1, s+"R", ans, visited);
+        // go left
+        helper(mat, i, j-1, s+"L", ans, visited);
+        // go up 
+        helper(mat, i-1, j, s+"U", ans, visited);
+        // go down 
+        helper(mat, i+1, j, s+"D", ans, visited);
+        
+        visited[i][j] = false ;
+    }
+}
