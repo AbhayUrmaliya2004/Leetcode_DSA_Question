@@ -1,0 +1,37 @@
+/*
+* Leetcode - (3098)
+* Approach :- Here we need to find the sum of subsequence powers, to find this what we 
+  can do, find all the subsequence with k size then sort O(NlogN), and iterate to find   min diff O(N), instead of doing this 
+  sort the array initially so that after finding each subsequence we don't need to
+  sort each subsequence and instead of finding diff just maintain a variable minDiff
+  and return this at last 
+*/
+
+class Solution {
+    int MOD = 1000000007 ;
+    public int sumOfPowers(int[] nums, int k) {
+        Arrays.sort(nums);
+        Map<String, Long> dp = new HashMap<>();
+        long ans = helper(nums, k, 0, -1, Long.MAX_VALUE, dp);
+        return (int)ans%MOD ;
+    }
+    public long helper(int[] nums, int remK, int idx, int lastIdx, long minDiff, Map<String, Long>dp){
+        if(remK == 0)return minDiff % MOD ;
+        if(idx == nums.length)return 0;
+        
+        String state = idx+"_"+lastIdx+"_"+remK+"_"+minDiff ;
+        if(dp.containsKey(state)){
+            return dp.get(state);
+        }
+        
+        // making subsequence 
+        long newDiff = (lastIdx==-1) ? Long.MAX_VALUE : Math.min(minDiff, (long)nums[idx]-(long)nums[lastIdx]);
+        // taking current element in the subsequence 
+        long sum1 = helper(nums, remK-1, idx+1, idx, newDiff, dp);
+        // not taking current element in the subsequence
+        long sum2 = helper(nums, remK, idx+1, lastIdx, minDiff, dp);
+        
+        dp.put(state, (sum1+sum2)%MOD);
+        return dp.get(state) ;
+    }
+}
