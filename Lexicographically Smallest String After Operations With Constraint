@@ -1,0 +1,28 @@
+/*
+* Leetcode - (3106)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public String getSmallestString(String s, int k) {
+        StringBuilder sb = new StringBuilder();
+        int N = s.length();
+        for(int i=0 ; i<N ; i++){
+            char ch = s.charAt(i);
+            if(k == 0){
+                sb.append(ch+"");
+            }else{
+                int diff = Math.abs(ch-'a');
+                int min = Math.min(diff, 26-diff);
+                if(min <= k){
+                    sb.append("a");
+                    k-=min ;
+                }else{
+                    sb.append((char)(ch-k)+"");
+                    k=0 ;
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
