@@ -1,0 +1,30 @@
+/*
+* Leetcode - (1700)
+*/
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        int N = students.length;
+        Queue<Integer> q = new LinkedList<>();
+        int count0=0, count1=0 ;
+        for(var stu : students){
+            if(stu == 1)count1++ ;
+            else count0++ ;
+            q.add(stu);
+        }
+        int i=0;
+        while(i < N){
+            if(sandwiches[i]==1 && count1==0)return q.size() ;
+            if(sandwiches[i]==0 && count0==0)return q.size() ;
+            
+            if(q.peek() == sandwiches[i]){
+                q.remove();
+                if(sandwiches[i] == 1) count1-- ;
+                if(sandwiches[i] == 0) count0-- ;
+                i++ ;
+            }else{
+                q.add(q.remove());
+            }
+        }
+        return 0;
+    }
+}
