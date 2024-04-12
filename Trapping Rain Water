@@ -1,0 +1,75 @@
+/*
+* Leetcode - (42)
+* T.C :- O(N)
+* S.C :- O(N), O(N) for next_greatest array + O(N) for prev_greatest array
+* Appraoch :- find the nextt and prev greatest element 
+*/
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length ;
+        int[] prev_greatest = new int[n];
+        int[] next_greatest = new int[n];
+        
+        find_prev_greatest(prev_greatest, height);
+        find_next_greatest(next_greatest, height);
+
+        int water = 0 ;
+        for(int i=0 ; i<n ; i++){
+            int curr = height[i] ;
+            int min_height = Math.min(prev_greatest[i], next_greatest[i]);
+            
+            if(min_height > curr)water += Math.abs(min_height - curr);
+        }
+        return water;
+    }
+    
+    public void find_next_greatest(int[] next_greatest, int[] height){
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i=height.length-1 ; i>=0 ; i--){
+            int curr = height[i];
+            if(st.size() == 0){
+                next_greatest[i] = 0 ;
+            }else{
+                // pop values to remove small values than curr
+                while( st.size()>0 && st.peek()<=curr ){
+                    st.pop();
+                }
+                
+                // pop values to get the greatest values in the right
+                while( st.size()>1 ){
+                    st.pop();
+                }
+                
+                next_greatest[i] = (st.size() == 0)? 0 : st.peek() ;
+            }
+            
+            st.add(curr);
+        }  
+    }
+    
+    public void find_prev_greatest(int[] prev_greatest, int[] height){
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i=0 ; i<height.length ; i++){
+            int curr = height[i];
+            if(st.size() == 0){
+                prev_greatest[i] = 0 ;
+            }else{
+                // pop values to remove small values than curr
+                while( st.size()>0 && st.peek()<=curr ){
+                    st.pop();
+                }
+                
+                // pop values to get the greatest values in the left 
+                while( st.size()>1 ){
+                    st.pop();
+                }
+                
+                prev_greatest[i] = (st.size() == 0)? 0 : st.peek() ;
+            }
+            
+            st.add(curr);
+        }
+    }
+}
