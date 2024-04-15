@@ -1,0 +1,41 @@
+/*
+* Leetcode - (3111)
+* T.C :- O(NlogN), NlogN for sorting + logN for Binary Search
+* S.C :- O(1)
+*/
+class Solution {
+    public int minRectanglesToCoverPoints(int[][] points, int w) {
+        Arrays.sort(points, (a, b)->Integer.compare(a[0], b[0]));
+        
+        int count = 0, N = points.length, i=0 ;
+        while(i < N){
+            int curr = points[i][0] ;
+            if(curr+w <= points[N-1][0]){
+                int next = BinarySearch(points, i, curr+w);
+//                System.out.println("next : "+next);
+                count++ ;
+                i = next ;
+            }else{
+                count++ ;
+                break ;
+            }
+        }
+        return count;
+    }
+    public int BinarySearch(int[][] points, int st, int target){
+//        System.out.println("st : "+st);
+        int end = points.length-1 ;
+        int mid = st ;
+        while(st <= end){
+            mid = st+(end-st)/2 ;
+            
+            if(points[mid][0] <= target){
+//                System.out.print(mid+" ");
+                st = mid+1 ;
+            }else{
+                end = mid-1 ;
+            }
+        }
+        return st ;
+    }
+}
