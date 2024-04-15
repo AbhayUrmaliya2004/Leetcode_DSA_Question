@@ -1,6 +1,6 @@
 /*
 * Leetcode - (124)
-* T.C :- O(N)
+* T.C :- O(N), faster than 100% and better than 97% in memory
 * S.C :- O(N) for call stack else no memory used
 * Approach :- sum variable keeps track of the maximum sum can be obatined by any path at any node and value of each node is updated after to which 
               we can get maximum path either with left tree sum with curr node or right tree sum with curr node
