@@ -1,0 +1,47 @@
+/*
+* Leetcode - (124)
+* T.C :- O(N)
+* S.C :- O(N) for call stack else no memory used
+* Approach :- sum variable keeps track of the maximum sum can be obatined by any path at any node and value of each node is updated after to which 
+              we can get maximum path either with left tree sum with curr node or right tree sum with curr node
+*/
+class Solution {
+    public int maxPathSum(TreeNode root) {
+        // to create a variable which can be passed referentially 
+        int[] sum = new int[1];
+        sum[0] = Integer.MIN_VALUE ;
+        helper(root, sum);
+        return sum[0];
+    }
+    public void helper(TreeNode root, int[] sum){
+        if(root.left == null && root.right == null){
+            sum[0] = Math.max(sum[0], root.val);
+            return ;
+        }
+        
+        if(root.left != null) helper(root.left, sum);
+        if(root.right != null) helper(root.right, sum);
+        
+        int newRootValue = root.val ;
+        
+        if(root.left != null && root.right != null){
+            int leftNodeRight = root.left.val + root.val + root.right.val ;
+            sum[0] = Math.max(sum[0], leftNodeRight);
+        }
+        
+        if(root.left != null){
+            int leftSumWithNode = root.val + root.left.val ;
+            sum[0] = Math.max(sum[0], leftSumWithNode);
+            newRootValue = Math.max(newRootValue, leftSumWithNode);
+        }
+        
+        if(root.right != null){
+            int rightSumWithNode = root.val + root.right.val ;
+            sum[0] = Math.max(sum[0], rightSumWithNode);
+            newRootValue = Math.max(newRootValue, rightSumWithNode);
+        }
+        
+        sum[0] = Math.max(root.val, sum[0]);
+        root.val = newRootValue;
+    }
+}
