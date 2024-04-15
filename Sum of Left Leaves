@@ -1,0 +1,19 @@
+/*
+* Leetcode - (404), sum of Left Leaves 
+* T.C :- O(N)
+* S.C :- O(N) for call stack
+*/
+class Solution {
+    public int sumOfLeftLeaves(TreeNode root) {
+          return helper(root, false);
+    }
+    public int helper(TreeNode root, boolean bool){
+        if(root == null)return 0;
+        if(bool && (root.left == null && root.right == null))return root.val ;
+        
+        int ans = helper(root.left, true);
+        ans += helper(root.right, false);
+        
+        return ans ;
+    }
+}
