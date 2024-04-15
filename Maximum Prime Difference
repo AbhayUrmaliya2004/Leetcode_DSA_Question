@@ -1,0 +1,48 @@
+/*
+* Leetcode - (3115)
+* T.C :- O(N)
+* S.C :- O(N)
+
+* constraints :- nums[i] <= 100 but this solution will work for even higher test cases
+*/
+class Solution {
+    public int maximumPrimeDifference(int[] nums) {
+        Set<Integer> prime = new HashSet<>();
+        Set<Integer> not_prime = new HashSet<>();
+        int first = -1 , last = -1, N=nums.length ;
+        
+        for(int i=0 ; i<N ; i++){
+            if(isPrime(nums[i], prime, not_prime)){
+                if(first == -1){
+                    first = i ;
+                }
+                
+                last = i ;// updating
+            }
+        }
+        return last - first ;
+    }
+    public boolean isPrime(int n, Set<Integer> prime, Set<Integer> not_prime){
+        if(prime.contains(n))return true ;
+        if(not_prime.contains(n)) return false ;
+        if(n == 1){
+            not_prime.add(n);
+            return false ;
+        }
+        if(n == 2 || n == 3){
+            prime.add(n);
+            return true ;
+        }
+        
+        int N = (int)Math.sqrt(n);
+        for(int i=2 ; i<=N ; i++){
+            if(n%i==0){
+                not_prime.add(n);
+                return false ;
+            }
+        }
+        
+        prime.add(n);
+        return true ;
+    }
+}
