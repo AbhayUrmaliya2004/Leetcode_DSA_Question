@@ -1,0 +1,29 @@
+/*
+* Leetcode - (129)
+* T.c :- O(N)
+* S.C :- O(N) can be better by adding sum in a variable instead of adding it to list
+*/
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        helper(list, root, 0);
+        int sum = 0 ;
+        for(Integer i : list){
+            sum += i ;
+        }
+        return sum ;
+    }
+    public void helper(List<Integer> list, TreeNode root, int num){
+        if(root.left == null && root.right == null){
+            num = num*10 + root.val ;
+            list.add(num);
+        }
+        
+        if(root.left != null){
+            helper(list, root.left, num*10+root.val);
+        }
+        if(root.right != null){
+            helper(list, root.right, num*10+root.val);
+        }
+    }
+}
