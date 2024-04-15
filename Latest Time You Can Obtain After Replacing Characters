@@ -1,0 +1,49 @@
+/*
+* Leetcode - (3114)
+* T.C :- O(1)
+* S.C :- O(1)
+*/
+class Solution {
+    public String findLatestTime(String s) {
+        char h1 = s.charAt(0);
+        char h2 = s.charAt(1);
+        char m1 = s.charAt(3);
+        char m2 = s.charAt(4);
+        String ans = "";
+        if(h1 == '?'){
+            if(h2 == '0' || h2 == '1' || h2 == '?'){
+                ans += '1';
+            }else{
+                ans += '0' ;
+            }
+            h1 = ans.charAt(0);
+        }else{
+            ans += h1 ;
+        }
+        
+        if(h2 == '?'){
+            if(h1 == '0'){
+                ans += '9' ;
+            }else{
+                ans += '1' ;
+            }
+        }else{
+            ans += h2 ;
+        }
+        
+        ans += ':' ;
+        
+        if(m1 == '?'){
+            ans += '5';
+        }else{
+            ans += m1 ;
+        }
+        
+        if(m2 == '?'){
+            ans += '9';
+        }else{
+            ans += m2 ;
+        }
+        return ans ;
+    }
+}
