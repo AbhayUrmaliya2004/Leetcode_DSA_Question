@@ -1,0 +1,39 @@
+/*
+* Leetcode - (623)
+* T.C :- O(N)
+* S.C :- O(N) for call stack
+*/
+
+class Solution {
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {
+        if(root == null)return null ;
+        if(depth == 1){
+            TreeNode curr = new TreeNode(val);
+            curr.left = root ;
+            return curr ;
+        }
+        else return helper(root, val, depth) ;
+    }
+    public TreeNode helper(TreeNode root, int val, int depth){
+        if(root == null)return root;
+        if(depth == 2){
+            TreeNode left = root.left ;
+            TreeNode right = root.right ;
+            TreeNode currLeft = new TreeNode(val);
+            TreeNode currRight = new TreeNode(val);
+            root.left = currLeft ;
+            currLeft.left = left ;
+            root.right = currRight ;
+            currRight.right = right ;
+            return root ;
+        }
+        
+        TreeNode left = addOneRow(root.left, val, depth-1);
+        TreeNode right = addOneRow(root.right, val, depth-1);
+        
+        root.left = left ;
+        root.right = right ;
+        
+        return root ;
+    }
+}
