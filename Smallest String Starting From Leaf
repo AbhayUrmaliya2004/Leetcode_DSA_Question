@@ -1,0 +1,97 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+/*
+* Leetcode - (998)
+* T.C :- O(N)
+* S.C :- O(N) for call stack
+*/
+class Solution {
+    public String smallestFromLeaf(TreeNode root) {
+        return helper(root, "");
+    }
+    public String helper(TreeNode root, String s){
+        String ans = (char)(root.val+'a')+"" ;
+        
+        if(root.left == null && root.right==null)return ans ;
+        String curr = ans+s ;
+        if(root.left != null && root.right != null){
+            String left = helper(root.left, curr);
+            String right = helper(root.right, curr);
+             
+            if((left+ans+s).compareTo(right+curr)>=0){
+                return right+ans ;
+            }else{
+                return left+ans ;
+            }
+        }
+        else if(root.left != null){
+            String left = helper(root.left, curr);
+            return left+ans ;
+        }
+        else{
+            String right = helper(root.right, curr);
+            return right+ans ;
+        }
+    }
+}/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+/*
+* Leetcode - (998)
+* T.C :- O(N)
+* S.C :- O(N) for call stack
+*/
+class Solution {
+    public String smallestFromLeaf(TreeNode root) {
+        return helper(root, "");
+    }
+    public String helper(TreeNode root, String s){
+        String ans = (char)(root.val+'a')+"" ;
+        
+        if(root.left == null && root.right==null)return ans ;
+        String curr = ans+s ;
+        if(root.left != null && root.right != null){
+            String left = helper(root.left, curr);
+            String right = helper(root.right, curr);
+             
+            if((left+ans+s).compareTo(right+curr)>=0){
+                return right+ans ;
+            }else{
+                return left+ans ;
+            }
+        }
+        else if(root.left != null){
+            String left = helper(root.left, curr);
+            return left+ans ;
+        }
+        else{
+            String right = helper(root.right, curr);
+            return right+ans ;
+        }
+    }
+}
