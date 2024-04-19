@@ -1,0 +1,34 @@
+/*
+* Leetcode - (795)
+* T.C :- O(N)
+* S.C :- O(1)
+* Approach :- find the len of subarray with max k, add it to ans and remove those subarrays
+* whose max < left, removing subarray whose values less than left , count variable track 
+* count of element less than left and lastMaxIdx count length of subarray 
+*/
+class Solution {
+    public int numSubarrayBoundedMax(int[] nums, int left, int right) {
+        int lastMaxIdx = -1, N=nums.length, ans=0 ;
+        long count = 0;
+        
+        for(int i=0 ; i<=N ; i++){
+            // removing subarrays which have max element < left 
+            if(i<N && nums[i] < left){
+                count++ ;
+            }else{
+                long subarrays = (count*(count+1))/2 ;
+                ans -= (int)subarrays ;
+                count = 0;
+            }
+            
+            // removing subarray which have max >= left && max <= right
+            if(i==N || nums[i] > right){
+                long len = i-lastMaxIdx-1 ;
+                long subarrays = (len*(len+1))/2 ;
+                ans += (int)subarrays ;
+                lastMaxIdx = i ;
+            }
+        }
+        return ans ;
+    }
+}
