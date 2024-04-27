@@ -1,0 +1,59 @@
+/*
+* Leetcode - (3129)
+* T.C :- O(M*N*limit)
+* S.C :- O(M*N*limit)
+* Approach :- DP with memoisation 
+*/
+class Solution {
+    int M = 1000000007;
+    int limit ;
+    public int numberOfStableArrays(int zero, int one, int limit) {
+        limit = Math.min(limit, zero + one + 1);
+        int[][][][] dp= new int[zero+1][one+1][limit+1][2];
+        for (int i = 0; i <= zero; i++) {
+            for (int j = 0; j <= one; j++) {
+                for (int l = 0; l <= limit; l++) {
+                    dp[i][j][l][0] = -1;
+                    dp[i][j][l][1] = -1;
+                }
+            }
+        }
+        this.limit = limit ;
+        int res = 0 ;
+        res += helper(zero - 1, one, limit - 1, 0, dp)%M;
+        res += helper(zero, one - 1, limit - 1, 1, dp)%M;
+
+        return (int)res%M;
+    }
+    
+    public int helper(int zero, int one, int currLimit, int last, int[][][][]dp){
+        if(one==0 && zero==0){
+            return 1;
+        }
+        
+        if(dp[zero][one][currLimit][last] != -1)return dp[zero][one][currLimit][last]%M;
+        int res = 0 ;
+        if (last == 0) {
+            if (currLimit > 0 && zero > 0) {
+                res += helper(zero - 1, one, currLimit - 1, 0, dp)%M;
+                res %= M;
+            }
+            if (one > 0) {
+                res += helper(zero, one - 1, limit - 1, 1, dp)%M;
+                res%=M ;
+            }
+        } else {
+            if (currLimit > 0 && one > 0) {
+                res += helper(zero, one - 1, currLimit - 1, 1, dp)%M;
+                res%=M ;
+            }
+            if (zero > 0) {
+                res += helper(zero - 1, one, limit - 1, 0, dp)%M;
+                res%=M ;
+            }
+        }
+        
+        res = res%M ;
+        return dp[zero][one][currLimit][last]=res%M ;
+    }
+}
