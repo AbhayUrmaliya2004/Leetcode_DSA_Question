@@ -1,0 +1,32 @@
+/*
+* Leetcode - (2370)
+* T.C :- O(N)
+* S.C :- O(N), for dp array 
+*/
+class Solution {
+    Integer[][] map;
+    int EMPTY_CHAR = 27;
+    
+    public int longestIdealString(String s, int k) {
+        map = new Integer[s.length()][28];
+        return traverse(0,EMPTY_CHAR,s.toCharArray(),k);
+    }
+    
+    public int traverse(int pos, int prev, char[] arr, int k){
+        if(pos==arr.length) return 0; 
+        var key = pos*100 + prev;
+        if (map[pos][prev]!=null) return map[pos][prev];
+        
+        var cur = arr[pos]-'a';    
+        var res = traverse(pos+1,prev,arr,k);
+        
+        if (prev==EMPTY_CHAR){
+            var st = 1+traverse(pos+1,cur,arr,k);
+            res = Math.max(res,st);
+        }  else if (prev!=EMPTY_CHAR && Math.abs(cur-prev)<=k){
+            var st = 1+traverse(pos+1,cur,arr,k);
+            res = Math.max(res,st);
+        } 
+        return map[pos][prev]=res; 
+    }
+}
