@@ -1,0 +1,36 @@
+/*
+* Leetcode :- (514)
+* T.C :- O(m*n)
+* S.C :- O(m*n)
+* Approach :- DP, can even optimise it using map to store indices
+*/
+class Solution {
+    public int findRotateSteps(String ring, String key) {
+        int ptr = 0, idx = 0 ;
+        int m=ring.length(), n=key.length() ;
+        int[][]dp = new int[n+1][m+1];
+        
+        for(int[] arr : dp){
+            Arrays.fill(arr, -1);
+        }
+        return helper(ring, key, ptr, idx, dp);
+    }
+    public int helper(String ring, String key, int ptr, int idx, int[][]dp){
+        int m=ring.length(), n=key.length() ;
+        if(idx >= n)return 0;
+        
+        if(dp[idx][ptr] != -1)return dp[idx][ptr];
+        
+        int res = Integer.MAX_VALUE ;
+        for(int i=0 ; i<m ; i++){
+             if(ring.charAt(i) == key.charAt(idx)){
+                 int ans = 1+helper(ring, key, i, idx+1, dp);
+                 ans += Math.min(Math.abs(i-ptr), m-Math.abs(i-ptr));
+                 
+                 // update res 
+                 res = Math.min(res, ans);
+             }
+        }
+        return dp[idx][ptr] = res ;
+    }
+}
