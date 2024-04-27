@@ -1,0 +1,36 @@
+/*
+* Leetcode - (3128)
+* T.C :- O(M*N)
+* S.C :- O(M*N)
+*/
+class Solution {
+    public long numberOfRightTriangles(int[][] grid) {
+        int m=grid.length ;
+        int n=grid[0].length ;
+        
+        long[] rowOne = new long[m];
+        long[] colOne = new long[n];
+        
+        long count = 0 ;
+        for(int i=0 ;  i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(grid[i][j]==1){
+                    rowOne[i]++ ;
+                    colOne[j]++ ;
+                }
+            }
+        }
+        
+        for(int i=0 ;  i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(grid[i][j]==1 && rowOne[i]>1 && colOne[j]>1){
+ //                   System.out.println(i+" "+j);
+                    long len = rowOne[i]-1;
+                    long width = colOne[j]-1 ;
+                    count += len*width ;
+                }
+            }
+        }
+        return count ;
+    }
+}
