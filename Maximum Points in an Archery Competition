@@ -1,0 +1,52 @@
+/*
+* Leetcode :- O(2212)
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- Memoisation for optimisation and check for which combination will give max points to bob
+*/
+class Solution {
+    boolean check = false ;
+    int[] ans = new int[12];
+    int max = 0 ;
+    public int[] maximumBobPoints(int numArrows, int[] aliceArrows) {
+        int[] bobArrows = new int[12];
+        int alicePoints= 0 ;
+        for(int i=0 ; i<aliceArrows.length ; i++){
+            if(aliceArrows[i] > 0)alicePoints += i ;
+        }
+        // here index representing area in which shot is done
+        Set<String> dp = new HashSet<>();
+        helper(aliceArrows, bobArrows, numArrows, 0, 11, dp);
+        return ans ;
+    }
+    public void helper(int[] aliceArrows, int[] bobArrows, int numArrows, int bobPoints, int idx, Set<String>dp){
+        if(bobPoints > max){
+            max = bobPoints ;
+            for(int i=0 ; i<12 ; i++){
+                ans[i] = bobArrows[i];
+            }
+        }
+        if(idx == 0){
+            bobArrows[idx] = numArrows;
+            if(bobPoints >= max){
+               max = bobPoints ;
+               for(int i=0 ; i<12 ; i++){
+                   ans[i] = bobArrows[i];
+               }
+            }  
+            bobArrows[idx] = 0;
+            return ;
+        }
+        String s = idx+"_"+numArrows+"_"+bobPoints ;
+        if(dp.contains(s))return ;
+        // shot arrows to get more points than alice
+        if(numArrows > aliceArrows[idx]){
+            bobArrows[idx] = aliceArrows[idx]+1 ;
+            helper(aliceArrows, bobArrows, numArrows-aliceArrows[idx]-1, bobPoints+idx, idx-1, dp);
+            bobArrows[idx] = 0;
+        }
+        // or leave for next one
+        helper(aliceArrows, bobArrows, numArrows, bobPoints, idx-1, dp);
+        dp.add(s);
+    }
+}
