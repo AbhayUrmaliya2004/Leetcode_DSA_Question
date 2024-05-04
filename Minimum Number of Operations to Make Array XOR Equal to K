@@ -1,0 +1,46 @@
+/*
+* Leetcode - (2997)
+* T.C :- O(N)
+* S.C :- O(32) = O(1)
+*/
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        int xor = nums[0];
+        for(int i=1 ; i<nums.length ; i++){
+            xor ^= nums[i] ;
+        }
+        
+        String s1 = decode(xor);
+        String s2 = decode(k);
+//        System.out.println(s1+" "+s2);
+        if(s1.length() > s2.length()){
+            int n = s1.length()-s2.length();
+            for(int i=0 ; i<n ; i++){
+                s2 = "0"+s2 ;
+            }
+        }else if(s1.length() < s2.length()){
+            int n = s2.length()-s1.length();
+            for(int i=0 ; i<n ; i++){
+                s1 = "0"+s1 ;
+            }
+        }
+//        System.out.println(s1+" "+s2);
+        int flips = 0 ;
+        for(int i=0 ; i<s1.length() ; i++){
+            if(s1.charAt(i) != s2.charAt(i)) flips++ ;
+        }
+        
+        return flips ;
+    }
+    public String decode(int n){
+        String s = "";
+        int rem ;
+        while(n > 0){
+            rem = n%2 ;
+            s = rem+s ;
+            n/=2 ;
+        }
+//        s = "1"+s ;
+        return s ;
+    }
+}
