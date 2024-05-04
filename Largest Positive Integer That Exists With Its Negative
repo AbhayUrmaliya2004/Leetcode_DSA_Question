@@ -1,0 +1,18 @@
+/*
+* Leetcode - (2441)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int findMaxK(int[] nums) {
+        int max = Integer.MIN_VALUE ;
+        Set<Integer> set = new HashSet<>();
+        for(int n : nums){
+            if(set.contains(-1*n)){
+                max = Math.max(max, Math.abs(n));
+            }
+            set.add(n);
+        }
+        return max==Integer.MIN_VALUE ? -1 : max ;
+    }
+}
