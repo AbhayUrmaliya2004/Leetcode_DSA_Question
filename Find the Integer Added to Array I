@@ -1,0 +1,13 @@
+/*
+* Leetcode - (3113)
+* T.C :- O(NlogN) but can be solved in linear beacuase maimum can be find in linear time 
+* S.C :- O(1)
+*/
+class Solution {
+    public int addedInteger(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        
+        return nums2[nums2.length-1]-nums1[nums1.length-1];
+    }
+}
