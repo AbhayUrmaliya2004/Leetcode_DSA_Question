@@ -1,0 +1,38 @@
+/*
+* Leetcode - (3132)
+* T.C :- O(n^3) it run because length of arrays is upto 200
+* S.C :- O(N)
+* Approach :- take 2 numbers one from nums1 and one from nums2 and then check with this can we get whole nums2, if yes then update min diff 
+*/
+class Solution {
+    public int minimumAddedInteger(int[] nums1, int[] nums2) {
+//        Arrays.sort(nums2);
+        
+        Map<Integer, Integer> mp1 = new HashMap<>();
+        Map<Integer, Integer> mp2 = new HashMap<>();
+        for(int i : nums1){
+            mp1.put(i, mp1.getOrDefault(i,0)+1);
+        }
+        
+        for(int i : nums2){
+            mp2.put(i, mp2.getOrDefault(i,0)+1);
+        }
+        // check 
+        int diff, min = Integer.MAX_VALUE ;
+        
+        // [4,20,16,12,8], nums2 = [14,18,10]
+        for(int j=0 ; j<nums2.length ; j++){
+            for(int i=0 ; i<nums1.length ; i++){
+                diff = nums2[j]-nums1[i] ;
+                int k=0 ;
+                while(k<nums2.length && mp1.containsKey(nums2[k]-diff) && mp2.get(nums2[k])<=mp1.get(nums2[k]-diff)){
+                    k++ ;
+                }
+                if(k==nums2.length){
+                    min = Math.min(min, diff);
+                }
+            }
+        }
+        return min ;
+    }
+}
