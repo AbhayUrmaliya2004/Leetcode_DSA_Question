@@ -1,0 +1,35 @@
+/*
+* Leetcode - (857)
+* T.C :- O(N*logN)for sorting + O(N*logK) for priorityQueue
+* Approach :- sort the workers with quality[i]/wage[i] and then for each worker check minimum amount to pay 
+*/
+class Solution {
+    public double mincostToHireWorkers(int[] quality, int[] wage, int k) {
+        List<Pair<Double, Integer>> workers = new ArrayList<>();
+        for(int i=0 ; i<wage.length ; i++){
+            workers.add(new Pair<>(wage[i]*1.0/quality[i], quality[i]));
+        }
+        
+        Collections.sort(workers, (p1,p2)->Double.compare(p1.getKey(), p2.getKey()));
+//        System.out.println(workers);
+        double ans = Double.MAX_VALUE, quantitySum=0 ;
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for(var worker : workers){
+            double ratio = worker.getKey();
+            quantitySum += worker.getValue();
+            pq.add(worker.getValue());
+            
+            if(pq.size() > k){
+                quantitySum -= pq.peek();
+                pq.remove();
+            }
+            
+            if(pq.size()==k){
+//                System.out.println(ans+" "+quantitySum*ratio);
+                ans = Math.min(ans, quantitySum*ratio);
+            }
+        }
+        return ans;
+    }
+}
