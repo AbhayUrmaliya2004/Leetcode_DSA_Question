@@ -1,0 +1,21 @@
+* Leetcode :- (979)
+* T.C :- O(N)
+* S.C :- O(N), for call stack
+*/
+class Solution {
+    int count = 0 ;
+    public int distributeCoins(TreeNode root) {
+        helper(root);
+        return count ;
+    }
+    public int helper(TreeNode root){
+        if(root == null) return 0;
+        
+        int left = helper(root.left);
+        int right = helper(root.right);
+        
+        int ans = root.val-1+left+right ;
+        count += Math.abs(ans) ;
+        return ans ;
+    }
+}
