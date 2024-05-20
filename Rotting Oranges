@@ -1,0 +1,56 @@
+/*
+* Leetcode - (994)
+* T.C :- O(M*N)for traversing + O(M*N) for each element in queue = O(M*N),
+* S.C :- O(M*N)+O(M*N) = O(M*N)
+*/
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int m=grid.length, n=grid[0].length ;
+        //              row_idx, col_idx,  time
+        Queue<Pair<Pair<Integer, Integer>, Integer>> q = new LinkedList<>();
+        boolean[][]visited = new boolean[m][n];
+        int freshOranges=0;
+        
+        // put all the rotten oranges in the queue and start level order traversal 
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(grid[i][j] == 1)freshOranges++ ;
+                if(grid[i][j] == 2){
+                    q.add(new Pair<>(new Pair<>(i, j),0));
+                    visited[i][j] = true ;
+                }
+            }
+        }
+        
+        int minTime = 0;
+        while(q.size()>0){
+            Pair<Pair<Integer, Integer>, Integer> curr = q.remove();
+            int row = curr.getKey().getKey();
+            int col = curr.getKey().getValue();
+            int time = curr.getValue();
+//            System.out.println(q+"\n"+curr);
+            minTime = Math.max(minTime, time);
+            // decrease fresh oanges
+            if(grid[row][col]==1) freshOranges-- ;
+            
+            if(row>0 && !visited[row-1][col] && grid[row-1][col]==1){
+                q.add(new Pair<>(new Pair<>(row-1, col), time+1));
+                visited[row-1][col] = true ;
+            }
+            if(row<m-1 && !visited[row+1][col] && grid[row+1][col]==1){
+                q.add(new Pair<>(new Pair<>(row+1, col), time+1));
+                visited[row+1][col] = true ;
+            }
+            if(col>0 && !visited[row][col-1] &&grid[row][col-1]==1){
+                q.add(new Pair<>(new Pair<>(row, col-1), time+1));
+                visited[row][col-1] = true ;
+            }
+            if(col<n-1 && !visited[row][col+1] && grid[row][col+1]==1){
+                q.add(new Pair<>(new Pair<>(row, col+1), time+1));
+                visited[row][col+1] = true ;
+            }
+        }
+//        return minTime ;
+        return freshOranges==0 ? minTime : -1;
+    }
+}
