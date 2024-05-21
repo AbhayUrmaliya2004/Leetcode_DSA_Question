@@ -1,0 +1,22 @@
+/*
+* Leetcode - (1791)
+* T.C :- O(N), N-> no of edges
+* S.C :- O(N)
+*/
+class Solution {
+    public int findCenter(int[][] edges) {
+        int[] noOfEdges = new int[edges.length+2];
+        for(int[] edge : edges){
+            int node1 = edge[0];
+            int node2 = edge[1];
+            
+            noOfEdges[node1]++ ;
+            noOfEdges[node2]++ ;
+        }
+        
+        for(int i=1 ; i<noOfEdges.length ; i++){
+            if(noOfEdges[i] == edges.length)return i;
+        }
+        return 0;
+    }
+}
