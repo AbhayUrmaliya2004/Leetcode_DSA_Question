@@ -1,0 +1,34 @@
+/*
+* Leetcode :- O(2597)
+* T.C :- O(2^N) because array size is small that's why sorted or it is also possible without   *        sorting and checking condition would be :
+*        if(!mp.containsKey(nums[idx]-k) && !mp.containsKey(nums[idx]+k))
+* S.C :- O(N) for call stack at max only N element will be there with N recursive calls
+*/ 
+class Solution {
+    public int beautifulSubsets(int[] nums, int k) {
+      // after sorting we will have to check a single condition also array size is small
+      Arrays.sort(nums);
+      Map<Integer, Integer> mp = new HashMap<>();
+      // we will also be getting and counting empty subset
+      return helper(nums, k, 0, mp);
+    }
+    public int helper(int[]nums, int k, int idx, Map<Integer, Integer>mp){
+        if(idx == nums.length){
+            return mp.size()==0?0: 1;
+        }
+        
+        int ans = 0 ;
+        // either choose an element 
+        if(!mp.containsKey(nums[idx]-k)){
+            mp.put(nums[idx], mp.getOrDefault(nums[idx], 0)+1);
+            ans += helper(nums, k, idx+1, mp);
+            // backtracking 
+            mp.put(nums[idx], mp.get(nums[idx])-1);
+            if(mp.get(nums[idx]) == 0) mp.remove(nums[idx]);
+        }
+        // or don't choose
+        ans += helper(nums, k, idx+1, mp);
+        
+        return ans ;
+    }
+}
