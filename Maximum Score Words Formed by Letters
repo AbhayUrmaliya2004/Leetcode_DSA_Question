@@ -1,0 +1,57 @@
+/*
+* Leetcode :- O(1255)
+* T.C :- O(2^N*M), N-> words.length, M->string length
+* S.C :- O(2^N + 26) = O(2^N)
+*/
+class Solution {
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+        int[] characters = new int[26];
+        // frequency of characters
+        for(char letter : letters){
+            characters[letter-'a']++ ;
+        }
+        return helper(words, 0, characters, score);
+    }
+    
+    public int helper(String[]words, int idx, int[]characters, int[]score){
+        if(idx == words.length)return 0;
+        
+        int res = 0;
+        // either choose an element
+        if(canMakeWord(words[idx], characters)){
+            int ans = 0, len = words[idx].length(), currIdx; 
+            // remove the letters taken by word
+            for(int i=0 ; i<len ; i++){
+                currIdx = words[idx].charAt(i)-'a' ;
+                ans += score[currIdx] ;
+                characters[currIdx]-- ;
+            }
+            ans += helper(words, idx+1, characters, score);
+            // backtracking when don't choose this word
+            for(int i=0 ; i<words[idx].length() ; i++){
+                currIdx = words[idx].charAt(i)-'a' ;
+                characters[currIdx]++ ;
+            }
+            
+            res = Math.max(res, ans);
+        }
+        
+        // or leave it to preserve characters for next words which will give more score
+        int ans = helper(words, idx+1, characters, score);
+        res = Math.max(ans, res);
+        
+        return res ;
+    }
+    public boolean canMakeWord(String s, int[]characters){
+        int reqmt[] = new int[26], len = s.length();
+        for(int i=0 ; i<len ; i++){
+            reqmt[s.charAt(i)-'a']++ ;
+        }
+        
+        // check whether this word can be made or not
+        for(int i=0 ; i<26 ; i++){
+            if(reqmt[i] > characters[i])return false;
+        }
+        return true ;
+    }
+}
