@@ -1,0 +1,28 @@
+/*
+* Leetcode - (140)
+* T.C :- O(n^3), there are n*(n+1)/2 substr and for each n calls can be possible 
+* S.C :- O(n)
+*/
+class Solution {
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>(wordDict);
+        List<String> list = new ArrayList<>();
+        helper(set, 0, s, "", list);
+        return list ;
+    }
+    public void helper(Set<String> set, int idx, String s, String curr, List<String> list){
+        if(idx == s.length()){
+            list.add(curr);
+            return ;
+        }
+        
+        int n = s.length();
+        for(int i=idx ; i<n ; i++){
+            String substr = s.substring(idx, i+1);
+            if(set.contains(substr)){
+                String newstr = curr.length()!= 0? curr+" "+substr : substr ;
+                helper(set, i+1, s, newstr, list);
+            }
+        }
+    }
+}
