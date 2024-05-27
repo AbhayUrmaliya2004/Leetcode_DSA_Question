@@ -1,0 +1,23 @@
+/*
+* Leetcode - (1608)
+* T.C :- O(NlogN) for sorting
+* S.C :- O(1)
+*/
+class Solution {
+    public int specialArray(int[] nums) {
+        Arrays.sort(nums);
+        int num=1, idx=0 ;
+        while(idx < nums.length){
+            if(num > nums[idx]) {
+                idx++ ;
+                continue ;
+            }
+            if(num == nums.length-idx) {
+                return num ;
+            }
+            
+            num++ ;
+        }
+        return -1 ;
+    }
+}
