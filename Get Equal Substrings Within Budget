@@ -1,0 +1,31 @@
+/*
+* Leetcode - (1208)
+* T.C :- O(N)
+* S.C :- O(N), for cost array
+*/
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        int n = s.length() ;
+        int[] cost = new int[n];
+        // cost for each changes
+        for(int i=0 ; i<n ; i++){
+            cost[i] = Math.abs(s.charAt(i)-t.charAt(i));
+        }
+        
+        // by sliding window calculate max size of array(actually substr) that 
+        // can be formed
+        int i=0 , j=0, sum = 0, ans = 0;
+        while(j < n){
+            if(sum > maxCost){
+                if(i>=0) sum -= cost[i];
+                i++ ;
+            }else{ // sum <= maxCost
+                sum += cost[j];
+                int len = j-i+1 ;
+                if(sum <= maxCost)ans = Math.max(ans, len);
+                j++ ;
+            }
+        }
+        return ans ;
+    }
+}
