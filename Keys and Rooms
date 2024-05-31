@@ -1,0 +1,36 @@
+/*
+* Leetcode - (841)
+* T.C :- O(N), will traverse only those node which are not yet unlock
+* S.C :- O(N), for boolean array 'unlock'
+*/
+class Solution {
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        // 0 is already unlock
+        int n = rooms.size();
+        boolean[] unlock = new boolean[n];
+        
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
+        while(queue.size() > 0){
+            
+            int curr = queue.poll();
+            if(!unlock[curr]){
+                unlock[curr] = true ;
+                // take keys from unlock rooms
+                List<Integer> keySet = rooms.get(curr);
+                for(var key : keySet){
+                    if(!unlock[key]){
+                        queue.add(key);
+                    }
+                }
+            }
+        }
+        // count that all rooms are unlock or not
+        int count = 0 ;
+        for(boolean bool : unlock){
+            if(bool) count++ ;
+        }
+        
+        return (count==n)?true:false ;
+    }
+}
