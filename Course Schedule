@@ -1,0 +1,39 @@
+/*
+* Leetcode - (207)
+*/
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i=0 ; i<numCourses ; i++){
+        adj.add(new ArrayList<>());
+    }
+      
+    int[] indegree = new int[numCourses];
+    // adjacency list
+    for(int[] preq : prerequisites){
+        adj.get(preq[0]).add(preq[1]);
+        // counting indegree
+        indegree[preq[1]]++ ;
+    }
+      
+    Queue<Integer> queue = new LinkedList<>();
+    for(int i=0 ; i<numCourses ; i++){
+        if(indegree[i] == 0){
+            queue.add(i);
+        }
+    }
+     
+    int topoCount = 0 ;
+    while(queue.size() > 0){
+        int curr = queue.remove();
+        for(int next : adj.get(curr)){
+            indegree[next]-- ;
+            if(indegree[next] == 0)
+                queue.add(next);
+        }
+        topoCount++ ;
+    }
+    
+    return (topoCount == numCourses)?true : false;
+    }
+}
