@@ -1,0 +1,38 @@
+/*
+* Leetcode - (547)
+* T.C :- O(N*N), for traversing isConnected
+* S.C :- O(N*N), for making adj list
+*/
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length ;
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i=0 ; i<n ; i++){
+            adj.add(new ArrayList<>());
+            List<Integer> list = adj.get(i);
+            for(int j=0 ;j<n ; j++){
+                if(i != j && isConnected[i][j] == 1)list.add(j);
+            }
+        }
+        
+        int count = 0 ;
+        boolean[] vis = new boolean[n];
+        for(int i=0 ; i<n ; i++){
+            if(!vis[i]){
+                count++ ;
+                dfs(i, adj, vis);
+            }
+        }
+        
+        return count ;
+    }
+    public void dfs(int node, List<List<Integer>> adj, boolean[] vis){
+        List<Integer> list = adj.get(node);
+        for(int next : list){
+            if(!vis[next]){
+                vis[next] = true ;
+                dfs(next, adj, vis);
+            }
+        }
+    }
+}
