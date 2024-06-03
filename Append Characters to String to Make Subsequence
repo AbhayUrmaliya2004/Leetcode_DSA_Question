@@ -1,0 +1,32 @@
+/*
+* Leetcode - (2486)
+* T.C :- O(N)
+* S.C :- O(N) for call stack can do it iteratively
+*/
+class Solution {
+    
+    public int appendCharacters(String s, String t) {
+        // make t to be subsequence of s 
+        return helper(t, s, 0, 0);
+    }
+    // I checked here 's' to be subsequence of 't' so in function call changed s and t
+    public int helper(String s, String t, int i, int j){
+        if(i == s.length())
+            return 0 ;
+        if(j == t.length())
+            return s.length()-i ;
+            
+        if(s.charAt(i) == t.charAt(j)){
+            int ans = helper(s, t, i+1, j+1);
+            return ans ;
+        }else{
+            // if characters are not same we can insert a character or can move 
+            // to check the next one
+            
+            // check for next charcters
+            int ans = helper(s, t, i, j+1);
+            
+            return ans ;
+        }
+    }
+}
