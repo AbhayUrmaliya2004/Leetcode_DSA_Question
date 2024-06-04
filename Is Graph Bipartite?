@@ -1,0 +1,48 @@
+/*
+* Leetcode - (785)
+* T.C :- O(V+2E)
+* S.C :- O(V)
+* Optimise :- No need to make visited and color array seperate if node is not colored(-1) then 
+* it is not visited, if making a color array no need to make Pair<Node, color>
+*/
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        // adjacency list is given in form of matrix
+        int n = graph.length ;
+        boolean[] vis = new boolean[n];
+        int[] color = new int[n];
+        Arrays.fill(color, -1);
+        //         Node, Color
+        Queue<Integer> queue = new LinkedList<>();
+        for(int node=0 ; node<n ; node++){
+            if(!vis[node]){
+                queue.add(node);
+                vis[node] = true ;
+                color[node] = 0 ;
+                if( bfs(queue, graph, vis, color) == false ) return false ;
+            }
+        }
+        return true ;
+    }
+    public boolean bfs(Queue<Integer> queue, int[][]graph, boolean[] vis, int[]color){
+        
+        while(queue.size() > 0){
+            int node = queue.poll();
+            int[] curr = graph[node];
+            int newColor = (color[node]==0)?1:0 ;
+            
+            for(int i=0 ; i<curr.length ; i++){
+                if(!vis[curr[i]]){
+                    vis[curr[i]] = true ;
+                    color[curr[i]] = newColor ;
+                    queue.add(curr[i]);
+                }else{// visited so check color
+                    if(color[curr[i]] != newColor){
+                        return false ;
+                    }
+                }
+            }
+        }
+        return true ;
+    }
+}
