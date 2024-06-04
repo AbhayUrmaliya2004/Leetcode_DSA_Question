@@ -1,0 +1,47 @@
+/*
+* Leetcode - (3170)
+* T.C :- O(N)
+* S.C :- O(N) for map + O(N) for boolean array = O(N)
+* Intuition :- While iterating through the string if we get star then check for the minimum character
+* and mark its last index that we remove this element to make lexographically smallest
+*/ 
+class Solution {
+    public String clearStars(String s) {
+        boolean[] arr = new boolean[s.length()];
+//        char[] array = s.toCharArray();
+        
+        Map<Character, List<Integer>> mp = new HashMap<>();
+        for(int i=0 ; i<s.length() ; i++){
+  //          System.out.println(i+" "+mp);
+            char ch = s.charAt(i);
+            if(ch == '*'){
+                arr[i] = true ;
+                // find smallest
+                for(char c='a' ; c<='z' ; c++){
+                    if(mp.containsKey(c)){
+                        List<Integer>list = mp.get(c);
+                        int idx = list.get(list.size()-1);
+                        list.remove(list.size()-1);
+                        if(list.size() == 0)
+                            mp.remove(c);
+                        
+                        arr[idx] = true ;
+                        break ;
+                    }
+                }
+            }else{
+                if(!mp.containsKey(ch))
+                    mp.put(ch, new ArrayList<>());
+                
+                mp.get(ch).add(i);
+            }
+        }
+//        System.out.println(mp);
+        StringBuilder sb = new StringBuilder();
+        for(int i=0 ; i<s.length(); i++){
+            if(arr[i] == false)
+                sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
+}
