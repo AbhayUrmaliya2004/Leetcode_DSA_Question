@@ -1,0 +1,31 @@
+/*
+* Leetcode - (409)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int longestPalindrome(String s) {
+        // create map
+        Map<Character, Integer> mp = new HashMap<>();
+        for(int i=0 ; i<s.length() ; i++){
+            char ch = s.charAt(i);
+            mp.put(ch, mp.getOrDefault(ch, 0)+1);
+        }
+        
+        int length = 0;
+        boolean oddFound = false ;
+        for(int fre : mp.values()){
+            if(fre%2 == 0){ // even length is suitable for making palindrome
+                length += fre ;
+            }else{ // make odd length to even by removing one char
+                length += fre-1;
+                oddFound = true ;
+            }
+        }
+        // example cbbabbc
+        if(oddFound == true)
+            length++ ;
+        
+        return length ;
+    }
+}
