@@ -1,0 +1,32 @@
+/*
+* Leetcode - (846)
+* T.C :- O(NlogN)
+* S.C :- O(N)
+*/
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        if(hand.length%groupSize != 0) return false ;
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Map<Integer, Integer> mp = new HashMap<>();
+        
+        int min = Integer.MAX_VALUE ;
+        for(int i=0 ; i<hand.length ; i++){
+            pq.add(hand[i]);
+            mp.put(hand[i], mp.getOrDefault(hand[i], 0)+1);
+        }
+        
+        while(pq.size() > 0){
+            int curr = pq.peek();
+            for(int i=curr ; i<curr+groupSize ; i++){
+               // if consecutive are not present in mp
+               if(!mp.containsKey(i)) return false ;
+               
+               pq.remove(i);
+               mp.put(i, mp.get(i)-1);
+               if(mp.get(i) == 0) mp.remove(i);
+            }
+        }
+        return true ;
+    }
+}
