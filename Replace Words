@@ -1,0 +1,43 @@
+/*
+* Leetcode - (648)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public String replaceWords(List<String> dictionary, String sentence) {
+        Set<String> set = new HashSet<>(dictionary);
+        int i=0, j;
+        StringBuilder sb = new StringBuilder();
+        System.out.println(set);
+        while(i<sentence.length()){
+            j = i;
+            // cover whole word
+            while(j<sentence.length() && sentence.charAt(j) != ' ') j++;
+            String word = sentence.substring(i, j);
+//            System.out.println(word);
+            String replace = findSmallestReplacement(set, word);
+            sb.append(replace);
+            sb.append(" ");
+            
+            i =j+1 ;
+        }
+        // remove last space
+        sb.deleteCharAt(sb.length()-1);
+        
+        return sb.toString();
+    }
+    public String findSmallestReplacement(Set<String> set, String word){
+        if(word.length() == 1) return word;
+        
+        // only find substring with starting
+        for(int i=1; i<=word.length() ; i++){
+            // create substring
+            String substr = word.substring(0, i);
+            if(set.contains(substr)){
+                // this will be the smallest substr
+                return substr ;
+            }
+        }
+        return word;
+    }
+}
