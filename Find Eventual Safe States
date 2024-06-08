@@ -2,6 +2,7 @@
 * Leetcode - (802)
 * T.C :- O(V+2E)
 * S.C :- O(5*V) = O(V), V-> no. of nodes
+* Another Method :- By doing topo sort, we can find cycle or not then can find safeNodes
 */
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
