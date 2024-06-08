@@ -1,0 +1,66 @@
+/*
+* Leetcode - (802)
+* T.C :- O(V+2E)
+* S.C :- O(5*V) = O(V), V-> no. of nodes
+*/
+class Solution {
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        int n = graph.length;
+        boolean[] vis = new boolean[n];
+        boolean[] dp = new boolean[n]; // for memoisation
+        boolean[] pathVis = new boolean[n];
+        Set<Integer> safeNodes = new HashSet<>();
+        
+        for(int node=0 ; node<n ; node++){
+            helper(node, graph, vis, safeNodes, dp, pathVis);
+        }
+        
+        List<Integer> ans = new ArrayList<>(safeNodes);
+        Collections.sort(ans);
+        return ans ;
+    }
+    public boolean helper(int node, int[][]graph, boolean[] vis, Set<Integer> safeNodes, boolean[]dp,
+                         boolean[] pathVis){
+        
+        if(vis[node] == true){
+            
+            if(pathVis[node] == true) {
+                return false ;
+            } else {             // pathVis[node] is false
+                return dp[node] ;
+            }
+            
+        }
+        
+        int[] adjNodes = graph[node];
+        // no outgoing nodes
+        if(adjNodes.length == 0){
+            safeNodes.add(node);
+            // to memoisation
+            dp[node] = true ;
+            return true ;
+        }
+        
+        vis[node] = true ;
+        pathVis[node] = true ;
+        for(int next : adjNodes){  
+            
+            boolean bool = helper(next, graph, vis, safeNodes, dp, pathVis);
+            // all the paths are not reaching to the nodes
+            if(bool == false){
+                pathVis[node] = false ;
+                dp[node] = false ; // by default but marked for clarity
+                return false ;
+            }else{
+                dp[next] = true ;
+            }
+        }
+        
+        // if all path reachinng to terminnal node this is safe node
+        safeNodes.add(node);
+        pathVis[node] = false ;
+        // to memoisation
+        dp[node] = true ;
+        return true ;
+    }
+}
