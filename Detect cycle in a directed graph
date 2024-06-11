@@ -1,0 +1,46 @@
+class Solution {
+    // Function to detect cycle in a directed graph.
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean[] vis = new boolean[V];
+        boolean[] pathVis = new boolean[V];
+        
+        for (int node = 0; node < V; node++) {
+            if (!vis[node]) {
+                if (isDetected(node, adj, vis, pathVis)) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isDetected(int startNode, ArrayList<ArrayList<Integer>> adj, boolean[] vis, boolean[] pathVis) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(startNode);
+
+        while (!stack.isEmpty()) {
+            int node = stack.peek();
+
+            if (!vis[node]) {
+                vis[node] = true;
+                pathVis[node] = true;
+            }
+
+            boolean cycleDetected = false;
+            for (int next : adj.get(node)) {
+                if (!vis[next]) {
+                    stack.push(next);
+                    cycleDetected = true;
+                    break;
+                } else if (pathVis[next]) {
+                    return true;
+                }
+            }
+
+            if (!cycleDetected) {
+                pathVis[node] = false;
+                stack.pop();
+            }
+        }
+
+        return false;
+    }
+}
