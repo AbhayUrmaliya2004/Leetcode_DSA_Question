@@ -1,0 +1,30 @@
+class Solution {
+    public int[] relativeSortArray(int[] arr1, int[] arr2) {
+        Map<Integer, Integer> mpArr1 = new HashMap<>();
+        for(int num : arr1){
+            mpArr1.put(num, mpArr1.getOrDefault(num, 0)+1);
+        }
+        int idx = 0, ans[] = new int[arr1.length] ;
+        for(int i=0 ; i<arr2.length ; i++){
+            int num = arr2[i];
+            int count = mpArr1.get(num);
+            
+            while(count-- > 0){
+                ans[idx++] = num ;
+            }
+            // remove num from mp
+            mpArr1.remove(num);
+        }
+        // fill the remaining element into the ans array
+        List<Integer> remaining = new ArrayList<>(mpArr1.keySet());
+        Collections.sort(remaining);
+        for(var num : remaining){
+            int count = mpArr1.get(num);
+            // there may be duplicates
+            while(count-- > 0){
+                ans[idx++] = num ;
+            }
+        }
+        return ans ;
+    }
+}
