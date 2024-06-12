@@ -1,0 +1,40 @@
+/*
+* Leetcode - (127)
+* Can solve this by recursion 
+* Optimisation :- BFS(Breadth First Search)
+*/
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> set = new HashSet<>(wordList);
+        
+        Queue<Pair<String, Integer>> q = new LinkedList<>();
+        q.add(new Pair<>(beginWord, 1));
+        
+        while(q.size() > 0){
+            Pair<String, Integer> pair = q.poll();
+            // remove word from set as well otherwise it will repeat
+            String word = pair.getKey();
+            int level = pair.getValue();
+            
+            // where we get last word
+            if(word.equals(endWord)) return level ;
+            set.remove(word);
+            
+            char[]arr = word.toCharArray();
+            for(int i=0 ; i<arr.length ; i++){
+                char prev = arr[i];
+                for(char ch='a' ; ch<='z' ; ch++){
+                    arr[i] = ch ;
+                    // new string
+                    String next = new String(arr);
+                    if(set.contains(next)){
+                        q.add(new Pair<>(next, level+1));
+                    }
+                }
+                // making string same as it was without transformation
+                arr[i] = prev ;
+            }
+        }
+        return 0 ;
+    }
+}
