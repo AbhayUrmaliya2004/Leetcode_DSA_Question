@@ -1,0 +1,81 @@
+/*
+* Leetcode - (126)
+* Intuition :- going from begin to endWord have multiple path so first find the minnLevel 
+* and then traverse from endWord to begin which will have minimum paths
+*/
+class Solution {
+    String b ;
+    List<List<String>> ans ;
+    Map<String, Integer>mp ;
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        Set<String> set = new HashSet<>(wordList);
+        if(!set.contains(endWord)) return new ArrayList<>();
+        mp = new HashMap<>();
+        
+        Queue<String> q = new LinkedList<>();
+        q.add(beginWord);
+        mp.put(beginWord, 1);
+        b = beginWord ;
+        set.remove(beginWord);
+        while(q.size() > 0){
+            // remove word from set as well otherwise it will repeat
+            String word = q.poll();
+            int level = mp.get(word);
+            int sz = word.length() ;
+            // where we get last word
+            if(word.equals(endWord)) break ;
+            char[]arr = word.toCharArray();
+            for(int i=0 ; i<sz ; i++){
+                char prev = arr[i];
+                for(char ch='a' ; ch<='z' ; ch++){
+                    
+                    arr[i] = ch ;
+                    // new string
+                    String next = new String(arr);
+                    if(set.contains(next)){
+                        q.add(next);
+                        mp.put(next, level+1);
+                        set.remove(next);
+                    }
+                }
+                arr[i] = prev ;
+            }
+        }
+//        System.out.println(mp);
+        ans = new ArrayList<>();
+        // calling dfs 
+        if(mp.containsKey(endWord)){
+            List<String>list = new ArrayList<>();
+            list.add(endWord);
+            dfs(endWord, list);
+        }
+        return ans ;
+    }
+    public void dfs(String s, List<String> list){
+        if(s.equals(b)){
+            Collections.reverse(list);
+            ans.add(new ArrayList<>(list));
+            // to maintain the order
+            Collections.reverse(list);
+            return ;
+        }
+//        System.out.println(s);
+        int n = s.length();
+        int level = mp.get(s);
+        char[] arr = s.toCharArray();
+        for(int i=0 ; i<n ; i++){
+            char prev = arr[i];
+            for(char ch='a' ; ch<='z' ; ch++){
+                
+                arr[i] = ch ;
+                String next = new String(arr);
+                if(mp.containsKey(next) && mp.get(next)+1 == level){
+                    list.add(next);
+                    dfs(next, list);
+                    list.remove(list.size()-1);
+                }
+            }
+            arr[i] = prev ;
+        }
+    }
+}
