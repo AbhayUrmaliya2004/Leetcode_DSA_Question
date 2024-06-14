@@ -1,0 +1,70 @@
+
+class Solution
+{   
+    public static class Pair<A, B> {
+        private A first;
+        private B second;
+
+        public Pair(A first, B second) {
+          this.first = first;
+          this.second = second;
+        }
+
+        public A getFirst() {
+           return first;
+        }
+
+        public B getSecond() {
+           return second;
+        }
+    
+        // equals, hashCode, and toString methods
+    }
+
+    //Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
+    {
+        int[] distance = new int[V];
+        //                 distance,     node
+        PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<Pair<Integer, Integer>>(new Comparator<Pair<Integer, Integer>>() {
+            @Override
+            public int compare(Pair<Integer, Integer> p1, Pair<Integer, Integer> p2) {
+                // Compare based on the first element
+                int firstComparison = p1.getFirst().compareTo(p2.getFirst());
+                if (firstComparison != 0) {
+                    return firstComparison;
+                }
+                // If the first elements are the same, compare based on the second element
+                return p1.getSecond().compareTo(p2.getSecond());
+            }
+        });
+        
+        // mark distance with infinity initially
+        Arrays.fill(distance, (int)1e9);
+//        System.out.println(Arrays.toString(distance));
+        distance[S] = 0;
+        pq.add(new Pair<>(0, S));
+//        System.out.println(pq);
+        
+        while(pq.size() > 0){
+            int dis = pq.peek().getFirst();
+            int node = pq.peek().getSecond();
+//            System.out.println(dis+" "+node);
+            pq.poll();
+            
+            for(var it : adj.get(node)){
+                int next = it.get(0);
+                int edgW = it.get(1);
+                
+                if(dis+edgW < distance[next]){
+                    distance[next] = dis+edgW ;
+                    pq.add(new Pair<>(distance[next], next));
+                }
+            }
+        }
+        
+        return distance ;
+    }
+}
+
