@@ -1,0 +1,32 @@
+/*
+* Leetcode - (945)
+* T.C :- O(NlogN), N-> nums.length
+* S.C :- O(1)
+*/
+class Solution {
+    public int minIncrementForUnique(int[] nums) {
+        Map<Integer, Integer> mp = new HashMap<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        
+        for(int num : nums){
+            mp.put(num, mp.getOrDefault(num, 0)+1);
+            if(mp.get(num) == 1) pq.add(num);
+        }
+        
+        int count = 0;
+        while(pq.size() > 0){
+            int top = pq.poll();
+            int moveFre = mp.get(top)-1;
+            
+            if(moveFre == 0) continue ;
+            // else part moveFre to next element 
+            // next number is top+1
+            if(!mp.containsKey(top+1)){
+                pq.add(top+1);
+            }
+            count += moveFre ;
+            mp.put(top+1, mp.getOrDefault(top+1, 0)+moveFre);
+        }
+        return count ;
+    }
+}
