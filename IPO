@@ -1,0 +1,56 @@
+/*
+* Leetcode - (52)
+* T.C :- O(NlogN)
+* S.C :- O(N) for queue storing big capital projects
+* Intuition :- find the project you can do with curr capital investment and maximum profit and add more big project to queue because for now we can't do it
+*              and then do the project increase capital with profits[i] and add all big projects from queue to PQ to check that those projects can we done or not
+*              if the PQ becomes empty means we cant do the project with curr capital investment.
+*/
+class Solution {
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        
+        PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>(new Comparator<>(){
+            public int compare(Pair<Integer, Integer> p1, Pair<Integer, Integer> p2){
+                // we just add profits to the capital no need to check ratios
+                return Integer.compare(p2.getKey(), p1.getKey());
+                // handling capital can be zero
+//             float ratio1 = (p1.getValue() != 0)? ((float)p1.getKey()/p1.getValue()): p1.getKey();
+//             float ratio2 = (p2.getValue() != 0) ? ((float)p2.getKey()/p2.getValue()) : p1.getKey();  
+                                
+//                if(ratio1 != ratio2) return Float.compare(ratio2, ratio1);
+                // if same ratios then less capital will send above
+//                return Integer.compare(p2.getKey(), p1.getKey());
+            }
+        });
+                                
+        Queue<Pair<Integer, Integer>> q = new LinkedList<>();
+        // add everything to pq 
+        for(int i=0 ; i<capital.length ; i++){
+            pq.add(new Pair<>(profits[i], capital[i]));
+        }
+        
+        while(k > 0){
+            
+            if(pq.size() == 0) {
+                break ;  // we can't do futher work
+            }
+            Pair<Integer, Integer> pair = pq.poll();
+            int profit = pair.getKey();
+            int capi = pair.getValue();
+            
+            if(capi <= w){ // we can do this work
+                k-- ; // one project is done
+                w += profit ;
+                // fill all the more capital project into pq, now our capital increased
+                while(q.size()> 0){
+                    pq.add(q.poll());
+                }
+                
+            }else{ // we can't do the work because of more capital requirement
+                q.add(pair);
+            }
+        }
+        
+        return w ;
+    }
+}
