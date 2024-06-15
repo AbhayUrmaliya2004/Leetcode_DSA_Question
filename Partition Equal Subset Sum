@@ -1,0 +1,42 @@
+/*
+* LEETCODE - (416)
+* T.C :- O(N)
+* S.C :- O(N)
+* Memoisation 
+*/
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+        for(int num : nums)
+            sum += num ;
+        
+        // if sum is odd we can't divide equally
+        if(sum%2 != 0) return false ;
+        // we just have to check can we make sum half of the totalSum
+        sum /= 2 ;
+    
+        int[][] dp = new int[nums.length][sum+1];
+        for(int[] arr : dp){
+            Arrays.fill(arr, -1);
+        }
+        
+        return (helper(0, sum, nums, dp) == 0)?false:true ;
+    }
+    public int helper(int idx, int sum, int[] nums, int[][]dp){
+//        System.out.println(sum);
+        if(idx == nums.length) return 0;// means false 
+    
+        if(sum < 0) return 0;
+        if(sum == 0) return dp[idx][sum] = 1; // means return true 
+        if(dp[idx][sum] != -1) return dp[idx][sum];
+        
+        
+        int pick = helper(idx+1, sum-nums[idx], nums, dp);
+        // if we get true we don't need to traverse further
+        if(pick == 1) return dp[idx][sum] = 1 ;
+        
+        int notpick = helper(idx+1, sum, nums, dp);
+        
+        return dp[idx][sum] = (notpick==1)? 1:0 ;
+    }
+}
