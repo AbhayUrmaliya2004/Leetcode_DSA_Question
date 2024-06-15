@@ -4,7 +4,7 @@
 * S.C :- O(N) for queue storing big capital projects
 * Intuition :- find the project you can do with curr capital investment and maximum profit and add more big project to queue because for now we can't do it
 *              and then do the project increase capital with profits[i] and add all big projects from queue to PQ to check that those projects can we done or not
-*              if the PQ becomes empty means we cant do the project with curr capital investment.
+*              if the PQ becomes empty means we cant do the project with curr capital investment. At last return the return the capital 
 */
 class Solution {
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
