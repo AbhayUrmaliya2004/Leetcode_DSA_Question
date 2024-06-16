@@ -1,0 +1,21 @@
+/*
+* Leetcode - (330)
+* T.C :- O(M+logN), M->length of array 
+* S.C :- O(1)
+*/
+class Solution {
+    public int minPatches(int[] nums, int n) {
+        int index = 0;
+        int missing = 0;
+        long reach = 1;
+        while(reach <= n){
+            if(index < nums.length && nums[index] <= reach){
+                reach += nums[index++] ;
+            }else{
+                reach += reach;
+                missing++ ;
+            }
+        }
+        return missing ;
+    }
+}
