@@ -1,0 +1,16 @@
+/*
+* Leetcode - (633)
+* Intuition :- check that b = c-a*a exist if b is integer then there exist a and b
+*/
+public class Solution {
+    public boolean judgeSquareSum(int c) {
+        if(c == 0) return true ;
+        int upper = (int)Math.sqrt(c) ;
+        
+        for(long a=1 ; a<=upper ; a++){
+            double b = Math.sqrt((long)c-a*a);
+            if(Math.ceil(b) == b) return true ; // integer b exist 
+        }
+        return false ;
+    }
+}
