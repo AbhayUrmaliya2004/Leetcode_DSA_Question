@@ -1,0 +1,57 @@
+/*
+* Leetcode - (826)
+* T.C :- O(NlogN) for PQ + O(MlogM) for sorting array
+* S.C :- O(N) for PriorityQueue
+* Intuition :- make a pq of node(difficulty, profit )and sort acc to profit check whether a worker
+* can do this work or not if not then check for the lower difficulty
+*/
+class Solution {
+    public class work {
+        int difficulty, profit;
+
+        public work(int _difficulty, int _profit) {
+            this.difficulty = _difficulty;
+            this.profit = _profit;
+        }
+    }
+
+    public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+        PriorityQueue<work> pq = new PriorityQueue<>(new Comparator<>() {
+            public int compare(work w1, work w2) {
+                int isEqual = Integer.compare(w2.profit, w1.profit);
+                if (isEqual != 0)
+                    return isEqual;
+                // if same profit then do the work with less difficulty
+                return Integer.compare(w1.difficulty, w2.difficulty);
+            }
+        });
+
+        // add the work with profit and difficulty into PQ
+        for (int i = 0; i < profit.length; i++) {
+            work w = new work(difficulty[i], profit[i]);
+            pq.add(w);
+        }
+
+        Arrays.sort(worker);
+
+        int idx = worker.length - 1, totalProfit = 0;
+
+        while (idx >= 0) {
+            if (pq.size() == 0)
+                break;
+
+            int ability = worker[idx];
+            int diffi = pq.peek().difficulty;
+            int prof = pq.peek().profit;
+
+            if (ability >= diffi) { // can do the curr work
+                totalProfit += prof;
+                idx--;
+            } else{ // if the worker with most ability can't do the work then others also can't so no 
+            // need to add to queue again
+                pq.poll();
+            }
+        }
+        return totalProfit;
+    }
+}
