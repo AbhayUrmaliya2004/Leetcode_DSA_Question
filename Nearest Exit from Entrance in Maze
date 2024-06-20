@@ -1,0 +1,62 @@
+/*
+* Leetcode - (1926)
+* T.C :- O(E), E-> no. of edges in graph(m*n) in context of grid 
+* S.C :- O(E)
+*/
+class Solution {
+    public class Node{
+        int dis ;
+        int x;
+        int y;
+        public Node(int _dis, int _x , int _y){
+            this.dis = _dis ;
+            this.x = _x ;
+            this.y = _y ;
+        }
+        public String toString(){
+            return dis+" "+x+" "+y;
+        }
+    } 
+    public int nearestExit(char[][] maze, int[] entrance) {
+        Queue<Node> q = new LinkedList<>();
+        
+        int m = maze.length, n = maze[0].length ;
+        int[][] distance = new int[m][n];
+        
+        for(int[] arr : distance){
+            Arrays.fill(arr, (int)1e9);
+        }
+        
+        int strow = entrance[0];
+        int stcol = entrance[1];
+        distance[strow][stcol] = 0;
+        q.add(new Node(0, strow, stcol));
+        
+        int[] drow = {-1, 0, +1, 0};
+        int[] dcol = {0, +1, 0, -1};
+        
+        while(!q.isEmpty()){
+//            System.out.println(q);
+            Node curr = q.poll();
+            int dis = curr.dis;
+            int x = curr.x;
+            int y = curr.y;
+            
+            // if reached at the boundary then can exit 
+            if( (x==0 || x==m-1 || y==0 || y==n-1) && (x!=strow || y!=stcol))return dis ;
+            
+            for(int i=0 ; i<4 ; i++){
+                int newr = x+drow[i];
+                int newc = y+dcol[i];
+                
+                if(newr>=0 && newr<m && newc>=0 && newc<n && maze[newr][newc] == '.' 
+                   && distance[newr][newc] > dis+1){
+//                    System.out.println(newr+" "+newc);
+                    q.add(new Node(dis+1, newr, newc));
+                    distance[newr][newc] = dis+1 ;
+                }
+            }
+        }
+        return -1;
+    }
+}
