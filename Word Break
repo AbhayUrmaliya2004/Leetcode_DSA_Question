@@ -1,0 +1,32 @@
+/*
+* Leetcode - (139)
+* T.C :- depends upon the wordDict 
+* S.C :- O(N) for set
+*/
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        Map<String, Boolean> dp = new HashMap<>();
+        Set<String> set = new HashSet<>(wordDict);
+        return helper(s, set, dp);
+    }
+    
+    public boolean helper(String s, Set<String> set, Map<String, Boolean> dp){
+        if(set.contains(s)) return true ;
+        
+        if(dp.containsKey(s)) return dp.get(s);
+            
+        for(int j=0 ; j<=s.length(); j++){
+            String substr1 = s.substring(0, j);
+            String substr2 = s.substring(j);
+                
+            if(set.contains(substr1) && helper(substr2, set, dp)){
+                dp.put(s, true);
+                return true ;
+            }
+        }
+        
+        dp.put(s, false);
+        return false ;
+    }
+}
