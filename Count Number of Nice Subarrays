@@ -1,0 +1,26 @@
+/*
+* Leetcode - (1248)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        List<Integer> list = new ArrayList<>();
+        list.add(-1);
+        int n=nums.length, subarrays=0 ;
+
+        for(int i=0 ; i<n ; i++){
+            if(nums[i]%2 != 0) list.add(i);
+        }
+        list.add(n);
+
+        // count no. of subarrays 
+        for(int i=1 ; i<list.size()-k ; i++){
+            int leftLen = list.get(i+k)-list.get(i+k-1);
+            int rightLen = list.get(i)-list.get(i-1);
+
+            subarrays += leftLen * rightLen;
+        }
+        return subarrays ;
+    }
+}
