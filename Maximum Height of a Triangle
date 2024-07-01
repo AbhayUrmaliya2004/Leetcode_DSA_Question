@@ -1,0 +1,30 @@
+/*
+* Leetcode - (3200)
+* T.C :- O(log(min(m,n)))
+* S.C :- O(1)
+* Approach :- since there are two options check by placing first (blue, red)
+* then check second for(blue, red)
+*/ 
+
+class Solution {
+    public int maxHeightOfTriangle(int red, int blue) {
+        int first = findHeight(red, blue);
+        int second = findHeight(blue, red);
+        
+        return Math.max(first, second);
+    }
+    public int findHeight(int x, int y){
+        int level = 1;
+        
+        while(true){
+            if(level%2 != 0){ // x ki turn 
+                if(x >= level) x-= level ;
+                else return level-1 ;
+            }else{ // y ki turn 
+                if(y >= level) y-=level ;
+                else return level-1 ;
+            }
+            level++ ;
+        }
+    }
+}
