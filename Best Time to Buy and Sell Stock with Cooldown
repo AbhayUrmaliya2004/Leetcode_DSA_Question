@@ -1,0 +1,47 @@
+
+
+
+/*
+* Leetcode - (309)
+* T.C :- O(N^2)
+* S.C :- O(N^2)
+* Approach :- Memoisation
+*/
+class Solution {
+    int[][][]dp ;
+    public int maxProfit(int[] prices) {
+        // 2-buy, 1-sell, 0-cooldown after cooldown can buy
+        int max = -1, n=prices.length ;
+        for(int i=0 ; i<n ; i++){
+            if(max < prices[i]) max = prices[i];
+        }
+
+        dp = new int[n][max+1][2];
+        for(var arr2D : dp){
+            for(var arr1D : arr2D){
+                Arrays.fill(arr1D, -1);
+            }
+        }
+        return helper(prices, 0, 0, 0);
+    }
+    public int helper(int[] prices, int idx, int state, int buyPrice){
+        if(idx >= prices.length) return 0;
+        if(dp[idx][buyPrice][state] != -1) return dp[idx][buyPrice][state];
+        
+        int skip = 0;
+        int option = 0;
+        if(state == 0){ // you have cooldown 
+           // have two options either buy stock or skip to buy
+           option = helper(prices, idx+1, 1, prices[idx]);
+           skip = helper(prices, idx+1, 0, buyPrice);
+
+        }else{ // state is 1 
+            // have two options either to sell or skip
+            if(prices[idx]-buyPrice > 0) option = (prices[idx]-buyPrice)+helper(prices, idx+2, 0, 0);
+            // state 1 will represent you need to sell the stock
+            skip = helper(prices, idx+1, 1, buyPrice);
+        }
+
+        return dp[idx][buyPrice][state] = Math.max(option, skip);
+    }
+}
