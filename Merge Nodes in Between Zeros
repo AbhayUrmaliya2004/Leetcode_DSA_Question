@@ -1,0 +1,23 @@
+/*
+* Leetcode - (2181)
+* T.C :- O(N)
+* S.C :- O(1) # no extra space rather than output
+*/
+class Solution {
+    public ListNode mergeNodes(ListNode head) {
+        ListNode head1 = new ListNode(100), temp = head.next, last = head1;
+        int sum = 0;
+        while(temp != null){
+            if(temp.val == 0){
+                ListNode newNode = new ListNode(sum);
+                last.next = newNode ;
+                last = newNode;
+                sum = 0;
+            }else{
+                sum += temp.val;
+            }
+            temp = temp.next ;
+        }
+        return head1.next ;
+    }
+}
