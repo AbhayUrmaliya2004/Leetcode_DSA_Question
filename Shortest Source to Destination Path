@@ -1,0 +1,47 @@
+/*
+* GeeksForGeeks
+* T.C :- O(M*N)
+* S.C :- O(M*N)
+*/
+class Pairs{
+    int steps ;
+    int x ;
+    int y ;
+    public Pairs(int steps, int x, int y){
+        this.steps = steps ;
+        this.x = x ;
+        this.y = y ;
+    }
+}
+class Solution {
+    int shortestDistance(int M, int N, int A[][], int X, int Y) {
+        if(A[0][0] == 0) return -1;
+        Queue<Pairs> q = new LinkedList<>();
+        boolean[][] vis = new boolean[M][N] ;
+        q.add(new Pairs(0, 0, 0));
+        vis[0][0] = true ;
+        
+        int[] drow = {-1, 0, +1, 0};
+        int[] dcol = {0, +1, 0, -1};
+        
+        while(q.size() > 0){
+            Pairs p = q.poll();
+            int steps = p.steps;
+            int row = p.x ;
+            int col = p.y ;
+            
+            if(row == X && col == Y) return steps ;
+            
+            for(int i=0 ; i<4 ; i++){
+                int newRow = row+drow[i] ;
+                int newCol = col+dcol[i] ;
+                
+                if(newRow>=0 && newRow<M && newCol>=0 && newCol<N && !vis[newRow][newCol] && A[newRow][newCol] == 1){
+                    q.add(new Pairs(steps+1, newRow, newCol));
+                    vis[newRow][newCol] = true ;
+                } 
+            }
+        }
+        return -1; 
+    }
+}
