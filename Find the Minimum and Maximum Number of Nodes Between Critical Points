@@ -1,0 +1,43 @@
+/*
+* Leetcode :- O(2058)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int[] nodesBetweenCriticalPoints(ListNode head) {
+        if(head.next.next == null) return new int[]{-1, -1};
+        int[] minMaxDis = new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE};
+        
+        
+        int first = -1, preValue = head.val, last = -1, dis = 1, critCount = 0;
+        ListNode temp = head.next;
+        boolean isCritical ;
+        while(temp.next != null){
+            isCritical = false ;
+            if((temp.val>preValue && temp.val>temp.next.val) || (temp.val<preValue && temp.val<temp.next.val)){
+                if(first == -1){ // also last == -1
+                    first = dis ;
+                    last = dis ;
+                }
+                isCritical = true;
+                critCount++ ;
+            }
+            
+            // update the distance 
+            if(isCritical && critCount > 1){
+                // update min
+                minMaxDis[0] = Math.min(minMaxDis[0], dis-last);
+                // update max
+                minMaxDis[1] = Math.max(minMaxDis[1] ,dis-first);
+            }
+                 
+            if(isCritical){// this is the critical point update the distance
+                last = dis;
+            }
+            dis++ ;
+            preValue = temp.val ;
+            temp = temp.next ;
+        }
+        return (first != last)? minMaxDis : new int[]{-1, -1} ;
+    }
+}
