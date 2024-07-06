@@ -1,0 +1,23 @@
+/*
+* Leetcode - (3208)
+* T.C :- O(N+k)
+* S.C :- O(1)
+*/
+class Solution {
+    public int numberOfAlternatingGroups(int[] colors, int k) {
+        int count = 1, n=colors.length, subarrays = 0;
+        for(int i=1 ; i<n+k-1 ; i++){
+            int left = colors[(i-1)%n];
+            int mid = colors[(i)%n];
+            int right = colors[(i+1)%n];
+            
+            if(mid != left && mid != right){
+                count++ ;
+                if(count>=k) subarrays++ ;
+            }else{
+                count = 1;
+            }
+        }
+        return subarrays ;
+    }
+}
