@@ -1,0 +1,19 @@
+/*
+* Leetcode - (1518)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int numWaterBottles(int numBottles, int numExchange) {
+        int drink = 0, empty = 0;
+        while(numBottles > 0){
+            drink += numBottles ;
+            empty += numBottles ;
+            numBottles = 0;
+            // with empty buy new ones
+            numBottles += (empty/numExchange);
+            empty = empty%numExchange ;
+        }
+        return drink ;
+    }
+}
