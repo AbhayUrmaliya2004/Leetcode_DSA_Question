@@ -1,0 +1,55 @@
+/*
+* Leetcode - (474)
+* T.C :- O(len*m*n), len -> length of array , m and n are count of zeroes
+* S.C :- O(len*m*n)
+*/
+
+/* Memoisation */
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        int len = strs.length ;
+        int[][] count01 = new int[len][2];
+        
+        for(int i=0 ; i<len ; i++){
+            int[] count = countOnesAndZeroes(strs[i]);
+            count01[i][0] = count[0];
+            count01[i][1] = count[1];
+        }
+        
+        int[][][] dp = new int[len][m+1][n+1];
+        for(int i=0 ; i<len ; i++){
+            for(int j=0 ; j<=m ; j++){
+                for(int k=0 ; k<=n ; k++){
+                    dp[i][j][k] = -1;
+                }
+            }
+        }
+        
+        return helper(0, m, n, 0, 0, count01, dp);
+    }
+    public int helper(int idx, int m, int n, int curr0, int curr1, int[][] count01, int[][][]dp){
+        if(curr0 > m || curr1 > n || idx == count01.length){
+            return 0;
+        }
+        
+        if(dp[idx][curr0][curr1] != -1) return dp[idx][curr0][curr1];
+        // pick or not_pick
+        int pick = Integer.MIN_VALUE;
+        if(curr0+count01[idx][0] <= m && curr1+count01[idx][1] <= n){
+            pick = 1+helper(idx+1, m, n, curr0+count01[idx][0], curr1+count01[idx][1], count01, dp);
+        }
+        int notPick = helper(idx+1, m, n, curr0, curr1, count01, dp);
+        
+        return dp[idx][curr0][curr1] = Math.max(pick, notPick);
+    }
+    public int[] countOnesAndZeroes(String s){
+        int[] count = new int[2];
+        
+        int n = s.length();
+        for(int i=0 ; i<n ; i++){
+            if(s.charAt(i) == '0') count[0]++ ;
+            else count[1]++ ;
+        }
+        return count ;
+    }
+}
