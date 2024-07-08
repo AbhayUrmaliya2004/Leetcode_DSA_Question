@@ -4,6 +4,62 @@
 * S.C :- O(len*m*n)
 */
 
+/* Tabulation */
+
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        int len = strs.length;
+        int[][] count01 = new int[len][2];
+
+        // Count '0's and '1's for each string
+        for (int i = 0; i < len; i++) {
+            count01[i] = countOnesAndZeroes(strs[i]);
+        }
+
+        // Initialize DP array
+        int[][][] dp = new int[len][m + 1][n + 1];
+
+        // Fill DP array
+        for (int idx = 0; idx < len; idx++) {
+            int cnt0 = count01[idx][0];
+            int cnt1 = count01[idx][1];
+
+            for (int curr0 = 0; curr0 <= m; curr0++) {
+                for (int curr1 = 0; curr1 <= n; curr1++) {
+                    // Option 1: Not picking the current string
+                    int notPick = (idx > 0) ? dp[idx - 1][curr0][curr1] : 0;
+
+                    // Option 2: Picking the current string if possible
+                    int pick = 0;
+                    if (curr0 >= cnt0 && curr1 >= cnt1) {
+                        pick = 1 + ((idx > 0) ? dp[idx - 1][curr0 - cnt0][curr1 - cnt1] : 0);
+                    }
+
+                    // Select the maximum between not picking and picking the current string
+                    dp[idx][curr0][curr1] = Math.max(notPick, pick);
+                }
+            }
+        }
+
+        // Return the maximum number of strings that can be formed
+        return dp[len - 1][m][n];
+    }
+
+    // Helper method to count '0's and '1's in a string
+    private int[] countOnesAndZeroes(String s) {
+        int[] count = new int[2];
+        for (char c : s.toCharArray()) {
+            if (c == '0') {
+                count[0]++;
+            } else {
+                count[1]++;
+            }
+        }
+        return count;
+    }
+}
+
+
 /* Memoisation */
 class Solution {
     public int findMaxForm(String[] strs, int m, int n) {
