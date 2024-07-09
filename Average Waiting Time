@@ -1,0 +1,25 @@
+/*
+* Leetcode - (1701)
+* T.C :- O(N)
+* S.C :- O(1)
+* Intuition :- This is like scheduling algorithm FCFS
+*/
+class Solution {
+    public double averageWaitingTime(int[][] customers) {
+        double waitingTime = 0;
+        long currTime = customers[0][0];
+        int n = customers.length ;
+        
+        for(int i=0 ; i<n ; i++){
+            if(currTime >= customers[i][0] ){
+                currTime += customers[i][1];
+                waitingTime += currTime-customers[i][0]; // customer entry time -> customes[0][0]
+            }else{
+                waitingTime += customers[i][1];
+                currTime = customers[i][1]+customers[i][0];
+            }
+        }
+        
+        return waitingTime/n;
+    }
+}
