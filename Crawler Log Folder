@@ -1,0 +1,20 @@
+/*
+* Leetcode :- O(N)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int minOperations(String[] logs) {
+        int steps = 0, n=logs.length;
+        for(int i=0 ; i<n ; i++){
+            String curr = logs[i];
+            
+            if(curr.equals("../")){
+                steps = Math.max(steps-1, 0);
+            }else if(!curr.equals("./")){
+                steps++ ; 
+            }
+        }
+        return steps ;
+    }
+}
