@@ -1,0 +1,36 @@
+/*
+* Leetcode :- O(1190)
+* Brute Force Approach :- just do as the question says
+* Here the worst case is like (a(b(c(d(e(f)))))).... 
+* no of steps :- 1+2+3+....+n/2 , n/2 are no. of chars at max
+* T.C :- O(n^2), Accepted
+* S.C :- O(n)
+*/
+
+class Solution {
+    public String reverseParentheses(String s) {
+        Stack<Character> st = new Stack<>();
+        Queue<Character> temp = new LinkedList<>();
+        
+        for(int i=0 ; i<s.length() ; i++){
+            char ch = s.charAt(i);
+            
+            if(ch == ')'){
+                while(st.peek() != '('){
+                    temp.add(st.pop());
+                }
+                st.pop(); // to remove '('
+                while(temp.size() > 0){
+                    st.add(temp.poll());
+                }
+            }else{
+                st.add(ch);
+            }
+        }
+        char[] arr = new char[st.size()];
+        for(int i=arr.length-1 ; i>=0 ; i--){
+            arr[i] = st.pop();
+        }
+        return new String(arr);
+    }
+}
