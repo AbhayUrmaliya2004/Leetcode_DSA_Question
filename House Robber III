@@ -1,0 +1,27 @@
+/*
+* Leetcode :- (337)
+* T.C :- O(N)
+* S.C :- O(N) for call stack and for dp
+*/
+class Solution {
+    Map<TreeNode, Integer> dp = new HashMap<>();
+    public int rob(TreeNode root) {
+        if(root == null) return 0;
+        if(dp.containsKey(root)) return dp.get(root);
+        
+        int pick = root.val ;
+        int val = 0;
+        if(root.left != null){
+            pick += rob(root.left.left)+rob(root.left.right);
+        }
+        if(root.right != null){
+            pick += rob(root.right.left)+rob(root.right.right);
+        }
+        
+        int notPick = rob(root.left) + rob(root.right);
+        
+        int ans = Math.max(pick, notPick);
+        dp.put(root, ans);
+        return ans ;
+    }
+}
