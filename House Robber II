@@ -1,0 +1,36 @@
+/*
+* Leetcode - (213)
+* T.C :- O(N)
+* S.C :- O(N) for 2 temp array
+* DP + space optimisation
+*/
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length == 1) return nums[0];
+        int n = nums.length;
+        int[] arr1 = new int[n-1], arr2 = new int[n-1];
+        // we know that any combination can't contain both first and last
+        
+        for(int i=0 ; i<n ; i++){
+            if(i != n-1) arr1[i] = nums[i];
+            if(i != 0) arr2[i-1] = nums[i];
+        }
+        
+        return Math.max(robI(arr1), robI(arr2));
+    }
+     public int robI(int[] nums) {
+        int n = nums.length ;
+
+        int prev = nums[0], prev2=0;
+        for(int i=1 ; i<n ; i++){
+            int pick = nums[i] + ((i-2>=0) ? prev2 : 0);
+            int notPick = prev;
+            
+            int curi = Math.max(pick, notPick);
+            // update prev and prev2
+            prev2 = prev ;
+            prev = curi;
+        }
+        return prev ;
+    }
+}
