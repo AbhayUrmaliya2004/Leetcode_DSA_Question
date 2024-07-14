@@ -1,0 +1,39 @@
+/*
+* Leetcode :- O(3219)
+* T.C :- O(NlogN)
+* S.C :- O(1)
+* Approach :- Greedy at each step  check minCost
+*/
+class Solution {
+    public long minimumCost(int m, int n, int[] hCut, int[] vCut) {
+        Arrays.sort(hCut);
+        Arrays.sort(vCut);
+        
+        int i=m-1-1, j=n-1-1, hPiece=1, vPiece=1 ;
+        long totalCost = 0;
+        while(i>=0 && j>=0){
+            if(hCut[i] > vCut[j]){
+                totalCost += (long)hCut[i]*vPiece;
+                hPiece++;
+                i-- ;
+            }else{
+                totalCost += (long)vCut[j]*hPiece ;
+                vPiece++ ;
+                j-- ;
+            }
+        }
+        
+        while(i>=0){
+            totalCost += (long)hCut[i]*vPiece;
+            hPiece++;
+            i-- ;
+        }
+        
+        while(j>=0){
+            totalCost += (long)vCut[j]*hPiece ;
+            vPiece++ ;
+            j-- ;
+        }
+        return totalCost ;
+    }
+}
