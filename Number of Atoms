@@ -1,0 +1,97 @@
+/*
+* Leetcode - O(726)
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- Just iterate through the formula once you enter to the braces make new map for counting elements in this brackets and when 
+* comes out of the bracket put the values of mp to the prev map and at last sort the key and return result 
+*/
+class Solution {
+    public String countOfAtoms(String s) {
+        int n = s.length();
+        
+        List<Map<String, Integer>> list = new ArrayList<>();
+        Map<String, Integer> mp = new HashMap<>();
+        list.add(mp);
+        int i=0 ;
+        while(i < n){
+            char ch = s.charAt(i);
+            Map<String, Integer> currMap = list.get(list.size()-1);
+            
+            if(ch == '('){
+                list.add(new HashMap<>());
+                i++ ;
+            }else if(ch == ')'){ // put the values from curr map to second last map
+                int factor = 1;
+//                System.out.println(i+" "+list);
+                if(i+1<n && (s.charAt(i+1)>='0' && s.charAt(i+1)<='9')){
+                    int j=i+1 ;
+                    String num = "";
+                    while(j<n && (s.charAt(j)>='0' && s.charAt(j)<='9')){
+                        num = num+s.charAt(j);
+                        j++ ;
+                    }
+                    factor = (num.length() == 0)?1 : Integer.parseInt(num);
+                    i=j ;
+                }else{
+                    i++ ;
+                }
+                // put fre of curr mp to second last map
+                
+                Map<String, Integer> secLast = list.get(list.size()-2);
+                for(var elem : currMap.keySet()){
+                    secLast.put(elem, secLast.getOrDefault(elem, 0)+currMap.get(elem)*factor);
+                }
+                // remove currMap
+                list.remove(list.size()-1);
+                    
+            }else if(ch>='A' && ch<='Z'){                
+                if(i+1<n){               
+                    if(s.charAt(i+1)>='a' && s.charAt(i+1)<='z'){
+                        String elem = ""+ch+s.charAt(i+1);
+                        String num = "";
+                        int j=i+2;
+                        while(j<n && (s.charAt(j)>='0' && s.charAt(j)<='9')){
+                            num += s.charAt(j);
+                            j++ ;
+                        }
+                        int freq = (num.length() > 0) ? Integer.parseInt(num) : 1;
+                        currMap.put(elem, currMap.getOrDefault(elem, 0)+freq);
+                        i = j;
+                              
+                    }else if(s.charAt(i+1)>='A' && s.charAt(i+1)<='Z'){
+                        
+                        String elem = ch+"";
+                        currMap.put(elem, currMap.getOrDefault(elem, 0)+1);
+                        i++ ;
+                    }else if(s.charAt(i+1)=='(' || s.charAt(i+1)==')' || (s.charAt(i+1)>='0' && s.charAt(i+1)<='9')){
+                        String elem = ""+ch;
+                        String num = "";
+                        int j=i+1;
+                        while(j<n && (s.charAt(j)>='0' && s.charAt(j)<='9')){
+                            num += s.charAt(j);
+                            j++ ;
+                        }
+                        int freq = (num.length()==0)?1:Integer.parseInt(num);
+                        currMap.put(elem, currMap.getOrDefault(elem, 0)+freq);
+                        i = j;
+                    }else{ // we get closing bracket at i+1
+                        i++ ;
+                    }
+                }else{ // if this is the last index 
+                    String elem = ch+"";
+                    currMap.put(elem, currMap.getOrDefault(elem, 0)+1);
+                    i++ ;
+                }    
+            }
+        }
+        List<String> temp = new ArrayList<>(mp.keySet());
+        Collections.sort(temp);
+        // make ans string
+        StringBuilder sb = new StringBuilder();
+        for(String key : temp){
+            sb.append(key);
+            if(mp.get(key) > 1)sb.append(mp.get(key));
+        }
+        return sb.toString();
+    }
+}
