@@ -1,0 +1,116 @@
+/*
+* Leetcode :- O(2096), submitted in one go 
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- At each node check st and end present on which go to that side, if present on different side
+* then find the path from root to st and root to end and append it 
+* only four cases need to consider 
+1 :- root is st and end lies below 
+2 :- root is end and st lies below 
+3 :- st at left and end at right 
+4 :- vice-versa of step 3
+*/
+class Solution {
+    public String getDirections(TreeNode root, int startValue, int destValue) {
+        String ans = "";
+        boolean checkSt = check(root.left, startValue); // checks on left side 
+        boolean checkDst = check(root.left, destValue); // if not on left then present at right
+        
+        if(root.val == startValue){ // do the required
+            if(checkDst){
+                String path = "L";
+                path += getPath(root.left, destValue);
+                return path ;
+            }else{ // destination present on right
+                String path = "R";
+                path += getPath(root.right, destValue);
+                return path ;
+            }
+            
+        }else if(root.val == destValue){ // just add U*steps from st to end
+            
+            StringBuilder sb = new StringBuilder();
+            if(checkSt){
+                String temp = getPath(root.left, startValue);
+                for(int i=0 ; i<=temp.length() ; i++){
+                    sb.append("U");
+                }
+            }else{ // destination present on right
+                String temp = getPath(root.right, startValue);
+                for(int i=0 ; i<=temp.length() ; i++){
+                    sb.append("U");
+                }
+            } 
+            return sb.toString() ;
+            
+        }else{ // now check which side both lies
+            
+            if(checkSt && checkDst){ // both lies on left side 
+                return getDirections(root.left, startValue, destValue);
+            }else if(!checkSt && !checkDst){ // both lies on right
+                return getDirections(root.right, startValue, destValue);
+            }else{ // case when one lies on left and other lies on right
+                
+                if(checkSt && !checkDst){ // start at left and destination at right
+                    // get left path 
+                    String temp = getPath(root.left, startValue);
+                    // change left path to UUU...
+                    StringBuilder sb = new StringBuilder();
+                    for(int i=0 ; i<=temp.length() ; i++){
+                       sb.append("U");
+                    }
+                    String leftpath = sb.toString();
+                    // get right path 
+                    String rightpath = "R";
+                    rightpath += getPath(root.right, destValue);
+                    
+                    return leftpath+rightpath;
+                    
+                }else if(!checkSt && checkDst){ // start at right 
+                    // get left path 
+                    String temp = getPath(root.right, startValue);
+                    // change left path to UUU...
+                    StringBuilder sb = new StringBuilder();
+                    for(int i=0 ; i<=temp.length() ; i++){
+                       sb.append("U");
+                    }
+                    String leftpath = sb.toString();
+                    // get right path 
+                    String rightpath = "L";
+                    rightpath += getPath(root.left, destValue);
+                    
+                    return leftpath+rightpath;
+                }
+            }
+        }
+            
+        return ans ;
+    }
+    
+    public boolean check(TreeNode root, int target){
+        if(root == null) return false ;
+        if(root.val == target) return true ;
+        
+        return check(root.left, target) || check(root.right, target);
+    }
+    
+    public String getPath(TreeNode root, int target){
+        StringBuilder sb = new StringBuilder();
+        findPath(root, target, sb);
+        return sb.toString();
+    }
+    public boolean findPath(TreeNode root, int target, StringBuilder sb){
+        if(root == null) return false ;
+        if(root.val == target) return true ;
+        
+        // go left 
+        sb.append("L");
+        if(findPath(root.left, target, sb)) return true ;
+        sb.deleteCharAt(sb.length()-1);
+        // go right
+        sb.append("R");
+        if(findPath(root.right, target, sb)) return true ;
+        sb.deleteCharAt(sb.length()-1);
+        return false ;
+    }
+}
