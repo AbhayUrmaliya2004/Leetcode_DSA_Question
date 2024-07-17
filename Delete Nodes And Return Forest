@@ -1,0 +1,67 @@
+/*
+* Leetcode :- (1110) faster than 98%
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- Create extra head node and attach the remaining tree to it, so that
+* deletion becomes easy
+*/
+class Solution {
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        Queue<TreeNode> q = new LinkedList<>();
+        Set<Integer> set = new HashSet<>(); // to_delete nodes
+        for(int node : to_delete){
+            set.add(node);
+        }
+        
+        List<TreeNode> ans = new ArrayList<>();
+        TreeNode head = new TreeNode(-1);
+        head.left = root ;
+        q.add(head);
+        while(q.size() > 0){
+            TreeNode node = q.poll();
+            helper(node, q, set);
+            
+            if(node.val == -1){
+                if(node.left != null)ans.add(node.left);
+            }
+            else ans.add(node);
+        }
+        return ans;
+    }
+    public void helper(TreeNode root, Queue<TreeNode> q, Set<Integer> set){
+        if(root == null) return ;
+        if(root.left != null && set.contains(root.left.val)){ // delete left 
+            if(root.left.left != null){
+                TreeNode head = new TreeNode(-1);
+                head.left = root.left.left;
+                q.add(head);
+            }
+            if(root.left.right != null){
+                TreeNode head = new TreeNode(-1);
+                head.left = root.left.right;
+                q.add(head);
+            }
+            
+            root.left = null ;
+        }else{
+            helper(root.left, q, set);
+        }
+        
+        if(root.right != null && set.contains(root.right.val)){ // delete right
+            if(root.right.left != null){
+                TreeNode head = new TreeNode(-1);
+                head.left = root.right.left;
+                q.add(head);
+            }
+            if(root.right.right != null){
+                TreeNode head = new TreeNode(-1);
+                head.left = root.right.right;
+                q.add(head);
+            }
+            
+            root.right = null ;
+        }else{
+            helper(root.right, q, set);
+        }
+    }
+}
