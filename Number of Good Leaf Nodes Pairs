@@ -1,0 +1,50 @@
+/*
+* Leetcode :- (1530)
+* T.C :- O(N*2), N-> no. of nodes
+* S.C :- O(N)
+*/
+class Solution {
+    public int countPairs(TreeNode root, int distance) {
+        return helper(root, distance, 0);
+    }
+    public int helper(TreeNode root, int dis, int curDis){
+        if(root == null) return 0;
+        
+        int ans = 0;
+        Map<Integer, Integer> leftMap = new HashMap<>(), rightMap = new HashMap<>();
+        
+        getLeafNodes(root.left, leftMap, 1);
+        getLeafNodes(root.right, rightMap, 1);
+        
+        // nodes in pairs by passing this root node and are on different side
+        // counting distance like 1 on left 2 on right 2 on left 1 on right
+        for(int i=1 ; i<dis ; i++){
+            int rem = dis-i;
+            for(int j=1 ; j<=rem ; j++){
+                if(leftMap.containsKey(i) && rightMap.containsKey(j)){
+                    int tempPairs = leftMap.get(i)*rightMap.get(j);
+                    ans += tempPairs ;
+                }
+            }
+        }
+        
+//        System.out.println(leftMap+" "+rightMap);
+//        System.out.println(root.val+" "+ans);
+        
+        int leftPairs = helper(root.left, dis, curDis+1);
+        int rightPairs = helper(root.right, dis, curDis+1);
+        
+        ans += leftPairs+rightPairs ;
+        return ans ;
+    }
+    public void getLeafNodes(TreeNode root, Map<Integer, Integer> mp, int curDis){
+        if(root == null) return ;
+        if(root.left == null && root.right==null){
+            mp.put(curDis, mp.getOrDefault(curDis, 0)+1);
+            return ;
+        }
+        
+        getLeafNodes(root.left, mp, curDis+1);
+        getLeafNodes(root.right, mp, curDis+1);
+    }
+}
