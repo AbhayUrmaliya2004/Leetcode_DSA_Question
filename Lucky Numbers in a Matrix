@@ -1,0 +1,28 @@
+/*
+* Leetcode :- (1380)
+* T.C :- O(m*n)
+* S.C :- O(m+n)
+*/
+class Solution {
+    public List<Integer> luckyNumbers (int[][] matrix) {
+        int m=matrix.length, n=matrix[0].length ;
+        int[] minInRow = new int[m];
+        Arrays.fill(minInRow, (int)1e9);
+        int[] maxInCol = new int[n];
+        List<Integer> lucky = new ArrayList<>();
+        
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                minInRow[i] = Math.min(minInRow[i], matrix[i][j]);
+                maxInCol[j] = Math.max(maxInCol[j], matrix[i][j]);
+            }
+        }
+
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(minInRow[i] == maxInCol[j]) lucky.add(matrix[i][j]);
+            }
+        }
+        return lucky ;
+    }
+}
