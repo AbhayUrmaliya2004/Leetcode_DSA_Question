@@ -1,0 +1,12 @@
+/*
+* Leetcode :- O(3222)
+* T.C :- O(1)
+* S.C :- O(1)
+*/
+class Solution {
+    public String losingPlayer(int x, int y) {
+        y = y/4 ;
+        int min = Math.min(x, y);
+        return (min%2!=0)? "Alice" : "Bob";
+    }
+}
