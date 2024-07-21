@@ -1,0 +1,41 @@
+/*
+* Leetcode :- (1029)
+* T.C :- O(NlogN)
+* S.C :- O(N)
+* Sorting according to value whose difference to go to different cities is more,
+* they should be prioritise to go min cost city 
+*/
+class Solution {
+    public int twoCitySchedCost(int[][] costs){
+        
+        int n = costs.length/2 ;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a1, a2)->Integer.compare(Math.abs(a2[0]-a2[1]),
+                                                                                Math.abs(a1[0]-a1[1])));
+        for(int i=0 ; i<2*n ;i++){
+            pq.add(costs[i]);
+        }
+        int costToA = 0, costToB = 0, countA=0, countB=0;
+        while(pq.size() > 0){
+            int[] arr = pq.poll();
+            
+            if(arr[0] <= arr[1]){
+                if(countA < n){
+                    costToA += arr[0];
+                    countA++ ;
+                }else{
+                    costToB += arr[1];
+                    countB++ ;
+                }
+            }else{  // arr[1] < arr[0] means going to city 2 is cheaper
+                if(countB < n){
+                    costToB += arr[1];
+                    countB++ ;
+                }else{
+                    costToA += arr[0];
+                    countA++ ;
+                }
+            }
+        }
+        return costToA + costToB;
+    }
+}
