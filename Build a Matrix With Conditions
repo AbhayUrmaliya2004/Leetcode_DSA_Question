@@ -1,0 +1,78 @@
+/*
+* Leetcode :- O(2392), solved in one GO !!!!!
+* T.C :- O(M+N+KlogK+k) ~= O(KlogK), where K is no. of nodes
+* S.C :- O(M+N) for extra list + O(K) for pos array ~= O(M+N) as no of edges can be more than K
+* Find topo order for both row and column 
+* which will givve the idea to fill matrix
+* then fill the matrix accordingly 
+*/
+class Solution {
+    public int[][] buildMatrix(int k, int[][] rowConditions, int[][] colConditions){
+        // create adjacency for row and col 
+        ArrayList<ArrayList<Integer>> adjRow = new ArrayList<>(), adjCol = new ArrayList<>();
+        for(int i=0 ; i<=k ;i++){
+            adjRow.add(new ArrayList<>());
+            adjCol.add(new ArrayList<>());
+        }
+        
+        for(int i=0 ; i<rowConditions.length ; i++){
+            adjRow.get(rowConditions[i][0]).add(rowConditions[i][1]);
+        }
+        for(int i=0 ; i<colConditions.length ; i++){
+            adjCol.get(colConditions[i][0]).add(colConditions[i][1]);
+        }
+        int[] rowTopo = new int[k], colTopo = new int[k]; 
+        // if topo sort not possible return empty array
+        if(!topoSort(rowTopo, k+1, adjRow)) return new int[][]{};
+        if(!topoSort(colTopo, k+1, adjCol)) return new int[][]{};
+        
+//        System.out.println(Arrays.toString(rowTopo));
+//        System.out.println(Arrays.toString(colTopo));
+        
+        int[][] matrix = new int[k][k];
+        int[][] pos = new int[k+1][2]; // position for row and col
+        
+        for(int i=0 ; i<k ; i++){
+            pos[rowTopo[i]][0] = i;
+            pos[colTopo[i]][1] = i;
+        }
+        
+        for(int i=1 ; i<=k; i++){
+            matrix[pos[i][0]][pos[i][1]] = i;
+        }
+        return matrix ;
+    }
+    private boolean topoSort(int []topo, int V, ArrayList<ArrayList<Integer>> adj){   
+        // finding indegree of nodes
+        int[] indegree = new int[V];
+        for(int node=0 ; node<adj.size() ; node++){
+            ArrayList<Integer> adjNode = adj.get(node);
+            for(int next=0 ; next<adjNode.size() ; next++){
+                int nbr = adjNode.get(next);
+                indegree[nbr]++ ;
+            }
+        }
+        
+        Queue<Integer> q = new LinkedList<>();
+        int idx=0 ;
+        // fill the indegree with node 0 to queue
+        for(int degree=1 ; degree<indegree.length ; degree++){
+            if(indegree[degree] == 0){
+                q.add(degree);
+            }
+        }
+        
+        while(q.size() > 0){
+            int node = q.poll();
+            topo[idx++] = node;
+            
+            for(int next : adj.get(node)){
+                indegree[next]-- ;
+                if(indegree[next]==0){
+                    q.add(next);
+                }
+            }
+        }
+        return (idx==V-1)?true : false;
+    }
+}
