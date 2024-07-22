@@ -1,0 +1,33 @@
+
+/*Codechef :- Odd Sum*/
+class Codechef {
+    public static void main (String[] args) throws java.lang.Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int t = Integer.parseInt(br.readLine());
+        
+        while(t-- > 0) {
+            long n = Long.parseLong(br.readLine());
+            
+            // Initial sum considering two elements 0 and 1
+            long sum = 1; // sum of 0 and 1
+
+            // If n is less than 2, no need for further calculation
+            if (n <= 2) {
+                bw.write(sum + "\n");
+                continue;
+            }
+            
+            // Sum of AP starting from 2, with common difference 2
+            // sumAP = (n/2) * (2*2 + (n-1)*2)
+            long sumAP = (n-1)*(n-2);
+            sum += sumAP;
+            
+            bw.write(sum + "\n");
+        }
+        
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
