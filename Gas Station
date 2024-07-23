@@ -1,0 +1,30 @@
+/*
+* Leetcode - (134)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int i=0, j=0, n=gas.length;
+        
+        int curGas = 0;
+        while(i<n && (j+1)%n != i){
+//            System.out.println(i+" "+j);
+            if(curGas+gas[j] >= cost[j]){
+                curGas += gas[j];
+                curGas -= cost[j];
+                j = (j+1)%n ;
+            }else{
+                if(j > i)i = j; // we have checked previous 
+                else if(j == i) i=j+1;
+                else return -1;
+                j=i ;
+                curGas = 0;
+            }
+        }
+        
+        if(i==n) return -1;
+        if(curGas+gas[j%n]>=cost[j%n]) return i; // checking for last idx
+        return -1 ;
+    }
+}
