@@ -1,0 +1,56 @@
+/*
+* Leetcode :- O(1424)
+* T.C :- O(M*N), number of elements
+* S.C :- O(M*N), number of elements
+* Approach :- Do not iterate uselessly, think at each index where it should be placed
+* Make a diagonalList of element after calculating maxLength
+* At last, just add all the diagonalList according to sequence should be into array
+*/
+
+class Solution {
+    public int[] findDiagonalOrder(List<List<Integer>> nums) {
+        // calculate maxLength of Diagonal List
+        int length = 1, len1 = nums.size();
+        for(int i=0 ; i<len1 ; i++){
+            
+            int len2 = nums.get(i).size();
+            length = Math.max(length, i+len2); // j = len2-1
+        }
+        
+        List<List<Integer>> diagonalList = new ArrayList<>();
+        
+        //  length of diagonalList should be 
+        // length = Math.max(nums.size(), maxCol);
+        // length = 2*length-1 ;
+        
+        for(int i=0 ; i<length ; i++){
+            diagonalList.add(new ArrayList<>());
+        }
+        
+        int numbers = 0;
+        for(int i=0 ; i<nums.size() ; i++){
+            
+            int len2 = nums.get(i).size();
+            numbers += len2;
+            for(int j=0 ; j<nums.get(i).size() ; j++){
+                int idx = i+j;
+                
+                diagonalList.get(idx).add(nums.get(i).get(j));
+            }
+        }
+//        System.out.println(diagonalList);
+        // Flat the list
+        int idx=0 ;
+        int[] ans = new int[numbers];
+        for(int i=0 ; i<length ; i++){
+            
+            int len2 = diagonalList.get(i).size();
+            
+            
+            for(int j=len2-1; j>=0 ; j--){
+                ans[idx++] = diagonalList.get(i).get(j);
+            }
+        }
+        return ans ;
+    }
+}
