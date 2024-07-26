@@ -1,0 +1,41 @@
+/*
+* Leetcode :- O(2064)
+* T.C :- O(N*logN), for Binary Search O(logN)*for helper function O(N+N) ~= O(N)
+* S.C :- O(N), O(N) for new array
+*/
+class Solution {
+    public int minimizedMaximum(int n, int[] quantities) {
+        // O(NlogN) -> minimising maxima 
+        int m=quantities.length, max=Integer.MIN_VALUE ;
+        for(int i=0 ; i<m ; i++){
+            if(quantities[i] > max) max = quantities[i];
+        }
+        
+        int st=0, end=max, ans=max;
+        
+        while(st <= end){
+            int mid = st+(end-st)/2;
+            boolean possible = isPossible(n, mid, quantities);
+            if(possible){
+                ans = Math.min(ans, mid);
+                end = mid-1;
+            }else{
+                st = mid+1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int n, int maxGive, int[]quantities){
+        int[] arr = Arrays.copyOf(quantities, quantities.length);
+        int idx = 0;
+        for(int i=0 ; i<n ; i++){
+            if(idx == arr.length) return true; // bakiyo ko 0 item de denge
+            if(arr[idx] <= maxGive){
+                arr[idx++] = 0;
+            }else{
+                arr[idx] -= maxGive;
+            }
+        }
+        return (idx==arr.length) ? true : false;
+    }
+}
