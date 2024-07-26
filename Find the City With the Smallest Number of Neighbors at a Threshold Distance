@@ -1,0 +1,62 @@
+/*
+* Leetcode :- (1334)
+* T.C :- O(V*(ElogV)), but ElogV is minimised when threshold is less
+* S.C :- O(V+2V) = O(V)
+*/
+class Solution {
+    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+        List<List<Pair<Integer, Integer>>> adj = new ArrayList<>();
+        
+        for(int i=0 ; i<n ; i++){
+            adj.add(new ArrayList<>());
+        }
+        
+        for(int i=0 ; i<edges.length ; i++){
+            adj.get(edges[i][0]).add(new Pair<>(edges[i][1], edges[i][2]));
+            adj.get(edges[i][1]).add(new Pair<>(edges[i][0], edges[i][2]));
+        }
+        
+        int neighbours = n-1, ansCity=n ; // max number of neighbours possible
+        for(int node=0 ; node<n; node++){
+            int res = helper(adj, node, distanceThreshold);
+            if(res <= neighbours){
+                neighbours = res;
+                ansCity = node ;
+            }
+        }
+        return ansCity;
+    }
+    public int helper(List<List<Pair<Integer, Integer>>> adj, int node, int maxDis){
+        int n = adj.size();
+        int[] vis = new int[n];
+        Arrays.fill(vis, (int)1e9);
+        // bfs 
+        //                 dis,     node
+        PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>((p1, p2)->
+                                                                       Integer.compare(p1.getKey(), p2.getKey()));
+        pq.add(new Pair<>(0,node));
+        vis[node] = 0;
+        while(!pq.isEmpty()){
+            int totalDis = pq.peek().getKey();
+            int currNode = pq.peek().getValue();
+            pq.poll();
+            
+            for(var pair : adj.get(currNode)){
+                int next = pair.getKey();
+                int dis = pair.getValue();
+                
+                if(vis[next] > totalDis+dis && totalDis+dis <= maxDis){
+                    vis[next] = totalDis+dis;
+                    pq.add(new Pair<>(totalDis+dis, next));
+                }
+            }
+        }
+        
+        int count = 0;
+        for(int i=0 ; i<n ; i++){
+            if(vis[i] <= maxDis)count++ ;
+        }
+        count-- ; // don't count itself
+        return count ;
+    }
+}
