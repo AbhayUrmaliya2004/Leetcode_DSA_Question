@@ -1,0 +1,76 @@
+/*
+* Leetcode :- (2976)
+* T.C :- O(V*ElogV+N) V -> no. of nodes is (a to z), E -> no.of edges, N-> length of string
+* S.C :- O(V*V + V + E), E-> for adjacency + V for PQ + V*V ~= 26*26 for costToChange list 26 characters
+*        have min dis for all other 26 characters
+
+* Approach :- Using Dijstrak's Algorithm find that from a char to another required character 
+* what is the minimum cost to reach then just take the minimum cost
+*/
+class Solution {
+    public long minimumCost(String source, String target, char[] original, char[] changed, int[] cost) {
+        // build weighted directd graph
+        //             Node ,     Weight of edge
+        List<List<Pair<Character, Integer>>> adj = new ArrayList<>();
+        for(int i=0 ; i<26 ; i++){
+            adj.add(new ArrayList<>());
+        }
+        
+        // make adjacency list 
+        int n = original.length;
+        for(int i=0 ; i<n ; i++){
+            adj.get(original[i]-'a').add(new Pair<>(changed[i], cost[i]));
+        }
+        
+        // 26*26 for 26 characters each will have 26 length map for node char to all chars cost 
+        List<List<Integer>> costToChange = new ArrayList<>();
+        
+        for(char ch='a' ; ch<='z' ; ch++){
+            List<Integer> tempCost = dijstrakAlgo(ch, adj);
+            costToChange.add(tempCost);
+        }
+        
+        // find cost 
+        long totalCost = 0;
+        n = source.length();
+        for(int i=0 ; i<n ; i++){
+            char ch1 = source.charAt(i), ch2 = target.charAt(i);
+            int curCost = costToChange.get(ch1-'a').get(ch2-'a');
+            if(curCost == Integer.MAX_VALUE) return -1;
+            totalCost += curCost ;
+        }
+        
+        return totalCost ;
+    }
+    // Simple Dijstrak Algorithm
+    public List<Integer> dijstrakAlgo(char node, List<List<Pair<Character, Integer>>>adj){
+        List<Integer> vis = new ArrayList<>();
+        
+        for(int i=0 ; i<26 ; i++){
+            vis.add(Integer.MAX_VALUE);
+        }
+        
+        vis.set(node-'a', 0);
+        PriorityQueue<Pair<Character, Integer>> pq = new PriorityQueue<>(
+                                                (p1, p2)->Integer.compare(p1.getValue(), p2.getValue()));
+        pq.add(new Pair<>(node, 0));
+        
+        while(pq.size() > 0){
+            var pair = pq.poll();
+            char ch = pair.getKey();
+            int dis = pair.getValue();
+            
+            for(var next : adj.get(ch-'a')){
+                char nextChar = next.getKey();
+                int weight = next.getValue();
+                
+                if(weight+dis < vis.get(nextChar-'a')){
+                    pq.add(new Pair<>(nextChar, weight+dis));
+                    vis.set(nextChar-'a', weight+dis);
+                }
+            }
+        }
+        return vis ;
+    }
+}
+
