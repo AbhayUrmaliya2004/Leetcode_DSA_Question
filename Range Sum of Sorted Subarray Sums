@@ -1,0 +1,27 @@
+/*
+* Leetcode :- (1508)
+* T.C :- O(N*N*logN)
+* S.C :- O(N*N)
+*/
+class Solution {
+    public int rangeSum(int[] nums, int n, int left, int right) {
+        List<Integer> subarraySum = new ArrayList<>();
+        
+        int Mod=(int)1e9+7;
+        for(int i=0 ; i<n ; i++){
+            int sum=0 ;
+            for(int j=i ; j<n ; j++){
+                sum += nums[j];
+                subarraySum.add(sum);
+            }
+        }
+        
+        Collections.sort(subarraySum);
+    
+        int ans = 0;
+        for(int i=left-1 ; i<right ; i++){
+            ans = (ans+subarraySum.get(i)%Mod)%Mod;
+        }
+        return ans ;
+    }
+}
