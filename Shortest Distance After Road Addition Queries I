@@ -1,0 +1,38 @@
+/*
+* Leetcode :- (3243)
+* T.C :- O(N*N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int[] shortestDistanceAfterQueries(int n, int[][] queries) {
+        int[] path = new int[n];
+        path[0] = 0;
+        List<List<Integer>> adj = new ArrayList<>();
+        
+        for(int i=0 ; i<n ; i++){
+            adj.add(new ArrayList<>());
+            path[i] = i;
+            if(i==0) continue ;
+            adj.get(i).add(i-1);
+        }
+        
+        int[] ans = new int[queries.length];
+        // operations for queries 
+        int len = queries.length;
+        for(int i=0 ; i<len ; i++){
+            int[] query = queries[i];
+            adj.get(query[1]).add(query[0]);
+            
+            // changes will reflect afterwards query[1]            
+            for(int j=query[1] ; j<n ; j++){
+                
+                List<Integer> list = adj.get(j);
+                for(int prev : list){
+                    path[j] = Math.min(path[j], path[prev]+1);
+                }
+            }
+            ans[i] = path[n-1];
+        }
+        return ans ;
+    }
+}
