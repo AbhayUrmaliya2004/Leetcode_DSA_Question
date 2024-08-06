@@ -1,0 +1,27 @@
+/*
+* Leetcode :- (3207)
+* T.C :- O(NlogN)
+* S.C :- O(1)
+*/
+class Solution {
+    public long maximumPoints(int[] enemyEnergies, int currentEnergy) {
+        Arrays.sort(enemyEnergies);
+    
+        int i=0, j=enemyEnergies.length-1;
+        long points=0;
+        
+        while(i <= j){
+            if(currentEnergy >= enemyEnergies[i]){
+                int quotient = currentEnergy/enemyEnergies[i];
+                currentEnergy -= quotient*enemyEnergies[i];
+                points +=  quotient;
+            }else if(points > 0){
+                currentEnergy += enemyEnergies[j];
+                j-- ;
+            }else{
+                break ;
+            }
+        }
+        return points;
+    }
+}
