@@ -1,0 +1,78 @@
+/* 
+* Leetcode :- (273)
+* T.C :- O(N), length of num
+* S.C :- O(1)
+*/
+
+class Solution {
+    public String numberToWords(int num) {
+        if(num == 0) return "Zero";
+        String[] arr = {"", "", "Thousand", "Million", "Billion"};
+        String n = ""+num;
+        
+        int len = n.length();
+        int pos = len/3;
+        int mod = len%3;
+        
+        StringBuilder sb = new StringBuilder();
+        // 2147483647
+        if(mod != 0){
+            sb.append(processNum(n.substring(0, mod)));
+            sb.append(arr[pos+1]+" ");
+        }
+        
+        n = n.substring(mod); // after removing last 
+        int i=0;
+        while(pos > 0){
+            String temp = processNum(n.substring(i, i+3));
+            
+            if(temp.length() > 0){
+                sb.append(processNum(n.substring(i, i+3)));
+                sb.append(arr[pos]+" ");
+            }
+            i+=3 ;
+            pos--;
+        }
+        
+        while(sb.length()>0 && sb.charAt(sb.length()-1) == ' '){
+            sb.deleteCharAt(sb.length()-1);
+        }
+        return sb.toString();
+    }
+    public String processNum(String s){
+        StringBuilder sb = new StringBuilder();
+        int num = Integer.parseInt(s);
+        
+        String[] position = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+        String[] afterTenPos = {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen","Eighteen", "Nineteen"};
+        
+        String[] onesPos = {"", "One", "Two", "Three", "Four", "Five","Six","Seven", "Eight", "Nine"};
+        
+        if(s.length() >= 3){
+            if(num/100 != 0){
+                sb.append(onesPos[num/100]+" ");
+                sb.append("Hundred ");
+                num = num%100;
+            }
+        }
+        
+        if(s.length() >= 2 ){
+            if(num/10 > 1){
+               sb.append(position[num/10]+" ");
+                
+               num = num%10;
+            }else if(num/10 == 1){
+                sb.append(afterTenPos[num-10]+" ");
+                return sb.toString();
+            }
+        }
+        
+        if(s.length() >= 1){
+            if(num%10 != 0){
+                sb.append(onesPos[num]+" ");
+            }
+        }
+        
+        return sb.toString();
+    }
+}
