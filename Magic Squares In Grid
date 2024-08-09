@@ -1,0 +1,57 @@
+/*
+* Leetcode :- (840)
+* T.C :- O(M*N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int numMagicSquaresInside(int[][] grid) {
+        int m=grid.length, n=grid[0].length ;
+        if(m<3 || n<3) return 0;
+        
+        int count=0 ;
+        for(int i=0 ; i<=m-3 ; i++){
+            for(int j=0 ; j<=n-3 ; j++){
+                if(isValid(grid, i, j))count++;
+            }
+        }
+        return count ;
+    }
+    private boolean isValid(int[][]grid, int i, int j){
+        int r1, r2, r3, c1, c2, c3;
+        
+        int[] arr = new int[8];
+        
+        r1 = grid[i][j] + grid[i][j+1] + grid[i][j+2];
+        r2= grid[i+1][j] + grid[i+1][j+1] + grid[i+1][j+2];
+        r3= grid[i+2][j] + grid[i+2][j+1] + grid[i+2][j+2];
+        arr[0]=r1;
+        arr[1]=r2;
+        arr[2]=r3;
+        
+        c1 = grid[i][j] + grid[i+1][j] + grid[i+2][j];
+        c2 = grid[i][j+1] + grid[i+1][j+1] + grid[i+2][j+1];
+        c3 = grid[i][j+2] + grid[i+1][j+2] + grid[i+2][j+2];
+        arr[3]=c1;
+        arr[4]=c2;
+        arr[5]=c3;
+        
+        int d1 = grid[i][j] + grid[i+1][j+1] + grid[i+2][j+2];
+        int d2 = grid[i][j+2] + grid[i+1][j+1] + grid[i+2][j];
+        arr[6]=d1;
+        arr[7]=d2;
+        
+        boolean[] vis = new boolean[10];
+        for(int row=i ; row<i+3 ; row++){
+            for(int col=j ; col<j+3 ; col++){
+                if(grid[row][col]<1 || grid[row][col]>9 || vis[grid[row][col]]==true)return false ;
+                else vis[grid[row][col]] = true ;
+            }
+        }        
+        
+        for( i=1 ; i<8 ; i++){
+//            System.out.println(arr[i]+" ");
+            if(arr[i] != arr[i-1])return false ;
+        }
+        return true ;
+    }
+}
