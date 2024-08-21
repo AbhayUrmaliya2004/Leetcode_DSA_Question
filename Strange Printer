@@ -1,0 +1,31 @@
+/*
+* Leetcode :- (664)
+* T.C :- O(N^2)
+* S.C :- O(N^2)
+* Approach : Divide at each step to check what is the min possible way to compute left and right substring and additionally if(s[i] == s[j]) means this was made from same substring so remove a operation by minTurns-- 
+*/
+class Solution {
+    public int strangePrinter(String s) {
+        int[][] dp = new int[s.length()][s.length()];
+        for(int i=0 ; i<s.length() ; i++){
+            Arrays.fill(dp[i], -1);
+        }
+        return helper(s, 0, s.length()-1, dp);
+    }
+    public int helper(String s, int i, int j, int[][]dp){
+        if(i==j) return 1;
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        int minTurns = Integer.MAX_VALUE;
+        
+        for(int k=i ; k<j ; k++){
+            int left = helper(s, i, k, dp);
+            int right = helper(s, k+1, j, dp);
+            
+            minTurns = Math.min(minTurns, left+right);
+        }
+        
+        if(s.charAt(i)==s.charAt(j)) minTurns-- ;
+        return dp[i][j] = minTurns;
+    }
+}
