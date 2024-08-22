@@ -1,0 +1,32 @@
+/*
+* Leetcode :- (476)
+* T.C :- O(1) at max they can have 32 bits
+* S.C :- O(1) at max can have 32 bit space for chars
+*/
+class Solution {
+    public int findComplement(int num) {
+        String comp = numToBinary(num);
+        int ans = 0, n=comp.length();
+        
+        for(int i=0 ; i<n ; i++){
+            char ch = comp.charAt(i);
+            int cur = (ch=='0')?1:0;
+            
+            ans += cur*(int)Math.pow(2, n-i-1);
+        }
+        return ans;
+    }
+    String numToBinary(int n){
+        StringBuilder sb = new StringBuilder();
+        int rem ;
+        while(n != 1){
+            rem = n%2;
+            char ch = (rem==0)?'0':'1';
+            sb.append(ch);
+            n /= 2;
+        }
+        sb.append('1');
+        
+        return sb.reverse().toString();
+    }
+}
