@@ -1,0 +1,54 @@
+/*
+* Leetcode :- (1514)
+* T.C :- O(ElogV)
+* S.C :- O(N)
+* Approach :- Traverse the grpah with bfs and store the probability to reach for each node, now want 
+* to reach the end_node with max. probability path so make PriorityQueue keeping max. prob at top and
+* return the prob when you reach the end_node, if don't reach return 0
+*/
+class Solution {
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+        List<List<Pair<Integer, Double>>> adj = new ArrayList<>();
+        
+        for(int i=0 ; i<n ; i++){
+            adj.add(new ArrayList<>());
+        }
+        
+        for(int i=0 ; i<edges.length ; i++){
+            adj.get(edges[i][0]).add(new Pair<>(edges[i][1], succProb[i]));
+            adj.get(edges[i][1]).add(new Pair<>(edges[i][0], succProb[i]));
+        }
+//        System.out.println(adj);
+        
+        //                 Node,  Probability of path
+        PriorityQueue<Pair<Integer, Double>> pq = new PriorityQueue<>((p1, p2)-> Double.compare(p2.getValue(), p1.getValue()));
+        // we are at startnode with probability 1
+        pq.add(new Pair<>(start_node, (double)1));
+        
+        double[] vis = new double[n];
+        vis[start_node] = 1;
+        int steps = 1;
+        while(pq.size() > 0){
+//            System.out.println("steps : "+steps++);
+            int curNode = pq.peek().getKey();
+            double curProb = pq.peek().getValue();
+//            System.out.println(pq+" "+curNode+" "+curProb);
+            pq.poll();
+               
+            if(curNode == end_node) return curProb;
+//            System.out.println(curNode+" -> "+ adj.get(curNode));
+//            System.out.println("Going to neighbours :");
+            for(var nextNode : adj.get(curNode)){
+                double newProb = curProb*nextNode.getValue();
+//                System.out.print(nextNode.getKey()+" "+newProb+" ");
+                if(newProb > vis[nextNode.getKey()]){
+//                    System.out.print("Updating : "+nextNode.getKey()+" "+newProb+" ");
+                    pq.add(new Pair<>(nextNode.getKey(), newProb));
+                    vis[nextNode.getKey()] = newProb;
+                }
+            }
+//            System.out.println();
+        }
+        return 0;
+    }
+}
