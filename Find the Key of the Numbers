@@ -1,0 +1,31 @@
+class Solution {
+    public int generateKey(int num1, int num2, int num3) {
+        String n1 = helper(num1);
+        String n2 = helper(num2);
+        String n3 = helper(num3);
+        
+        StringBuilder sb = new StringBuilder();
+        for(int i=0 ; i<4 ; i++){
+            int a1 = (i<n1.length()) ? Integer.parseInt(n1.charAt(i)+"") : 0;
+            int a2 = (i<n2.length()) ? Integer.parseInt(n2.charAt(i)+"") : 0;
+            int a3 = (i<n3.length()) ? Integer.parseInt(n3.charAt(i)+"") : 0;
+            
+            int min = Math.min(a1, Math.min(a2, a3));
+            
+            sb.append(min);
+        }
+        
+        return Integer.parseInt(sb.reverse().toString());
+    }
+    
+    public String helper(int n){
+        String ans = "";
+        int count=4;
+        while(count-->0){
+            int rem = n%10 ;
+            n/=10;
+            ans += rem;
+        }
+        return ans ;
+    }
+}
