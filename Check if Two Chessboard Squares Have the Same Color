@@ -1,0 +1,19 @@
+class Solution {
+    public boolean checkTwoChessboards(String coord1, String coord2) {
+        int color1 = findColor(coord1);
+        int color2 = findColor(coord2);
+        
+        return color1 == color2;
+    }
+
+    public int findColor(String s) {
+        int file = s.charAt(0) - 'a' + 1;
+        int rank = s.charAt(1) - '0';
+
+        if ((file + rank) % 2 == 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
