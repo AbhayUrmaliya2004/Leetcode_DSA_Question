@@ -1,0 +1,26 @@
+/*
+* Leetcode :- 3275
+* Intuition :- find the kth largest element
+*/
+class Solution {
+    public int[] resultsArray(int[][] queries, int k) {
+        int n = queries.length;
+        int[] ans = new int[n];
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        int idx=0;
+        for(int[] query : queries){
+            int x = Math.abs(query[0]);
+            int y = Math.abs(query[1]);
+            
+            // int dis = (int)(Math.ceil(Math.sqrt(x*x+y*y)));
+            int dis = (x+y);
+//            System.out.println(dis);
+            pq.add(dis);
+            
+            if(pq.size() > k) pq.poll();
+            ans[idx++] = (pq.size()==k)?(int)pq.peek():-1;
+        }
+        return ans;
+    }
+}
