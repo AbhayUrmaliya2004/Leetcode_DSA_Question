@@ -1,0 +1,44 @@
+/*
+* Leetcode :- (874)
+* T.C :- O(N*k)
+* S.C :- O(M), M-> obstacles.length
+*/
+
+class Solution {
+    public int robotSim(int[] commands, int[][] obstacles) {
+        // Using a set to store obstacle positions
+        Set<String> set = new HashSet<>();
+        for (int[] obstacle : obstacles) {
+            set.add(obstacle[0] + "," + obstacle[1]);
+        }
+        
+        // Direction vectors for north, east, south, and west
+        int[] delx = {0, 1, 0, -1}; // N, E, S, W
+        int[] dely = {1, 0, -1, 0}; // N, E, S, W
+        int posx = 0, posy = 0;
+        int dir = 0; // initially facing north
+        int maxDis = 0;
+        
+        for (int command : commands) {
+            if (command == -1) { // turn right
+                dir = (dir + 1) % 4;
+            } else if (command == -2) { // turn left
+                dir = (dir + 3) % 4;
+            } else { // move forward
+                for (int k = 0; k < command; k++) {
+                    int nextX = posx + delx[dir];
+                    int nextY = posy + dely[dir];
+                    // Check if the next position is an obstacle
+                    if (!set.contains(nextX + "," + nextY)) {
+                        posx = nextX;
+                        posy = nextY;
+                        maxDis = Math.max(maxDis, posx * posx + posy * posy);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return maxDis;
+    }
+}
