@@ -1,0 +1,32 @@
+/*
+* Leetcode :- (2028)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int m = rolls.length, sum=0 ;
+        
+        for(int roll : rolls){
+            sum += roll;
+        }
+        
+        int totalSum = mean*(m+n);
+        totalSum -= sum; // remove the sum of m size array
+        
+        int[] ans = new int[n];
+        
+        int rem = totalSum-(totalSum/n)*n; // num given to each roll
+        int parts = totalSum/n;
+        
+        if(6*n < totalSum || totalSum <= 0 || parts==0) return new int[]{};
+        
+        int idx=0 ;
+        
+        while(idx < n){
+            ans[idx++] = parts+((rem>0)?1:0);
+            if(rem > 0)rem-- ;
+        }
+        return ans ;
+    }
+}
