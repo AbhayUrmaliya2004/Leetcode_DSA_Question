@@ -1,0 +1,77 @@
+
+/*
+* Leetcode :- (1367)
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- Don't Maintain set while traversing if you encounter root.val == head.val
+* check does that root can make a subset like list
+*/
+class Solution {
+    public boolean isSubPath(ListNode head, TreeNode root) {
+        return helper(root, head);
+    }
+    public boolean containsSubset(TreeNode root, ListNode head){
+        if(head == null) return true;
+        if(root == null) return false;
+        if(head.val != root.val) return false;
+        
+        boolean leftCheck = false, rightCheck = false;
+        leftCheck = containsSubset(root.left, head.next);
+        rightCheck = containsSubset(root.right, head.next);
+        
+        return leftCheck || rightCheck ;
+    }
+    
+    public boolean helper(TreeNode root, ListNode head){
+        if(root.val == head.val){
+            // check can this node can make subset like list given
+            if(containsSubset(root, head)) return true;
+        }
+        
+        boolean checkLeft = false, checkRight = false;
+        if(root.left != null) checkLeft = helper(root.left, head);
+        if(root.right != null) checkRight = helper(root.right, head);
+        
+        return checkLeft || checkRight;
+    }
+}
+
+
+/*
+* Leetcode :- (1367)
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- Maintain a set that contain nodes which has value starting with head and then
+* check for all nodes 
+*/
+class Solution {
+    public boolean isSubPath(ListNode head, TreeNode root) {
+        Set<TreeNode> set = new HashSet<>(); // contains all node start with head
+        helper(root, set, head.val); // method to find all node
+        
+        for(TreeNode curr : set){
+            if(containsSubset(curr, head)) return true;
+        }
+        
+        return false;
+    }
+
+    public boolean containsSubset(TreeNode root, ListNode head){
+        if(head == null) return true;
+        if(root == null) return false;
+        if(head.val != root.val) return false;
+        
+        boolean leftCheck = false, rightCheck = false;
+        leftCheck = containsSubset(root.left, head.next);
+        rightCheck = containsSubset(root.right, head.next);
+        
+        return leftCheck || rightCheck ;
+    }
+    
+    public void helper(TreeNode root, Set<TreeNode> set, int head){
+        if(root.val == head) set.add(root);
+        
+        if(root.left != null) helper(root.left, set, head);
+        if(root.right != null) helper(root.right, set, head);
+    }
+}
