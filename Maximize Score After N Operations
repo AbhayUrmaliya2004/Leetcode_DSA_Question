@@ -1,0 +1,44 @@
+/*
+* Leetcode :- O(1799)
+* T.C :- O(N*(M^2))
+* S.C :- O(N*(M^2))
+*/
+class Solution {
+    public int maxScore(int[] nums) {
+        //  array, mask, operation, 
+        Map<Integer, Integer> dp = new HashMap<>();
+        return helper(nums, 0, 1, dp);
+    }
+    public int helper(int[] nums, int mask, int op, Map<Integer, Integer> dp){
+        int m=nums.length, n=nums.length/2;
+        if(n > m/2) return 0;
+        if(dp.containsKey(mask)) return dp.get(mask);
+        
+        int res = 0;
+        for(int i=0 ; i<m-1 ; i++){
+            if((mask & (1<<i)) != 0) continue ;
+            for(int j=i+1 ; j<m ; j++){
+                if((mask & (1<<j)) != 0) continue ;
+                
+                int newMask = mask | (1<<i) | (1<<j) ;
+                int ans = op*gcd(nums[i], nums[j]) + helper(nums, newMask, op+1, dp);
+                
+                res = Math.max(ans, res);
+            }
+        }
+        dp.put(mask, res);
+        return res;
+    }
+    
+    public static int gcd(int a, int b) {
+        // Continue looping until b becomes 0
+        while (b != 0) {
+            // Calculate the remainder
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        // When b is 0, a contains the GCD
+        return a;
+    }
+}
