@@ -1,0 +1,64 @@
+/*
+* Leetcode :- (2326)
+* T.C :- O(M*N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int[][] spiralMatrix(int m, int n, ListNode head) {
+        int left = 0, right = n - 1, up = 0, down = m - 1;
+        int[][] ans = new int[m][n];
+        int filled = 0;
+
+        while (filled < m * n) {
+            // Go right
+            for (int j = left; j <= right && filled < m * n; j++) {
+                if (head != null) {
+                    ans[up][j] = head.val;
+                    head = head.next;
+                } else {
+                    ans[up][j] = -1;
+                }
+                filled++;
+            }
+            up++;
+
+            // Go down
+            for (int i = up; i <= down && filled < m * n; i++) {
+                if (head != null) {
+                    ans[i][right] = head.val;
+                    head = head.next;
+                } else {
+                    ans[i][right] = -1;
+                }
+                filled++;
+            }
+            right--;
+
+            // Go left
+            for (int j = right; j >= left && filled < m * n; j--) {
+                if (head != null) {
+                    ans[down][j] = head.val;
+                    head = head.next;
+                } else {
+                    ans[down][j] = -1;
+                }
+                filled++;
+            }
+            down--;
+
+            // Go up
+            for (int i = down; i >= up && filled < m * n; i--) {
+                if (head != null) {
+                    ans[i][left] = head.val;
+                    head = head.next;
+                } else {
+                    ans[i][left] = -1;
+                }
+                filled++;
+            }
+            left++;
+        }
+
+        return ans;
+    }
+}
