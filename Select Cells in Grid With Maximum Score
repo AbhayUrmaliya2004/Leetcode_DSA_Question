@@ -1,0 +1,49 @@
+/*
+* Leetcode :- (3276)
+* T.C :- O(100*2^M)
+* S.C :- O(M*N)
+* Approach :- Instead of bitmasking the num we selected bitmask the row you have taken to 
+* optimise the space 
+*/
+class Solution {
+    public int maxScore(List<List<Integer>> grid) {
+        Map<Integer, Set<Integer>> mp = new HashMap<>();
+        int m = grid.size(), n = grid.get(0).size();
+        int maxi = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                int num = grid.get(i).get(j);
+                if(!mp.containsKey(num)){
+                    mp.put(num, new HashSet<>());
+                }
+                mp.get(num).add(i); // num exists in that row
+                maxi = Math.max(num, maxi);
+            }
+        }
+        // dp with memo
+        int[][] dp = new int[maxi+1][1<<m];
+        for(int i=0 ; i<=maxi ; i++){
+            Arrays.fill(dp[i], -1);
+        }
+        return helper(maxi, mp, 0, dp);
+    }
+    
+    public int helper(int curr, Map<Integer, Set<Integer>> mp, int mask, int[][]dp){
+        if(curr == 0) return 0; // base case: can't get anything after that 
+        if(dp[curr][mask] != -1) return dp[curr][mask];
+        
+        int ans = helper(curr-1, mp, mask, dp); // don't take curr element
+        
+        if(mp.containsKey(curr)){ // check if curr exists in the map
+            Set<Integer> temp = mp.get(curr);
+            for(int row : temp){
+                if((mask & (1<<row)) == 0){ // if row is not taken
+                    // add current num and check for another to get max sum
+                    ans = Math.max(ans, curr + helper(curr-1, mp, (mask | (1<<row)), dp)); 
+                }
+            }
+        }
+        
+        return dp[curr][mask] = ans;
+    }
+}
