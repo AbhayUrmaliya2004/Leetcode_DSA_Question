@@ -1,0 +1,49 @@
+/*
+* Leetcode :- (2419)
+* T.C : O(N)
+* S.C :- O(1)
+* Approach :- Find the max element which will be max bitwise AND and then check which longest 
+* subarray has the value max
+*/
+class Solution {
+    public int longestSubarray(int[] nums) {
+        int max = 0, maxIdx=-1, n=nums.length;
+        for(int i=0 ; i<n ; i++){
+            if(nums[i] > max){
+                maxIdx = i;
+                max = nums[i];
+            }
+        }
+        
+        int maxLen = 0;
+        for(int i=0 ; i<n ; i++){
+            if(nums[i] == max){
+                maxLen = Math.max(maxLen, helper(nums, i, max));
+                int val = nums[i];
+                while(i<n && (val & nums[i]) == val){
+                    i++ ;
+                }
+                i-- ;
+            }
+        }
+        return maxLen ;
+    }
+    public int helper(int[] nums, int maxIdx, int max){
+        // traverse both side left and right 
+        int n = nums.length;
+        int left = maxIdx-1, right = maxIdx+1;
+        int val = max ;
+        while(left >=0 && ((val & nums[left]) >= max)){
+            val = val & nums[left];
+            left-- ;
+        }
+        
+        val = max;
+        while(right < n && ((val & nums[right]) >= max)){
+            val = val & nums[right];
+            right++;
+        }
+        
+        return right-left-1;
+    }
+}
