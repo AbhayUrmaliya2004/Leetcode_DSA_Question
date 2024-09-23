@@ -1,0 +1,36 @@
+public class Trie{
+    boolean endWord ;
+    Trie[] links ;
+    
+    public Trie(){
+        endWord = false;
+        links = new Trie[26];
+    }
+    
+    public void insert(char ch, Trie node){
+        links[ch-'a'] = node;
+    }
+    
+    public Trie get(char ch){
+        return links[ch-'a'];
+    }
+    
+    public boolean contains(char ch){
+        return links[ch-'a']!=null ;
+    }
+    
+    public void setEnd(){
+        endWord = true;
+    }
+    
+    public void insertWord(String word) {
+        Trie node = this;
+        for (char ch : word.toCharArray()) {
+            if (!node.contains(ch)) {
+                node.insert(ch, new Trie());
+            }
+            node = node.get(ch);
+        }
+        node.setEnd();
+    }
+}
