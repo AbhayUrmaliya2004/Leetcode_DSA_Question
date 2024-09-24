@@ -1,0 +1,74 @@
+/*
+* Leetcode :- O(3043)
+* T.C :- O(N*Length(N))
+*/
+public class Trie{
+    boolean isEnd;
+    Trie[] links ;
+    
+    public Trie(){
+        isEnd = false;
+        links = new Trie[10];
+    }
+    
+    public void insert(char n, Trie node){
+        links[n-'0'] = node;
+    }
+    
+    public Trie get(char n){
+        return links[n-'0'];
+    }
+    
+    public boolean contains(char n){
+        return links[n-'0'] != null ;
+    }
+    
+    public void insertNumber(int n){
+        String num = n+"";
+        
+        Trie node = this ;
+        for(int i=0 ; i<num.length(); i++){
+            char ch = num.charAt(i);
+            
+            if(!node.contains(ch)){
+                node.insert(ch, new Trie());
+            }
+            node = node.get(ch);
+        }
+        node.isEnd = true;
+    }
+}
+
+class Solution {
+    public int longestCommonPrefix(int[] arr1, int[] arr2) {
+        Trie trie = new Trie();
+        
+        // all the numbers are in trie of arr1 
+        for(int num : arr1){
+            trie.insertNumber(num);
+        }
+        
+        // check for arr2 with max prefix
+        int maxi = 0 ;
+        for(int num : arr2){
+            // helper will find the number of matching length longest prefix
+            maxi = Math.max(maxi, helper(num, trie)); 
+        }
+        
+        return maxi;
+    }
+    
+    public int helper(int n, Trie node){
+        int count = 0;
+        
+        String num = n+"";
+        
+        for(int i=0 ; i<num.length() ; i++){
+            if(!node.contains(num.charAt(i))) break ;
+            count++ ;
+            node = node.get(num.charAt(i));
+        }
+        
+        return count ;
+    }
+}
