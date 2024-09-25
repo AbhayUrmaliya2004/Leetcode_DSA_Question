@@ -1,0 +1,75 @@
+/*
+* Leetcode :- (2416)
+* T.C :- O(N*len(N))
+*/
+public class Trie{
+    int countPrefix = 0;
+    Trie[] links = new Trie[26];
+    
+    public boolean contains(char ch){
+        return links[ch-'a'] != null;
+    }
+    
+    public Trie get(char ch){
+        return links[ch-'a'];
+    }
+    
+    public void put(char ch, Trie node){
+        links[ch-'a'] = node;
+    }
+        
+    public void insertWord(String word){
+        Trie node = this;
+        
+        int n = word.length();
+        
+        for(int i=0 ; i<n ; i++){
+            char ch = word.charAt(i);
+            
+            if(!node.contains(ch)){
+                node.put(ch, new Trie());
+            }
+            node = node.get(ch);
+            node.countPrefix++ ;
+        }
+    }
+}
+
+class Solution {
+    public int[] sumPrefixScores(String[] words) {
+        int n = words.length ;
+        int[] ans = new int[n];
+        Trie trie = new Trie();
+        
+        for(String word : words){
+            trie.insertWord(word);
+        }
+        
+        // do the operation
+        for(int i=0 ; i<n ; i++){
+            ans[i] = countPrefixWithWord(trie, words[i]);
+        }
+        
+        return ans ;
+    }
+    
+    public int countPrefixWithWord(Trie node, String word){
+        int n = word.length();
+        int count = 0;
+        
+        for(int i=0 ; i<n ; i++){
+            char ch = word.charAt(i);
+            if(!node.contains(ch)) break ;
+            
+            node = node.get(ch);
+            count += node.countPrefix ;
+        }
+        
+        return count ;
+    }
+}
+
+
+
+
+
