@@ -1,0 +1,17 @@
+class MyCalendar {
+
+    List<Pair<Integer, Integer>> list = new ArrayList<>(); 
+    public MyCalendar() {
+        
+    }
+    
+    public boolean book(int start, int end) {
+        for(var arr : list){
+            if(arr.getKey() < end && start < arr.getValue()){
+                return false;
+            }
+        }
+        list.add(new Pair<>(start, end));
+        return true;
+    }
+}
