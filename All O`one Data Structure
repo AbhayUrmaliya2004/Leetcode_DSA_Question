@@ -1,0 +1,59 @@
+/*
+* Leetcode :- (432)
+* In log time we can check that the element exist in the array or not and can increment and decrement * it in average of O(1) time  
+*/
+class AllOne {  
+
+    Map <String, Integer> counts;
+    Map <Integer, Set<String>> keysWithCount; 
+    int min,max;
+    public AllOne() {
+        min =0;
+        max =0;
+        counts = new HashMap();
+        keysWithCount = new HashMap();
+
+        keysWithCount.put(1,new HashSet()); 
+        keysWithCount.put(0,new HashSet()); 
+    }
+    
+    public void inc(String key) {
+        Integer last = counts.putIfAbsent(key,1);
+        if (last == null) {
+            keysWithCount.get(1).add(key);
+            min = 1;
+            max = Math.max(1,max);
+        }
+        else {
+            keysWithCount.putIfAbsent (1+last, new HashSet());
+            keysWithCount.get(1+last).add(key);
+            keysWithCount.get(last).remove(key); 
+            counts.put(key , counts.get(key) + 1);
+           
+            if (last == min  &&  keysWithCount.get(last).isEmpty()) min++;
+            max = Math.max (max, last + 1);
+        }
+    }
+    
+    public void dec(String key) {
+        int count = counts.get(key) - 1;
+        
+        counts.put (key, count);
+
+        keysWithCount.get(count + 1).remove(key);
+        keysWithCount.get(count).add(key);
+        if (count + 1 == max && keysWithCount.get(count + 1).isEmpty()) max--;
+        if (keysWithCount.get(min).isEmpty()) min--;
+        if (min == 0 && max > 0) { 
+            while (keysWithCount.get(++min).isEmpty());
+        }
+    }
+    
+    public String getMaxKey() {
+        return (max != 0) ? keysWithCount.get(max).iterator().next() : "";
+    }
+    
+    public String getMinKey() {
+        return (min != 0) ? keysWithCount.get(min).iterator().next() : "";
+    }
+}
