@@ -1,3 +1,67 @@
+public class Node{ // doubly linked list
+    int val ;
+    Node prev ;
+    Node next ;
+    
+    public Node(int val){
+        this.val = val;
+        this.prev = null ;
+        this.next = null ;
+    }
+}
+
+class CustomStack {
+
+    int size = 0, maxi;
+    Node st = null, end = null ;
+    public CustomStack(int maxSize) {
+        maxi = maxSize;
+    }
+    
+    public void push(int x) {
+        if(size == maxi) return ;
+        
+        Node temp = new Node(x);
+        
+        if(st == null){
+            st = temp;
+            end = temp;
+        }else{
+            temp.prev = end ;
+            end.next = temp ;
+            end = temp ;
+        }
+        size++ ;
+    }
+    
+    public int pop() {
+        if(size == 0) return -1;
+        int ans = end.val;
+        
+        if(size == 1){
+            st = null;
+            end = null;
+        }else{
+            end = end.prev;
+            end.next = null;
+        }
+        size-- ;
+        
+        return ans;
+    }
+    
+    public void increment(int k, int val){
+        Node temp = st;
+        int count = 0;
+        while(count < k && temp != null){
+            temp.val = temp.val+val;
+            count++;
+            temp = temp.next;
+        }
+    }
+}
+
+
 /* 
 * Leetcode :- O(1381)
 * S.C :- O(N)
