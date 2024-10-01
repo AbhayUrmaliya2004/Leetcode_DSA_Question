@@ -1,0 +1,29 @@
+/*
+* Leetcode :- (1497)
+* T.C :- O(N)
+* S.C :- O(K) // for hashmap beacuse values will not go beyond k
+*/
+class Solution {
+    public boolean canArrange(int[] arr, int k) {
+        int pairs = 0;
+        
+        Map<Integer, Integer> mp = new HashMap<>();
+        int mod ;
+        for(int i=0 ; i<arr.length ; i++){
+            mod = arr[i]%k;
+            mod = (mod+k)%k;
+            int comp = (k-mod)%k ;
+            if(mp.containsKey(comp)){
+                pairs++ ;
+                mp.put(comp, mp.get(comp)-1);
+                
+                if(mp.get(comp) == 0) mp.remove(comp);
+            }else{
+                mp.put(mod, mp.getOrDefault(mod, 0)+1);
+            }
+        }
+        
+        if(pairs == arr.length/2) return true;
+        return false;
+    }
+}
