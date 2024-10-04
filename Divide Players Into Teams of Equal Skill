@@ -1,0 +1,42 @@
+/*
+* Leetcode :- (2491)
+* T.C :- O(NlogN), logN for hashmap
+* S.C :- O(N)
+* Approach :- Find the sum of teams and divide them into (n/2) teams each team will have same total
+* skill equal to skill = sum/(n/2) and then check can we create n/2 team with the skill 
+*/
+class Solution {
+    public long dividePlayers(int[] skill) {
+        int n = skill.length;
+        int sum = 0;
+        
+        for(int num : skill){
+            sum += num;
+        }
+        
+        // skill required by each team
+        int reqSkill = sum/(n/2); 
+        
+        Map<Integer, Integer> mp = new HashMap<>();
+        int countTeams = 0;
+        long chemistry = 0; // chemistry of all teams
+        
+        for(int i=0 ; i<n ; i++){
+            int compl = reqSkill-skill[i];
+            
+            if(mp.containsKey(compl)){
+                countTeams++ ;
+                chemistry += skill[i]*(compl);
+                mp.put(compl, mp.get(compl)-1);
+                
+                if(mp.get(compl) == 0) mp.remove(compl);
+                
+            }else{
+                mp.put(skill[i], mp.getOrDefault(skill[i], 0)+1);
+            }
+        }
+        
+        if(countTeams == n/2) return chemistry;
+        return -1 ;
+    }
+}
