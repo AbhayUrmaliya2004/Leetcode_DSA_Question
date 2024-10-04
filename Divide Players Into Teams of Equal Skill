@@ -1,5 +1,30 @@
 /*
 * Leetcode :- (2491)
+* T.C :- O(NlogN) for sorting
+* S.C :- O(1)
+*/
+
+class Solution {
+    public long dividePlayers(int[] skill){
+        int n = skill.length;
+        long chemistry = 0;
+        
+        Arrays.sort(skill);
+        
+        int reqSkill = skill[0] + skill[n-1];
+        
+        for(int i=0 ; i<n/2 ; i++){
+            if(skill[i]+skill[n-i-1] != reqSkill) return -1;
+            chemistry += skill[i] * skill[n-i-1];
+        }
+        
+        return chemistry;
+    }
+}
+
+
+
+/*
 * T.C :- O(NlogN), logN for hashmap
 * S.C :- O(N)
 * Approach :- Find the sum of teams and divide them into (n/2) teams each team will have same total
