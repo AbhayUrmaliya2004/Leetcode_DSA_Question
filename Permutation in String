@@ -1,0 +1,48 @@
+/*
+* Leetcode :- (567)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        int left=0, right=s1.length(), n1 = s1.length(), n2 =s2.length();
+        
+        if(n1 > n2) return false;
+        
+        int[] fre2 = new int[26], fre1 = new int[26];
+        
+        for(int i=0 ; i<n1 ; i++){
+            fre1[s1.charAt(i)-'a']++ ;
+        }
+        
+        for(int i=left ; i<right ; i++){
+            fre2[s2.charAt(i)-'a']++ ;
+        }
+        
+        if( isEqual(fre1, fre2) ) return true;
+        
+        while(right < n2){
+            
+            fre2[s2.charAt(right)-'a']++ ;
+            right++ ;
+            
+            fre2[s2.charAt(left)-'a']-- ;
+            left++ ;
+            
+            // check frequencies are equal or not 
+            if(isEqual(fre1, fre2)) return true;
+        }
+        
+        return false;
+    }
+    
+    public boolean isEqual(int[] fre1, int[] fre2){
+        
+        for(int i=0 ; i<26 ; i++){
+            if(fre1[i] != fre2[i]) return false;
+        }
+        
+        return true;
+    }
+}
