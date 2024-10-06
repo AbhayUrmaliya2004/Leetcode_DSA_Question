@@ -1,0 +1,34 @@
+/*
+* Leetcode :- (1813)
+* T.C :- O(M+N)
+* S.C :- O(M+N)
+* Approach :- Check how much sequence matching from starting and how much sequence matching from
+* back side, if any of sent1 and sent2 get completely matched then we can add the remaining part 
+* of other sent into this sentence
+*/
+
+class Solution {
+    public boolean areSentencesSimilar(String sent1, String sent2) {
+        String[] arr1 = sent1.split(" "), arr2 = sent2.split(" ");
+        
+        int i=0, j=0, n1=arr1.length, n2=arr2.length; 
+        
+        while(i<n1 && j<n2){
+            if(!arr1[i].equals(arr2[j])) break;
+            i++ ;
+            j++ ;
+        }
+        
+        if(i==n1 || j==n2) return true;
+        
+        int p=n1-1, q=n2-1;
+        
+        while(p>=i && q>=j){
+            if(!arr1[p].equals(arr2[q])) break;
+            p-- ;
+            q-- ;
+        }
+        
+        return p<i || q<j;
+    }
+}
