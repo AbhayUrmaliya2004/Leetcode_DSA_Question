@@ -1,0 +1,50 @@
+/*
+* Leetcode - (1963)
+* T.C :- O(N)
+* S.C for soltuion2:- O(1)
+* S.C for solution1 :- O(N)
+* Approach :- There are fixed length or sequence and equal opening and closing brackets that means
+* and in that only some part is inbalnced and we only need to take the imbalanced part. for example 
+* "][[]][]]][[][[" only the part in any string which we will get might be unbalanced like ]]][[[
+* firstly closing and then opening we only need to check out that unbalced part. So if we replace first
+* and last from their position this will eventually make up two pairs correctly so whatever pairs are there 
+* we just have to correct half of that and rest all the string will be equal like in case of ][ we need one swap
+*/
+class Solution {
+    public int minSwaps(String s) {
+    //    return solution1(s);
+        return solution2(s);
+    }
+    public int solution2(String s){
+        int maxUnbalanced = 0, count=0;
+
+        int n = s.length();
+        for(int i=0 ; i<n ; i++){
+            char ch = s.charAt(i);
+            if(ch=='['){ // ]]][[[
+                count-- ;
+            }else{
+                count++ ;
+            }
+
+            maxUnbalanced = Math.max(maxUnbalanced, count);
+        }
+
+        return (maxUnbalanced+1)/2;
+    }
+    public int solution1(String s){
+        Stack<Character> st = new Stack<>();
+
+        int n = s.length();
+        for(int i=0 ; i<n ; i++){
+            char ch = s.charAt(i);
+            if(ch == ']' && st.size()>0 && st.peek()=='['){
+                st.pop();
+            }else{
+                st.push(ch);
+            }
+        }
+        // +1 was done to handle the odd pair cases 
+        return (st.size()/2+1)/2;
+    }
+}
