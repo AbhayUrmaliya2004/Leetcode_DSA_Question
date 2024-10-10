@@ -1,0 +1,32 @@
+/*
+* Leetcode :- (962)
+* T.C :- O(NlogN)
+* S.C :- O(N)
+* Approach :- We can't use stack we have 2 parameter indices and values, so in order to count the 
+* indices in monotonic way we can sort things according to values which will tends to sorting values
+* At each step in list, we are checking the number of values smaller than curr values and 
+* out of those what is the minimum Index 
+*/
+class Solution {
+    public int maxWidthRamp(int[] nums) {
+        int n = nums.length;
+        List<Pair<Integer, Integer>> list = new ArrayList<>();
+        for(int i=0 ; i<n ; i++){
+            list.add(new Pair<>(nums[i], i));    
+        }
+        
+        Collections.sort(list, (p1, p2) -> Integer.compare(p1.getKey(), p2.getKey()));
+        
+        int ramp = 0, minIndex=n;
+        
+        // At each index, we are checking the number of values smaller than curr values and 
+        // 
+        for(var pair : list){
+            int index = pair.getValue();
+            ramp = Math.max(ramp, index-minIndex);
+            minIndex = Math.min(minIndex, index);      
+        }
+        
+        return ramp;
+    }
+}
