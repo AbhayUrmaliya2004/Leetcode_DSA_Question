@@ -1,0 +1,55 @@
+/*
+* Leetcode :- (1942)
+* T.C :- O(MlogM)+O(NlogM) for trversing so O(MlogM), M=1e5
+* S.C :- O(M)+O(N), N-> size of array
+*/
+class Solution {
+    public int smallestChair(int[][] time, int targetFriend) {
+        int targetFriendArrivalTime = time[targetFriend][0];
+        
+        // Sort by arrival time
+        Arrays.sort(time, (o1, o2) -> Integer.compare(o1[0], o2[0]));
+        
+        Map<Integer, List<Integer>> leavingTime = new HashMap<>();
+        
+        PriorityQueue<Integer> emptyChairs = new PriorityQueue<>();
+        for (int i = 0; i <= 100000; i++) {
+            emptyChairs.add(i);
+        }
+        
+        int n = time.length;
+        int curTime = 0;
+        
+        for (int i = 0; i < n; i++) {
+            int arrival = time[i][0];
+            int leave = time[i][1];
+
+            // Free up chairs for people who have left
+            while (curTime <= arrival) {
+                if (leavingTime.containsKey(curTime)) {
+                    for (int chair : leavingTime.get(curTime)) {
+                        emptyChairs.add(chair); // Free the chair
+                    }
+                    leavingTime.remove(curTime); // Clean up map
+                }
+                curTime++;
+            }
+
+            // Correct the condition to check target friend's arrival
+            if (arrival == targetFriendArrivalTime) {
+                return emptyChairs.peek(); // Return chair assigned to target friend
+            }
+
+            // Assign the smallest available chair
+            int assignedChair = emptyChairs.poll();
+
+            // Track the chair being freed when the person leaves
+            if (!leavingTime.containsKey(leave)) {
+                leavingTime.put(leave, new ArrayList<>());
+            }
+            leavingTime.get(leave).add(assignedChair);
+        }
+
+        return -1; // Should not be reached if input is valid
+    }
+}
