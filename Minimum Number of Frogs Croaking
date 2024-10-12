@@ -1,0 +1,53 @@
+/*
+* Leetcode :- (1419)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int minNumberOfFrogs(String s) {
+        int[] fre = new int[26]; // Frequency array for the letters in 'croak'
+        
+        Map<Character, Character> prev = new HashMap<>(); // Map to track valid transitions
+        prev.put('r', 'c');
+        prev.put('o', 'r');
+        prev.put('a', 'o');
+        prev.put('k', 'a');
+        
+        int maxFrogs = 0, activeFrogs = 0; // Track the max and current active frogs
+        
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            
+            // Increment frequency for the current character
+            fre[ch - 'a']++;
+            
+            // Ensure valid transitions based on the croak sequence
+            if (ch != 'c' && fre[prev.get(ch) - 'a'] < fre[ch - 'a']) {
+                return -1; // Invalid transition if the sequence breaks
+            }
+            
+            // Start a new croak if 'c' is encountered
+            if (ch == 'c') {
+                activeFrogs++; // A new frog starts croaking
+                maxFrogs = Math.max(maxFrogs, activeFrogs); // Track the max number of frogs croaking simultaneously
+            }
+            
+            // When a frog completes croaking ('k'), reset the counts for that sequence
+            if (ch == 'k') {
+                activeFrogs--; // One frog finishes croaking
+                fre['c' - 'a']--; // Reset counts for a completed croak sequence
+                fre['r' - 'a']--;
+                fre['o' - 'a']--;
+                fre['a' - 'a']--;
+                fre['k' - 'a']--;
+            }
+        }
+        
+        // After processing, there should be no incomplete croak sequences
+        if (fre['c' - 'a'] != 0 || fre['r' - 'a'] != 0 || fre['o' - 'a'] != 0 || fre['a' - 'a'] != 0 || fre['k' - 'a'] != 0) {
+            return -1; // Invalid if any incomplete sequence remains
+        }
+        
+        return maxFrogs; // Return the maximum number of frogs croaking simultaneously
+    }
+}
