@@ -1,0 +1,68 @@
+/*
+* Leetcode :- (632)
+* T.C :- O(NlogK)
+* S.C :- O(K)
+* Approach :- Simple Intuition, think how you find the smallest range of 3 numbers in * the array in the same manner we can find the smallest range in the k-list 
+* Step 1 :- by taking smallest element from each of the k-list(already sorted)
+* Step2 :- then to squeeze the list we have only the option that remove the smalles 
+* number and then find the range again 
+* compare the range of current list to the last found list and update that 
+* at last if reach the end of the any list return immediately because after that
+* number you can;t find another list
+*/
+
+class Solution {
+    public class Node{
+        int val;
+        int row;
+        int col;
+        public Node(int val, int row, int col){
+            this.val = val;
+            this.row = row;
+            this.col = col;
+        }
+    }
+    
+    public int[] smallestRange(List<List<Integer>> nums) {
+        PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<>(){
+            public int compare(Node a, Node b){
+                return Integer.compare(a.val, b.val);
+            }
+        });
+        
+        int n = nums.size(), maxValue = Integer.MIN_VALUE;
+        for(int i=0 ; i<n ; i++){
+            //              val, row, col
+            pq.add(new Node(nums.get(i).get(0), i, 0));
+            maxValue = Math.max(maxValue, nums.get(i).get(0));
+        }
+        
+        int left = 0, right = Integer.MAX_VALUE, minValue, row, col;
+        while(true){
+            Node temp = pq.poll();
+            minValue = temp.val;
+            row = temp.row;
+            col = temp.col;
+            
+//            System.out.println(minValue+" "+" "+row+" "+col);
+            // adjust the range smaller if found
+            if(maxValue-minValue < right-left){
+                left = minValue;
+                right = maxValue;
+            }
+            
+            // increase the index of the smallest element
+            // reached at the last of the list and no element left
+            if(nums.get(row).size() == col+1) break;
+            
+            // else add the next to the smallest into the PQ
+            pq.add(new Node(nums.get(row).get(col+1), row, col+1));
+            // update the maxValue as well
+            maxValue = Math.max(maxValue, nums.get(row).get(col+1));
+        }
+        
+        return new int[]{left, right};
+    }
+}
+
+
