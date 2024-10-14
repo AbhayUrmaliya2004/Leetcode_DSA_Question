@@ -1,0 +1,43 @@
+/*
+* Leetcode :- (1915)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public long wonderfulSubstrings(String s) {
+        // Map to store indices of characters 'a' to 'j'
+        Map<Character, Integer> indices = new HashMap<>();
+        for (char ch = 'a'; ch <= 'j'; ch++) {
+            indices.put(ch, ch - 'a');
+        }
+
+        int mask = 0, n = s.length();
+        long count = 0;
+        int idx;
+
+        // Map to store the frequency of mask states
+        Map<Integer, Integer> mp = new HashMap<>();
+        mp.put(mask, 1); // Initialize with the base case (empty substring)
+
+        for (int i = 0; i < n; i++) {
+            // Get the index of the character
+            idx = indices.get(s.charAt(i));
+            
+            // Toggle the bit for the current character to track its frequency parity
+            mask ^= (1 << idx);
+
+            // Add the number of substrings that have this exact bitmask
+            count += mp.getOrDefault(mask, 0);
+
+            // Check for masks that differ by exactly one bit (odd/even frequency)
+            for (int j = 0; j < 10; j++) {
+                count += mp.getOrDefault(mask ^ (1 << j), 0);
+            }
+
+            // Increase the frequency of the current mask
+            mp.put(mask, mp.getOrDefault(mask, 0) + 1);
+        }
+
+        return count;
+    }
+}
