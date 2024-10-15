@@ -1,0 +1,26 @@
+/*
+* Leetcode ;- (2938)
+* T.C :- O(N)
+* S.C :- O(1)
+* Approach :- Think making all 0s to the left then all 1s will be at the right always
+* Steps :- count at each index how many steps we required to send this 0 to the left
+* moves = (idx-count0) beacuse already count 0s are in left why to move those 0s just 
+* put curr 0 to the right of other zeroes already at left. 
+*/
+class Solution {
+    public long minimumSteps(String s) {
+        long moves = 0;
+        int count0 = 0, n=s.length();
+        
+        for(int idx=0 ; idx<n ; idx++){
+            char ch = s.charAt(idx);
+            
+            if(ch == '0'){
+                moves += (idx-count0);
+                count0++ ;
+            }
+        }
+        
+        return moves;
+    }
+}
