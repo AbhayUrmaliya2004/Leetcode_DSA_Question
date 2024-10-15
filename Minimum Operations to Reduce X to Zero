@@ -1,0 +1,49 @@
+/*
+* Leetcode :- (1658)
+* T.C :- O(N) 
+* S.C :- O(N)
+* Intuition :- Basically we have option to take either the leftmost or the rightmost 
+* element from the array, consider we have taken some part(some elements) from the left 
+* side and some elements from the right side, 
+* by doing this there will be subarray in between which will have remSum = (totalSum-x)
+* So the problem becomes FIND THE SUBARRAY HAVE SUM remSum.
+* since we have to minimise our operation we will take the maxLength subarray which will
+* have sum = remSum and at last return nums.length-maxLen which will give the min no of 
+* operation or element to take to become the sum equal to x
+*/
+class Solution {
+    public int minOperations(int[] nums, int x) {
+        // find totalSum of the array
+        int totalSum = 0;
+        for(int num : nums){
+            totalSum += num;
+        }
+        
+        // need to take the maximum length subarray with sum = totaSum-x
+        int currSum = 0, maxLength = -1, n=nums.length, remSum=totalSum-x ;
+        // like problem subaarray with sum x
+        Map<Integer, Integer> mp = new HashMap<>();
+        mp.put(0, -1);
+        
+        for(int i=0 ; i<n ; i++){
+            currSum += nums[i];
+            
+            // need to maximise the length so don't update if we get this currSum value previously
+            if(!mp.containsKey(currSum)){
+                mp.put(currSum, i);
+            }
+
+            // checking to t=get the subarray with sum equal to remSum
+            if(mp.containsKey(currSum-remSum)){
+                maxLength = Math.max(maxLength, i-mp.get(currSum-remSum));
+            }
+        
+        }
+        
+        // returning the minimum elements to be taken in order to make the sum equal to x
+        return maxLength==-1 ? -1 : n-maxLength;
+    }
+}
+
+
+
