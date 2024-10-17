@@ -1,0 +1,48 @@
+/*
+* Leetcode :- (670)
+* T.C :- O(len(num)), at max len(num) can be 8
+* S.C :- O(len(num)), at max len(num) can be 8
+*/
+class Solution {
+    public int maximumSwap(int num) {
+        List<Integer> list = new ArrayList<>(), temp=new ArrayList<>();
+        
+        int n = num, rem, len = 0;
+        while(n > 0){
+            rem = n%10;
+            n /= 10;
+            list.add(rem);
+            temp.add(rem); // temp to sort and then compare
+            len++ ;
+        }
+        
+        Collections.reverse(list);
+        int idx = 0;
+        Collections.sort(temp, Comparator.reverseOrder());
+        while(idx < len && list.get(idx) == temp.get(idx)){
+            idx++ ;
+        }
+        
+        if(idx == len)return num;
+//        System.out.println(list+" "+temp+" "+idx);
+        if(idx < len){
+            int j = idx+1, lastIdx = -1;
+            while(j < len){
+                if(list.get(j) == temp.get(idx)) lastIdx = Math.max(lastIdx, j);
+                j++ ;
+            }
+            swap(list, idx, lastIdx);
+        }
+        
+        int ans = 0;
+        for(int digit : list){
+            ans = ans*10+digit;
+        }
+        return ans;
+    }
+    void swap(List<Integer> list, int i, int j){
+        int temp = list.get(i);
+        list.set(i, list.get(j));
+        list.set(j, temp);
+    }
+}
