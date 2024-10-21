@@ -9,19 +9,17 @@ class Solution {
     }
     public int helper(String s, int idx, Set<String> set){
         if(idx == s.length()) return 0;
-        
+
         int maxi = -1, n=s.length();
-        for(int i=idx ; i<n ; i++){
-            for(int j=i+1 ; j<=n ; j++){
-                String substr = s.substring(i, j);
-                if(!set.contains(substr)){
-                    set.add(substr);
-                    int ans = helper(s, j, set);
-                    if(ans != -1){
-                        maxi = Math.max(maxi, ans);
-                    } 
-                    set.remove(substr);
-                }
+        for(int j=idx+1 ; j<=n ; j++){
+            String substr = s.substring(idx, j);
+            if(!set.contains(substr)){
+                set.add(substr);
+                int ans = helper(s, j, set);
+                if(ans != -1){
+                    maxi = Math.max(maxi, ans);
+                } 
+                set.remove(substr);
             }
         }
         
