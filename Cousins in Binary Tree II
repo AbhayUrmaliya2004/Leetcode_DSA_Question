@@ -1,0 +1,59 @@
+class Solution {
+    public TreeNode replaceValueInTree(TreeNode root) {
+        Map<TreeNode, TreeNode> parMap = new HashMap<>();
+        List<Integer> sumAtLevel = new ArrayList<>();
+        Map<TreeNode, Integer> parSum = new HashMap<>();
+        // parent ke child nodes ka sum or siblings ka sum
+        parSum.put(root, root.val);
+        // head is parent node or root 
+        TreeNode head = new TreeNode(-1); // temp head
+        parMap.put(root, head);
+    
+        head.left = root;
+        setSumAndParent(root, head, 0, parMap, sumAtLevel, parSum);
+//        System.out.println(sumAtLevel);
+        // Traverse to the whole tree and change the value of the nodes
+        Queue<Pair<TreeNode, Integer>> que = new LinkedList<>();
+        que.add(new Pair<>(root, 0));
+        
+        while(!que.isEmpty()){
+            Pair<TreeNode, Integer> pair = que.poll();
+            int level = pair.getValue();
+            TreeNode curr = pair.getKey();
+            
+            // totalSum of all nodes at this level - sum of the sibling nodes
+            int newSum = sumAtLevel.get(level)-parSum.get(curr);
+//            System.out.println(curr.val+" "+level+" "+sumAtLevel.get(level)+" "+parSum.get(curr));
+            curr.val = newSum;
+            
+            if(curr.left != null) que.add(new Pair<>(curr.left, level+1));
+            if(curr.right != null) que.add(new Pair<>(curr.right, level+1));
+        }
+        
+        return root;
+    }
+    public void setSumAndParent(TreeNode node, TreeNode parNode, int level, Map<TreeNode, TreeNode> parMap,
+                                List<Integer> sumAtLevel, Map<TreeNode, Integer> parSum){
+        // set the sum of nodes at their level
+        while(sumAtLevel.size() <= level){
+            sumAtLevel.add(0);
+        }
+        sumAtLevel.set(level, sumAtLevel.get(level)+node.val);
+        
+        // set the parMap
+        parMap.put(node, parNode);
+        // find the sum of child nodes and set parSum map
+        int sum = 0;
+        if(node.left != null) sum+=node.left.val;
+        if(node.right != null) sum+=node.right.val;
+        
+        if(node.left != null){
+            parSum.put(node.left, sum); // sum of all siblings
+            setSumAndParent(node.left, node, level+1, parMap, sumAtLevel, parSum);
+        }
+        if(node.right != null){
+            parSum.put(node.right, sum); // sum of all siblings
+            setSumAndParent(node.right, node, level+1, parMap, sumAtLevel, parSum);
+        }
+    }
+}
