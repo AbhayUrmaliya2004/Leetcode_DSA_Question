@@ -1,0 +1,21 @@
+/*
+* Leetcode :- (951)
+* T.C :- O(2*N) Faster than 100%, as we have two option at each node either check are these subtrees equal or if can * made equal after swap
+* S.C :- O(N) at max for space complexity 
+*/
+class Solution {
+    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
+        if(root1 == null || root2 == null){
+            if(root1 != root2) return false;
+            return true;
+        }
+        if(root1.val != root2.val) return false;
+        
+        boolean bool1 = flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right);
+        if(bool1) return true;
+        
+        // consider I have changed the nodes if give correct answer on both then true  
+        boolean bool2 = flipEquiv(root1.right, root2.left) && flipEquiv(root1.left, root2.right);
+        return bool2;
+    }
+}
