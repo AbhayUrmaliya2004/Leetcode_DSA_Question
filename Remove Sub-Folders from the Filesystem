@@ -1,0 +1,67 @@
+/*
+* Leetcode :- (1233)
+* T.C :- O(NlogN)
+* O(N*len(N))
+*/
+public class Trie {
+    Map<String, Trie> mp;
+    boolean isEnd;
+
+    public Trie() {
+        isEnd = false;
+        mp = new HashMap<>();
+    }
+
+    public void insert(String s, Trie node) {
+        mp.put(s, node);
+    }
+
+    public Trie get(String s) {
+        return mp.get(s);
+    }
+
+    public boolean contains(String s) {
+        return mp.containsKey(s);
+    }
+
+    public void setEnd() {
+        this.isEnd = true;
+    }
+
+    public boolean insertWord(String word) {
+        Trie node = this;
+        String[] arr = word.split("/");
+
+        for (String s : arr) {
+            if (s.equals("")) continue; // Skip empty parts
+
+            if (node.isEnd) {
+                return false; // Skip insertion for subfolders
+            }
+
+            if (!node.contains(s)) {
+                node.insert(s, new Trie());
+            }
+            node = node.get(s);
+        }
+        node.setEnd();
+        return true; // Main folder added
+    }
+}
+
+class Solution {
+    public List<String> removeSubfolders(String[] folder) {
+        Trie trie = new Trie();
+        List<String> ans = new ArrayList<>();
+
+        Arrays.sort(folder); // Sort folders to process parents before children
+
+        for (String s : folder) {
+            if (trie.insertWord(s)) {
+                ans.add(s); // Add only main folders
+            }
+        }
+
+        return ans;
+    }
+}
