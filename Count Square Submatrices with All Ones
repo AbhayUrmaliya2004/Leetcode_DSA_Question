@@ -1,0 +1,57 @@
+/*
+* Leetcode :- O(N)
+* T.C :- O(M*N*min(M,N))
+* S.C :- O(M*N)
+*/
+class Solution{
+    public int countSquares(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int[][] rowPre = new int[m][n], colPre = new int[m][n];
+        
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                rowPre[i][j] += ((i>0) ? rowPre[i-1][j] : 0)+matrix[i][j];
+                colPre[i][j] += ((j>0) ? colPre[i][j-1] : 0)+matrix[i][j];
+            }
+        }
+        
+        int count = 0;
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(matrix[i][j] == 1) count += helper(i, j, rowPre, colPre);
+//                System.out.println("i: "+i+" j : "+j+" count : "+count);
+            }
+        }
+        return count;
+    }
+    
+    public int helper(int row, int col, int[][] rowPre, int[][] colPre){
+        int count = 1; // counted itself
+        
+        int strow=row-1 , stcol=col-1, len=2;
+        int rowCount, colCount;
+        while(strow>=0 && stcol>=0){
+            rowCount = rowPre[row][stcol]-((strow>0) ? rowPre[strow-1][stcol] : 0);
+            colCount = colPre[strow][col]-((stcol>0) ? colPre[strow][stcol-1] : 0);
+            System.out.println("rowCount : "+rowCount+" colCount : "+colCount);
+            if(rowCount != len || colCount != len) break;
+            
+            strow--;
+            stcol--;
+            len++ ; // check for large length of square 
+            count++ ; // square of len*len can be formed
+        }
+        return count;
+    }
+}
+
+
+
+
+
+
+
+
+
