@@ -1,0 +1,40 @@
+/*
+* T.C :- O(N^2)
+* S.C :- O(N^2)
+* Intuition :- Create Longest Increasing Subsequence from front and back and then at each index 
+* count the total maxLen that can be achieved for a mountain array and at last return n-maxlen
+* beacuse eventually we need to find the minimum number of deletions
+*/
+class Solution {
+    public int minimumMountainRemovals(int[] arr) {
+        int n=arr.length;
+        int[] lis = new int[n], lds=new int[n];
+        
+        // create Longest increasing subsequence
+        for(int i=0 ; i<n ; i++){
+            int maxlen = 0;
+            for(int j=0; j<i ; j++){
+                if(arr[j] < arr[i]) maxlen = Math.max(maxlen, lis[j]);
+            }
+            lis[i] = 1+maxlen;
+        }
+        
+        // longest increasing subsequence from back at that ith index
+        for(int i=n-1 ; i>=0 ; i--){
+            int maxlen=0;
+            for(int j=n-1 ; j>i ; j--){
+                if(arr[i]>arr[j]) maxlen = Math.max(maxlen, lds[j]);
+            }
+            lds[i] = 1+maxlen;
+        }
+        
+        // find the total length of the mountain array
+        int ans = Integer.MAX_VALUE;
+        for(int i=0 ; i<n ; i++){
+            if(lis[i]==1 || lds[i]==1) continue;
+            ans = Math.min(ans, n-(lis[i]+lds[i]-1)); // -1 because curr is counted twice
+        }
+        
+        return ans;
+    }
+}
