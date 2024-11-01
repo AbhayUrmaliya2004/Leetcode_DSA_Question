@@ -1,0 +1,38 @@
+/*
+* Codechef :- Chef and Bulb Invemtion
+* T.C :- O(1)
+* S.C :- O(1)
+*/
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Codechef
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while(t-- > 0){
+            int n=sc.nextInt();
+            int p=sc.nextInt();
+            int k=sc.nextInt();
+            
+            int ans = helper(n, p, k);
+            System.out.println(ans);
+        }
+	}
+	
+	public static int helper(int nGas, int target, int k){
+	    int rem = target/k;
+	    int mod = target%k;
+	    // number of rounds
+	    int rounds = (nGas-1)/k;
+	    int extraRound = (nGas-1)%k;
+	    
+	    int extra = Math.min(mod-1, extraRound);
+//	    System.out.println(rem+" "+mod+" "+rounds+" "+extraRound+" "+extra);
+	    int days = (rounds*mod)+extra+(rem+1);
+	    return 1+days; // added 1 for 0
+	}
+}
