@@ -1,0 +1,23 @@
+/*
+* Leetcode :- (1957)
+* T.C :- O(N)
+* S.C :- O(N) for strinbuilder
+*/
+class Solution {
+    public String makeFancyString(String s) {
+        StringBuilder sb = new StringBuilder();
+        int n=s.length(), i=0, count=0;
+        
+        while(i<n){
+            if(i==0 || s.charAt(i) == s.charAt(i-1)){
+                count++;
+            }else{
+                count=1;
+            }
+
+            if(count < 3) sb.append(s.charAt(i)); 
+            i++;
+        }
+        return sb.toString();
+    }
+}
