@@ -1,0 +1,39 @@
+/*
+* Leetcode :- (1829)
+* T.C :- O(N*32) ~= O(N)
+* S.C :- O(N) just for creating the preXor
+* Intuition :- create prefix xor array to minimise the processing each time 
+* and then consider removing one element from back and then process the query 
+* by setting the bit upto max bit to the number 'k'(num) which will maximise the xor
+*/
+class Solution {
+    public int[] getMaximumXor(int[] nums, int maximumBit) {
+        int n = nums.length;
+        int[] preXor = new int[n], ans = new int[n];
+        
+        // finding the prefix xor
+        int xor = 0;
+        for(int i=0 ; i<n ; i++){
+            xor ^= nums[i];
+            preXor[i]=xor;
+        }
+        
+        // process the query at each query we remove the last element
+        for(int i=0 ; i<n ; i++){
+            ans[i] = processQuery(preXor[n-1-i], maximumBit);
+        }
+        
+        return ans;
+    }
+    public int processQuery(int val, int bit){
+        int num=0;
+        // set the 0 bit to 1 which will maximise the xor
+        for(int i=0 ; i<bit ; i++){
+            if((val & (1<<i)) == 0){
+                // set the bit for number
+                num = (num | (1<<i));
+            }
+        }
+        return num;
+    }
+}
