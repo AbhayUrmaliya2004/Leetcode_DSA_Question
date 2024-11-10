@@ -1,0 +1,58 @@
+/*
+* Leetcode :- (3097)
+* Intuition :- Similarly as subarray with sum k but the problem is that we can't add and remove
+* the value with 'OR' operation as in 'SUM' operation thus we will create a 32 sized array means * orValue which is in the form of countBits and not number so we can add and remove contribution * of nums[j] and remove nums[i] but increasing and decreasing bits and then the problem reduces
+* to subarray with sum k 
+*/
+class Solution {
+    public int minimumSubarrayLength(int[] nums, int k) {
+        int ans = (int)1e9;
+        
+        // two pointer approach
+        int []orValue = new int[32];
+        int i=-1, j=0, n=nums.length;
+        
+        while(i<n && i<j && j<=n){
+            
+            if(getNumber(orValue) >= k){
+                ans = Math.min(ans, j-i);
+            }
+            
+            if(j<n && getNumber(orValue) < k){
+                // do the or operation
+                addContribution(orValue, nums[j]);
+                j++;
+            }else{
+                if(i>=0) removeContribution(orValue, nums[i]);
+                i++;
+            }    
+//            System.out.println("i : "+i+" j : "+j+" num : "+Arrays.toString(orValue));
+        }
+        
+        return ans==(int)1e9 ? -1 : ans;
+    }
+    
+    int getNumber(int[] orValue){
+        int num = 0;
+        for(int i=0 ; i<32 ; i++){
+            if(orValue[i] > 0) num += (int)Math.pow(2, i);
+        }
+        return num;
+    }
+    
+    void addContribution(int[] orValue, int num){
+        for(int i=0 ; i<32 ; i++){
+            if((num & (1<<i)) > 0){
+                orValue[i]++;
+            }
+        }
+    }
+    
+    void removeContribution(int[] orValue, int num){
+        for(int i=0 ; i<32 ; i++){
+            if((num & (1<<i)) > 0){
+                orValue[i]--;
+            }
+        }
+    }
+}
