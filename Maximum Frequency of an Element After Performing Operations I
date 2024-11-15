@@ -1,0 +1,66 @@
+/*
+* Leetcode :- 3346
+* Intuition :- Line Sweep Approach
+*/
+class Solution {
+    class Event{
+        int x;
+        int sign;
+        public Event(int x, int sign){
+            this.x = x;
+            this.sign = sign;
+        }
+        public String toString(){
+            return "{"+x+", "+sign+"} ";
+        }
+    }
+    
+    public int maxFrequency(int[] nums, int k, int numOperations) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        
+        List<Event> events = new ArrayList<>();
+        Set<Integer> criticalPoints = new HashSet<>();
+        Map<Integer, Integer> freMap = new HashMap<>();
+        
+        for(int num : nums){
+            freMap.put(num, freMap.getOrDefault(num, 0)+1);
+            int st = num-k;
+            int end = num+k;
+            
+            events.add(new Event(st, +1));
+            events.add(new Event(end+1, -1));
+            
+            criticalPoints.add(num);
+            criticalPoints.add(end+1);
+            criticalPoints.add(st);
+        }
+        
+        // this will help to find overlapping interval 
+        events.sort(Comparator.comparingInt(e->e.x));
+        // count the number of overlapping intervals and then required operation to make the 
+        // maximum possible freq
+        
+        List<Integer> sortedPoints = new ArrayList<>(criticalPoints);
+        Collections.sort(sortedPoints);
+        // System.out.println(events);
+        // System.out.println(sortedPoints);
+        
+        int maxFrePossible = 1, eventId=0, overlappingCount = 0;
+        for(int x : sortedPoints){
+            while(eventId < events.size() && events.get(eventId).x <= x){
+                overlappingCount += (events.get(eventId).sign == 1) ? 1 : -1 ;
+                eventId++ ;
+            }
+            
+            int currPointFre = freMap.getOrDefault(x, 0);
+            int currFrePossible = currPointFre + Math.min(numOperations, Math.max(0, overlappingCount-currPointFre));
+            
+            maxFrePossible = Math.max(maxFrePossible, currFrePossible);
+        }
+        
+        return maxFrePossible;
+    }
+}
+
+
