@@ -1,0 +1,25 @@
+/*
+* Leetcode :- (3345)
+* T.C :- O(1) at max 10 iteration
+* S.C :- O(1)
+*/
+class Solution {
+    public int smallestNumber(int n, int t) {
+        while(n%10 != 0){
+            if(productOfDigits(n) % t == 0) return n;
+            n++ ;
+        }
+        
+        return n;
+    }
+    public int productOfDigits(int n){
+        int ans = 1;
+        while(n > 0){
+            int rem = n%10;
+            ans=ans*rem;
+            n/=10;
+        }
+        
+        return ans;
+    }
+}
