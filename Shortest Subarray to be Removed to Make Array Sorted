@@ -1,0 +1,82 @@
+/*
+* Leetcode :- (1574)
+* Intuition :- find PreSortedArray from starting and suffSortedArray from end
+* then [1,2,3,10, 4, 2, 3, 5] we will get 
+* preArray as [1,2,3,10] and suffArraySorted as [2,3,5]
+* then traverse in prefix array and find in suffix array for correct addition like 
+* if we take 1 from preArray we can take 2,3,5 from suffix array and then
+* traverse in suffix and findInPrefix and maximise the length of the sorted array 
+* at last remove the extra element by arr.length-maxLengthOfSortedArray
+* T.C :- O(NlogN) , logN for binnary search
+* S.C :- O(1) for function call beacause even in function we are not creating extra space just the 
+* space taken by function call which is constant 
+*/
+class Solution {
+    public int findLengthOfShortestSubarray(int[] arr) {
+        int n = arr.length;
+        int preSortedIdx = 0, suffSortedIdx=n-1;
+        
+        // sorted prefix
+        for(int i=1 ; i<n ; i++){
+            if(arr[i] < arr[i-1]) break;
+            preSortedIdx = i;
+        }
+        
+        // sorted suffix 
+        for(int i=n-2 ; i>=0 ; i--){
+            if(arr[i] > arr[i+1]) break;
+            suffSortedIdx = i;
+        }
+        if(preSortedIdx == n-1) return 0;// no need to remove already sorted
+        
+//        System.out.println(preSortedIdx+" "+suffSortedIdx);
+        int ans = 1; // we can make atleast 1 size array need to maximise this
+        // then traverse in one prefix array and find the elements sorted in suffix array
+        for(int i=0 ; i<=preSortedIdx ; i++){
+            int noOfElement = findInSuffix(arr, arr[i], suffSortedIdx, n-1);
+            ans = Math.max(ans, i+1+noOfElement); // i+1 is length of prefix Array
+//            System.out.println(arr[i]+" suff noOfElement : "+noOfElement);
+        }
+        
+        // then traverse in one prefix array and find the elements sorted in suffix array
+        for(int i=n-1 ; i>=suffSortedIdx ; i--){
+            int noOfElement = findInPrefix(arr, arr[i], 0, preSortedIdx);
+            ans = Math.max(ans, n-i+noOfElement); // n-i is length of suffix array
+//            System.out.println(arr[i]+" pre noOfElement : "+noOfElement);
+        }
+        
+        return n-ans; // we need to return the minimum required length to remove
+    }
+    public int findInPrefix(int[] arr, int val, int st, int end){
+        int mid, ans=0;
+        
+        while(st <= end){
+            mid = st+(end-st)/2;
+            if(arr[mid] <= val){
+                ans = Math.max(ans, mid+1);
+                st = mid+1;
+            }else{
+                end = mid-1;
+            }
+        }
+        
+        return ans;
+    }
+    public int findInSuffix(int[] arr, int val, int st, int end){
+        int mid, ans=0, n=arr.length;
+        
+        while(st <= end){
+            mid = st+(end-st)/2;
+            if(arr[mid] >= val){
+                ans = Math.max(ans, n-mid);
+                end = mid-1;
+            }else{
+                st = mid+1;
+            }
+        }
+        
+        return ans;
+    }
+}
+
+
