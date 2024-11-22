@@ -1,0 +1,44 @@
+/*
+* Leetcode :- (1072)
+* T.C :- O(M*N)
+* Approach :- We need to make the elements of rows equal so that we need to check how many
+* rows are same either exactly same or complementary same this way. But to maintain count
+* of 0101 and 1010 as same we need method to treat them same to store in map
+* so for my own built hash function , WE WILL MAINTAIN THE ORDER AS 0 AND 1, TO DO THAT
+* IF 1 IS AT FIRST POSITION FLIP THE ROW ELSE NOT FLIP AND THEN CONVERT THE STRING AND STORE IN 
+* HASHMAP   
+*/
+class Solution {
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+        Map<String, Integer> mp = new HashMap<>();
+        
+        int m=matrix.length, n=matrix[0].length;
+        for(int i=0 ; i<m ; i++){
+            String s = convertToString(matrix[i]);
+            mp.put(s, mp.getOrDefault(s, 0)+1);
+        }
+        
+        int max=1;
+        for(int count : mp.values()){
+            max = Math.max(max, count);
+        }
+        
+        return max;
+    }
+    
+    public String convertToString(int[] arr){
+        boolean flip = (arr[0] == 0) ? false : true;
+        
+        StringBuilder sb = new StringBuilder();
+        int n = arr.length;
+        
+        int num;
+        for(int i=0 ; i<n ; i++){
+            num = arr[i];
+            if(flip) num = (num==0)?1:0;
+            sb.append(num+"");
+        }
+        
+        return sb.toString();
+    }
+}
