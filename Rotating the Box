@@ -1,0 +1,79 @@
+/*
+* Leetcode :- (1861)
+* T.C :- O(M*N)
+* S.C :- O(1)
+* Approach :- b/w any obastacle there are some free space and stones so stones will fall down 
+* to cover space in order to do that, this problem reduce to SORT THE '0' AND '1' BALLS BY TWO
+* POINTER METHOD    
+*/
+class Solution {
+    public char[][] rotateTheBox(char[][] box) {
+        int m=box.length, n=box[0].length;
+        
+        for(int i=0 ; i<m ; i++){
+            introduceGravity(box[i]);
+        }
+        
+        
+        // check
+        // for(int i=0 ; i<m ; i++){
+        //     System.out.print(Arrays.toString(box[i])+" ");
+        // }
+        // System.out.println();
+        
+        char[][] ans = new char[n][m];
+        
+        // corrected acc to gravity now rotate it right
+        
+        // to rotate matrix by 90* take col j and row i and row i as column m-i-1
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                ans[j][m-i-1] = box[i][j];
+            }
+        }
+        
+        return ans;
+    }
+    
+    public void introduceGravity(char[] arr){
+        int n = arr.length;
+        int j=n-1, i;
+        
+        while(j>=0){
+            // fix the position of j
+            while(j>=0 && arr[j] == '*') j--;
+            
+            // fix the position of i
+            i = j-1;
+            while(i>=0 && arr[i] != '*') i--;
+            i++ ; // to fix indexing
+            
+            // we get window where some spaces and stones present sort these
+            sortStonesAndSpace(arr, i, j);
+            
+            // for next iteration
+            j = i-1;
+        }
+    }
+    
+    public void sortStonesAndSpace(char[] arr, int i, int j){
+//        System.out.println("sort stones : i: "+i+" j : "+j);
+        while(i<j){
+            while(j>i && arr[j]!='.') j-- ;
+            
+            while(i<j && arr[i] != '#') i++;
+            
+            // swap the i and j
+            swap(arr, i, j);
+            j-- ;
+            i++ ;
+        }
+    }
+    
+    public void swap(char[] arr, int i, int j){
+//        System.out.println("swapping i : "+i+" j : "+j);
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
