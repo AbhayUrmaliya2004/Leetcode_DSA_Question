@@ -1,0 +1,55 @@
+/*
+* Leetcode :- (773)
+* Intuition :- To do the BFS to check all possible ways beacuse of less inputs length
+* and a important thing to remember to store a array like it is visited we used to store it as string 
+* to store the visited curr state
+*/
+class Solution {
+    public int slidingPuzzle(int[][] board) {
+        int[][] nbrs = {{1, 3}, {0,2,4}, {1,5}, {0, 4}, {1,3,5}, {2,4}};
+        
+        StringBuilder sb = new StringBuilder();
+        for(int i=0 ; i<board.length ; i++){
+            for(int j=0 ; j<board[0].length ; j++){
+                sb.append(board[i][j]);
+            }
+        }
+        String initState = sb.toString();
+        String target = "123450";
+        
+        Queue<Pair<String, Integer>> q = new LinkedList<>();
+        Set<String> vis = new HashSet<>();
+        q.add(new Pair<>(initState, 0));
+        vis.add(initState);
+        
+        while(!q.isEmpty()){
+            String currState = q.peek().getKey();
+            int steps = q.peek().getValue();
+            q.poll();
+            
+            if(currState.equals(target)) return steps;
+            
+            int zeroPos = currState.indexOf('0');
+            for(int newPos : nbrs[zeroPos]){
+                String newState = swap(currState, zeroPos, newPos);
+                
+                if(vis.contains(newState)) continue;
+                q.add(new Pair<>(newState, steps+1));
+                vis.add(newState);
+            }
+        }
+        
+        return -1;
+    }
+    
+    public String swap(String s, int i, int j){
+        char[] arr = s.toCharArray();
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        
+        return new String(arr); 
+    }
+}
+
+
