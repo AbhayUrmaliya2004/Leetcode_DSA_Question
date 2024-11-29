@@ -1,0 +1,44 @@
+/*
+* Leetcode :- O(2577)
+* T.C :- O(NlogN), N->(m*n)
+* S.C :- O(m*n = N)
+* Intuition :- Need to reach to the (m-1, n-1) in miinmum time so we can traverse a node if we * our time >= 
+* grid[i][j] 
+*/
+class Solution {
+    public int minimumTime(int[][] grid) {
+        if(grid[0][1] > 1 && grid[1][0] > 1) return -1; // can't reach
+        int m = grid.length, n = grid[0].length;
+        boolean[][] vis = new boolean[m][n];
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)->Integer.compare(a[0], b[0]));
+        // time, row, col
+        pq.add(new int[]{0, 0, 0});
+        
+        int[] drow = {-1, 0, +1, 0};
+        int[] dcol = {0, +1, 0, -1};
+        
+        while(pq.size() > 0){
+            int[] arr = pq.poll();
+            int time = arr[0];
+            int row = arr[1];
+            int col = arr[2];
+            
+            if(row == m-1 && col == n-1) return time;
+            if(vis[row][col]) continue;
+            
+            vis[row][col] = true;
+            
+            for(int i=0 ; i<4 ; i++){
+                int newr = row+drow[i];
+                int newc = col+dcol[i];
+                
+                if(newr<0 || newr>=m || newc<0 || newc>=n || vis[newr][newc]) continue;
+                int cycleType = ((grid[newr][newc]-time)%2==0) ? 1 : 0;
+                pq.add(new int[]{Math.max(grid[newr][newc]+cycleType, time+1), newr, newc});
+            }
+        }
+        
+        return -1;
+    }
+}
