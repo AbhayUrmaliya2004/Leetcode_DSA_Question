@@ -1,0 +1,34 @@
+/*
+* Leetcode :- (2825)
+* T.C :- O(max(m, n)) or O(N) means linear
+* S.C :- O(1)
+* Approach :- Simple approach just check is str2 a subsequence of str1 either by same char or by increasing 
+* char by 1 step like 'a' -> 'b'. Iterate over the indices as idx1 and idx2 and compare the character if 
+* same increase both the indexes else only idx1++ means that this current char at idx1 can't be make equal 
+* to char At str2 at idx2 
+*/
+class Solution {
+    public boolean canMakeSubsequence(String str1, String str2) {
+        if(str2.length() > str1.length()) return false;
+        
+        int idx1 = 0, idx2=0, m=str1.length(), n=str2.length();
+        
+        while(idx1<m && idx2<n){
+            char ch1 = str1.charAt(idx1), ch2 = str2.charAt(idx2);
+            
+            if(ch1 == ch2 || getNextChar(ch1) == ch2){
+                idx1++;
+                idx2++;
+            } else {
+                idx1++ ;
+            }
+        }
+        
+        if(idx2 == n) return true; // can cover string2
+        return false;
+    }
+    private char getNextChar(char ch){
+        if(ch == 'z') return 'a';
+        return (char)(ch+1);
+    }
+}
