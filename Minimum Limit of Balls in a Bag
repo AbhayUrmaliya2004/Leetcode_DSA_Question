@@ -1,0 +1,43 @@
+/*
+* Leetcode :- (1760)
+* Minimising Maxima (Standard Binary Search Queston)
+* T.C :- O(NlogN)
+* S.C :- O(1)
+*/
+class Solution {
+    public int minimumSize(int[] nums, int maxOps) {
+        int left = 1, ans=0, right;
+        for(int num : nums){
+            ans = Math.max(ans, num);
+        }
+        
+        right = ans; // max penalty possible
+        
+        while(left <= right){
+            int mid = left+(right-left)/2;
+            
+            if(isPossible(nums, maxOps, mid)){
+                ans = mid;
+                right = mid-1;
+            } else {
+                left = mid+1;
+            }
+        }
+        
+        return ans;
+    }
+    
+    public boolean isPossible(int[] nums, int maxOps, int maxBalls){
+        int totalOps = 0;
+        for(int num : nums){
+            int ops = (int)Math.ceil((1.0*num)/maxBalls)-1; // -1 to determine no of ops required to make the bags with at max maxBalls
+            totalOps += ops;
+            
+            if(totalOps > maxOps) return false;
+        }
+        
+        return true;
+    }
+}
+
+
