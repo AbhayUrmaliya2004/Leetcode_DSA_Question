@@ -1,0 +1,56 @@
+/*
+* Leetcode :- (1235)
+* T.C :- O(NlogN)
+* S.C :- O(N)
+* Approach :- If we want to take the profit of current job then we have to find the total profit we can earn before 
+* starting this job and thus making a prefix array to store the totalProfitTillNow
+* 1. sort the array according to end
+* 2. iterate the jobs and take the profit of the current job and find the totalProfitBeforeThisJob
+* 3. Update the totalProfitTillNow
+* 4. this way we can find the total profit after doing multiplt jobs one after another
+*/
+class Solution {
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int size = startTime.length;
+        int[][] job = new int[size][3];
+        
+        for(int idx=0 ; idx<size ; idx++){
+            job[idx][0] = startTime[idx];
+            job[idx][1] = endTime[idx];
+            job[idx][2] = profit[idx];
+        }
+        
+        // sort acc to ending time
+        Arrays.sort(job, (job1, job2)->Integer.compare(job1[1], job2[1]));
+        
+        int[] totalProfitTillNow = new int[size];
+        int maxProfit = 0;
+        
+        for(int idx=0 ; idx<size ; idx++){
+            int curProfit = job[idx][2] + findMaxProfitBeforeJob(job, totalProfitTillNow, idx);
+            
+            maxProfit = Math.max(curProfit, maxProfit);
+            totalProfitTillNow[idx] = maxProfit;
+        }
+        
+        return maxProfit;
+    }
+    
+    public int findMaxProfitBeforeJob(int[][] job, int[] totalProfitTillNow, int curIdx){
+        int maxProfit=0;
+        
+        int left=0, right=curIdx-1, mid;
+        while(left <= right){
+            mid = left+(right-left)/2;
+            
+            if(job[mid][1] <= job[curIdx][0]){
+                maxProfit = Math.max(maxProfit, totalProfitTillNow[mid]);
+                left = mid+1;
+            } else {
+                right = mid-1;
+            }
+        }
+        
+        return maxProfit;
+    }
+}
