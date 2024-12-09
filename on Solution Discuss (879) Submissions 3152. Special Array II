@@ -1,0 +1,42 @@
+/*
+* Leetcode :- (3152)
+* T.C :- O(N) 
+* S.C :- O(N) for parity preSum array
+* Apporach :- Basic Intution we need to check that at each query means in a subarray all
+* elements are in parity so just count the in preSum array then O(1) time we can check this
+* for each query 
+*/
+class Solution {
+    public boolean[] isArraySpecial(int[] nums, int[][] queries) {
+        int size = nums.length;
+        
+        // prefix array will count the parity 
+        int[] pre = new int[size];
+        pre[0] = 1; // count
+        
+        for(int idx=1 ; idx<size ; idx++){
+            // if (odd and even) || (even and odd) present then ok increase the count
+            if((nums[idx]%2==0 && nums[idx-1]%2!=0) || (nums[idx]%2!=0 && nums[idx-1]%2==0)){
+                pre[idx] = pre[idx-1]+1;
+            }else{
+                pre[idx] = pre[idx-1];
+            }
+        }
+        
+//        System.out.println(Arrays.toString(pre));
+        // process the queries
+        size = queries.length;
+        boolean[] ans = new boolean[size];
+        
+        int idx=0;
+        for(int []query : queries){
+            if(query[1]-query[0] == pre[query[1]]-pre[query[0]]){
+                ans[idx++] = true;
+            }else{
+                ans[idx++] = false;
+            }
+        }
+        
+        return ans;
+    }
+}
