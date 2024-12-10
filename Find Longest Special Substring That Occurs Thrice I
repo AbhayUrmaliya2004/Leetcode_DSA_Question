@@ -1,3 +1,31 @@
+/*
+* Leetcode :- (2981)
+* T.C :- O(N^2)
+* S.C :- O(N^2)
+*/
+class Solution {
+    public int maximumLength(String s) {
+        Map<String, Integer> mp = new HashMap<>();
+        
+        int size=s.length(), maxi=0;
+        
+        for(int st=0 ; st<size ; st++){
+            for(int end=st+1; end<=size ; end++){
+                if(s.charAt(st) != s.charAt(end-1)) break;
+                
+                String substr = s.substring(st, end);
+                
+                mp.put(substr, mp.getOrDefault(substr, 0)+1);
+                if(mp.get(substr) > 2){
+                    maxi = Math.max(maxi, substr.length());
+                }
+            }
+        }
+
+        return maxi==0 ? -1 : maxi;
+    }
+}
+
 // LeetCode - (2981)
 --> O(N^2)
 class Solution {
