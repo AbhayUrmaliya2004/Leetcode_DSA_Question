@@ -1,0 +1,45 @@
+/*
+* Leetcode :- (2779)
+* T.C :- O(NlogN) beacause of sorting
+* S.C :- O(2*N) = O(N)
+* Approach :- Line Sweep Algorithm
+* create a list and add st = {nums[i]-k, +1}; +1 denoting start
+* add end = {nums[i]+k+1, -1} // -1 denoting end
+* range as 'element' = [st, end) = [nums[i]-k, nums[i]+k+1)
+* then just sort the list and then count 
+* count = (no. of element range started - no. of element range end) and maiximise this by 
+* taking max
+*/
+class Solution {
+    public int maximumBeauty(int[] nums, int k) {
+        int ans = 0, size=nums.length;
+        
+        List<int[]> events = new ArrayList<>();
+        
+        for(int idx=0 ; idx<size ; idx++){
+            int[] st = {nums[idx]-k, +1};
+            int[] end = {nums[idx]+k+1, -1};
+            
+            events.add(st);
+            events.add(end);
+        }
+        
+        Collections.sort(events, new Comparator<>(){
+            public int compare(int[] arr1, int[] arr2){
+                if(arr1[0] == arr2[0]){
+                    return Integer.compare(arr1[1], arr2[1]);  
+                }else{
+                    return Integer.compare(arr1[0], arr2[0]);
+                }
+            }
+        });
+        
+        int count=0;
+        
+        for(int[] arr : events){
+            count += arr[1]; // it will count how many ranges are colliding
+            ans = Math.max(ans, count);
+        }
+        return ans;
+    }
+}
