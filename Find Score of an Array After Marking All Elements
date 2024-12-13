@@ -1,0 +1,38 @@
+class Solution {
+    public long findScore(int[] nums) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<>(){
+            public int compare(int[] arr1, int[] arr2){
+                if(arr1[0] == arr2[0]){ // if same value then based on idx
+                    return Integer.compare(arr1[1], arr2[1]);
+                }else{
+                    return Integer.compare(arr1[0], arr2[0]);
+                }
+            }
+        });
+        
+        int size = nums.length;
+        
+        // initially all are unmarked
+        boolean[] marked = new boolean[size];
+        
+        for(int idx=0 ; idx<size ; idx++){
+            pq.add(new int[]{nums[idx], idx});
+        }
+        
+        long score = 0;
+        
+        while(pq.size() > 0){
+            int[] curr = pq.poll();
+            int curIdx = curr[1];
+            
+            if(marked[curIdx]) continue;
+            
+            score += curr[0];   
+            // mark left and right
+            if(curIdx-1>=0) marked[curIdx-1]=true;
+            if(curIdx+1<size) marked[curIdx+1]=true;
+        }
+        
+        return score;
+    }
+}
