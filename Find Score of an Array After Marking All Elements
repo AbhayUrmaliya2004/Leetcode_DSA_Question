@@ -1,3 +1,9 @@
+/*
+* Leetcode :- (2593)
+* T.C :- O(NlogN)
+* S.C ;- O(N)
+* Apporach :- Just do as the question says
+*/
 class Solution {
     public long findScore(int[] nums) {
         PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<>(){
