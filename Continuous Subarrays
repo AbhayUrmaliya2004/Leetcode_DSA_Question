@@ -1,0 +1,43 @@
+/*
+* Leetcode :- (2762)
+* T.C :- O(NlogN)
+* S.C :- O(N) for creating priority queues
+* Intuition :- If we store the max and min element in the PQ then while removing we need to iterate all the element
+* to remove the left element while shrinking the window thus to avoid that we can store indices of the 
+* elements but can sort on the basis of the values
+* each time we don't need to remove the element before left but can remove when they appear and should not  be in the subarray otherwise if we remove the nums[left] each time from the priorityqueue the time complexity would reach 
+* O(N*N*logN) thus remove only when we tackle those index
+*/
+class Solution {
+    public long continuousSubarrays(int[] nums) {
+        long count = 0;
+        
+        int left=0, right=0, size=nums.length;
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>((a,b)->Integer.compare(nums[a],nums[b])),
+                               maxHeap = new PriorityQueue<>((a,b)->Integer.compare(nums[b],nums[a]));
+        
+        while(right < size){
+            minHeap.add(right);
+            maxHeap.add(right);
+            
+            while(left < right && nums[maxHeap.peek()]-nums[minHeap.peek()] > 2){
+                left++ ;
+                
+                // each time we don't need to remove the element before left but can remove 
+                // when they appear and should mot be im the subarray
+                while(maxHeap.size()>0 && maxHeap.peek() < left){
+                    maxHeap.poll();
+                }
+                
+                while(minHeap.size() > 0 && minHeap.peek() < left){
+                    minHeap.poll();
+                }
+            }
+            
+            count += (right-left+1);
+            right++ ;
+        }
+        
+        return count;
+    }
+}
