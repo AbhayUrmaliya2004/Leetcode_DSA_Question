@@ -1,0 +1,44 @@
+/*
+* Leetcode :- (1792)
+* T.C :- O(NlogN) for PriorityQueue
+* S.C :- O(N) for extra PQ
+* Intuition :- We want our avg. to maximise so for each class ratio should increase and thus
+* need to assign brilliantStudent to the class which will be affecting more to the contribution
+* ex :- incrementing in [1,4]->[2,5] will contribute 15% increase but [1,999]->[2,1000] minute increment
+* So increment in that class which will contribute more
+* "JISKA INCREMENT KARNE ME % KA DIFFERENCE JYADA HOGA USKO INCREMENT KARENGE"
+*/
+class Solution {
+    public double maxAverageRatio(int[][] classes, int extraStudents) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<>(){
+            public int compare(int[] arr1, int[] arr2){
+                // jiska incremnent karne me %ka diff jyada hoga usko increment karenge
+                double incre1 = (double)(arr1[0]+1)/(arr1[1]+1) - (double)arr1[0]/arr1[1];
+                double incre2 = (double)(arr2[0]+1)/(arr2[1]+1) - (double)arr2[0]/arr2[1];
+                
+                return Double.compare(incre2, incre1);
+            }
+        });
+        
+        int size = classes.length;
+        for(int i=0 ; i<size ; i++){
+            pq.add(classes[i]);
+        }
+        
+        while(extraStudents-- > 0 && pq.size()>0){
+            int[] curr = pq.poll();
+            curr[0]++ ;
+            curr[1]++ ;
+            pq.add(curr);
+        }
+        
+        double total = 0;
+        
+        while(pq.size() > 0){
+            total += ((double)pq.peek()[0]/pq.peek()[1]);
+            pq.poll();
+        }
+        
+        return total/size;
+    }
+}
