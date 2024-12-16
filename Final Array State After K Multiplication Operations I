@@ -1,0 +1,51 @@
+/*
+* Leetcode :- (3264)
+* T.C :- O(NlogN)
+* S.C :- O(N)
+*/
+class Solution {
+    public int[] getFinalState(int[] nums, int k, int multiplier) {
+        if(multiplier == 1) return nums;
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        //  value ,  indices
+        Map<Integer, PriorityQueue<Integer>> mp = new HashMap<>();
+        
+        int size = nums.length;
+        for(int idx=0 ; idx<size ; idx++){
+            int num = nums[idx];
+            pq.add(num);
+            if(!mp.containsKey(num)){
+                mp.put(num, new PriorityQueue<>());
+            }
+            
+            mp.get(num).add(idx);
+        }
+        while(k-- > 0 && pq.size()>0){
+            int top = pq.peek();
+            // do the required operation
+            operation(top, mp, multiplier, pq, nums);
+        }
+        
+        return nums;
+    }
+    public void operation(int top, Map<Integer, PriorityQueue<Integer>> mp, int multiplier, PriorityQueue<Integer> pq, int[] nums){
+        int newNum = top*multiplier;
+        
+        // change the frequency
+        int curIdx = mp.get(top).poll(); // remove the smallest idx of curr element as its value is changing
+        
+        pq.poll(); // remove the element
+        if(mp.get(top).size() == 0){ // if size is 0 then remove from mp
+            mp.remove(top);
+        }
+        
+        nums[curIdx] = newNum;
+        // increase the frequency of the newNum
+        if(!mp.containsKey(newNum)){
+            mp.put(newNum, new PriorityQueue<>());
+        }
+        mp.get(newNum).add(curIdx);
+        pq.add(newNum);
+    }
+}
