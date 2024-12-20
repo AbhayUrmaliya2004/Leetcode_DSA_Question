@@ -1,0 +1,55 @@
+/*
+* Leetcode :- (2415)
+* T.C :- O(N)
+* S.C :- O(N) 
+* Intuition :- Just Store the odd level nodes in arraylist and the indices in we are currently
+* while filling the arraylist with nodes increase the index 
+* while filling the reverse values with nodes values decrease the index
+* this way we don't need to sort the arrays 
+* ~NOTE :- THIS WILL ALSO WORK FOR ANY BINARY TREE NOT NECESSARY PERFECT BINARY TREE~
+*/
+class Solution {
+    public TreeNode reverseOddLevels(TreeNode root) {
+        List<List<Integer>>oddLevelNodes = new ArrayList<>();
+        List<Integer> curLevelIdx = new ArrayList<>();
+        
+        // fill the ArrayList
+        fillArrayList(root, oddLevelNodes, curLevelIdx, 0);
+        
+        // reverse the odd level nodes
+        reverseTheArray(root, oddLevelNodes, curLevelIdx, 0);
+        
+        return root;
+    }
+    public void fillArrayList(TreeNode root, List<List<Integer>> oddLevelNodes, List<Integer> curLevelIdx, int curLevel){
+        if(root == null) return;
+        
+        if(curLevel%2 !=0){
+            int idx = curLevel/2;
+            if(idx >= oddLevelNodes.size()){
+                oddLevelNodes.add(new ArrayList<>());
+                curLevelIdx.add(0);
+            }
+            
+            oddLevelNodes.get(idx).add(root.val);
+            curLevelIdx.set(idx, curLevelIdx.get(idx)+1);
+        }
+        
+        fillArrayList(root.left, oddLevelNodes, curLevelIdx, curLevel+1);
+        fillArrayList(root.right, oddLevelNodes, curLevelIdx, curLevel+1);
+    }
+    
+    public void reverseTheArray(TreeNode root, List<List<Integer>> oddLevelNodes, List<Integer> curLevelIdx, int curLevel){
+        if(root == null) return;
+        
+        if(curLevel%2 !=0){
+            int idx = curLevel/2;
+            curLevelIdx.set(idx, curLevelIdx.get(idx)-1);
+            // change the value of the odd level root node
+            root.val = oddLevelNodes.get(idx).get(curLevelIdx.get(idx));
+        }
+        
+        reverseTheArray(root.left, oddLevelNodes, curLevelIdx, curLevel+1);
+        reverseTheArray(root.right, oddLevelNodes, curLevelIdx, curLevel+1);
+    }
+}
