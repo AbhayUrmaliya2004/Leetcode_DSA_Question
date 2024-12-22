@@ -1,0 +1,25 @@
+/*
+* Leetcode :- (3396) 
+* T.C :- O(N) Faster than 100%
+* S.C :- O(N) Better than 100% in memory
+* Intuition :- Iterate from back and if you get the repeated element means till here you need
+* to remove the elements from the arr just calculate no. of Operations required and return
+*/
+class Solution {
+    public int minimumOperations(int[] nums) {
+        int lastIdx = -1;
+        
+        Set<Integer> set = new HashSet<>();
+        for(int idx=nums.length-1 ; idx>= 0 ; idx--){
+            if(set.contains(nums[idx])){ // afer this elements are repeating 
+                lastIdx = idx;
+                break;
+            }
+            
+            set.add(nums[idx]);
+        }
+        
+        if(lastIdx == -1) return 0;
+        return ((lastIdx+1)%3 == 0) ? (lastIdx+1)/3 : lastIdx/3+1;
+    }
+}
