@@ -1,0 +1,20 @@
+/*
+* Leetcode :- (494)
+* T.C :- O(2^N)
+* S.C :- O(N) for call stack
+*/ 
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        return helper(nums, target, 0, 0, 0);
+    }
+    public int helper(int[] nums, int target, int idx, int posSum, int negSum){
+        if(idx == nums.length){
+            return posSum-negSum == target ? 1 : 0;
+        }
+        
+        int assignPos = helper(nums, target, idx+1, posSum+nums[idx], negSum);
+        int assignNeg = helper(nums, target, idx+1, posSum, negSum+nums[idx]);
+        
+        return assignPos+assignNeg;
+    }
+}
