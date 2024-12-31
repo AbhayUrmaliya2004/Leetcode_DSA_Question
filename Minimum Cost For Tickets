@@ -1,0 +1,47 @@
+/*
+* Leetcode :- (983)
+* T.C :- O(N), Faster than 100% 
+* as N for traversal or logN sometimes for travel with single pass
+* S.C :- O(N), N for call stack   
+* Intuition :- Simple intuition try every possibility and return the ans with lowest cost
+* Optimisation :- with singles pass we can travel for next 7 or 30 days so search
+* the idx where we have to take ticket again with Binary Search as days are sorted
+*/
+class Solution {
+    public int mincostTickets(int[] days, int[] costs) {
+        int[]dp = new int[days.length];
+        Arrays.fill(dp, -1);
+
+        return helper(days, 0, costs, dp);
+    }
+
+    public int helper(int[] days, int idx, int[] costs, int[] dp){
+        if(idx >= days.length) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        int dayPass = costs[0]+helper(days, idx+1, costs, dp);
+        int weekPass = costs[1]+helper(days, passUpto(days, idx, 7), costs, dp);
+        int monthPass = costs[2]+helper(days, passUpto(days, idx, 30), costs, dp);
+
+        int minCost = Math.min(dayPass, Math.min(weekPass, monthPass));
+        return dp[idx] = minCost;
+    }
+
+    public int passUpto(int[] days, int idx, int pass){
+        int st = idx+1, end = days.length-1, mid;
+        int maxLimit = days[idx]+pass-1; // upto which date we can travel
+
+        while(st <= end){
+            mid = st+(end-st)/2;
+
+            if(days[mid] <= maxLimit){
+                st = mid+1;
+            } else {
+                end = mid-1;
+            }
+        }
+
+        return st; // from this dayIdx we have to take passes again
+    }   
+}
