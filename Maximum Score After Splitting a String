@@ -1,0 +1,23 @@
+/*
+* Leetcode :- (1422)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int maxScore(String s) {
+        int count1 = 0;
+        for(int idx=0 ; idx<s.length() ; idx++){
+            if(s.charAt(idx) == '1') count1++;
+        }
+
+        int count0=0, score=0;
+        for(int idx=0 ; idx<s.length()-1 ; idx++){
+            if(s.charAt(idx) == '0') count0++ ;
+            else count1-- ; 
+
+            score = Math.max(score, count0+count1);
+        }
+
+        return score;
+    }
+}
