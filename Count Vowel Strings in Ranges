@@ -1,0 +1,42 @@
+/*
+* Leetcode :- (2559)
+* T.C :- O(N)
+* S.C :- O(N) for prefix sum array
+*/ 
+class Solution {
+    public int[] vowelStrings(String[] words, int[][] queries) {
+        int size = words.length;
+        int[] preMax = new int[size];
+        
+        for(int idx=0 ; idx<size ; idx++){
+            if(startAndEndWithVowel(words[idx])){
+                preMax[idx] = 1+((idx>0) ? preMax[idx-1] : 0);
+            } else {
+                preMax[idx] = (idx>0) ? preMax[idx-1] : 0;
+            }
+        }
+
+        size = queries.length;
+        int[] ans = new int[size];
+
+        for(int idx=0 ; idx<size ; idx++){
+            int left = queries[idx][0], right = queries[idx][1];
+            ans[idx] = preMax[right] - ((left>0) ? preMax[left-1] : 0);
+        }
+
+        return ans;
+    }
+    public boolean startAndEndWithVowel(String s){
+        char first = s.charAt(0);
+        if(!(first == 'a' || first == 'e' || first == 'i' || first == 'o' || first == 'u')){
+            return false;
+        }
+
+        char last = s.charAt(s.length()-1);
+        if(!(last == 'a' || last == 'e' || last == 'i' || last == 'o' || last == 'u')){
+            return false;
+        }
+        
+        return true;
+    }
+}
