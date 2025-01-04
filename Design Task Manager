@@ -1,0 +1,99 @@
+/*
+* Leetcode :- (3408)
+* Implementation Based 
+*/
+class TaskManager {
+    
+    Map<Integer, Map<Integer, Integer>> mpUser = new HashMap<>();
+    Set<Integer> removedTask = new HashSet<>();
+    Map<Integer, Integer> taskToUser = new HashMap<>();
+     // pq me taskId, Priority
+    PriorityQueue<int[]> pqTask = new PriorityQueue<>(new Comparator<>(){
+        public int compare(int[] a, int []b){
+            if(a[1] == b[1]) return Integer.compare(b[0], a[0]); // Break ties by taskId (ascending)
+            return Integer.compare(b[1], a[1]); // Higher priority first
+        }
+    });
+    
+    public TaskManager(List<List<Integer>> tasks) {
+        for(var task : tasks){
+            int user=task.get(0), taskId=task.get(1), priority=task.get(2);
+            
+            if(!mpUser.containsKey(user)){
+                mpUser.put(user, new HashMap<>());
+            }
+            
+            mpUser.get(user).put(taskId, priority);
+            
+            // add into the pqTask
+            pqTask.add(new int[]{taskId, priority});
+            // taskToUser 
+            taskToUser.put(taskId, user);            
+        }
+    }
+    
+    public void add(int userId, int taskId, int priority) {
+        if(!mpUser.containsKey(userId)){
+            mpUser.put(userId, new HashMap<>());
+        }
+        
+        mpUser.get(userId).put(taskId, priority);
+        
+        // update the PQ and taskToUser
+        pqTask.add(new int[]{taskId, priority});
+        taskToUser.put(taskId, userId);
+        
+        if(removedTask.contains(taskId)){
+            removedTask.remove(taskId);
+        }
+    }
+    
+    public void edit(int taskId, int newPriority) {
+        // firstly check
+        int userId = taskToUser.get(taskId);
+        mpUser.get(userId).put(taskId, newPriority); // Update priority in mpUser
+        pqTask.add(new int[]{taskId, newPriority}); // Add the updated task to PQ
+    }
+    
+    public void rmv(int taskId) {
+        removedTask.add(taskId);
+    }
+    
+    public int execTop() {
+        while (!pqTask.isEmpty()){
+            int[] topTask = pqTask.poll();
+            int taskId = topTask[0];
+            int priority = topTask[1];
+
+            if (removedTask.contains(taskId)) continue; // Skip removed tasks
+
+            int userId = taskToUser.get(taskId);
+
+            // Check if the priority has been updated
+            if (mpUser.get(userId).get(taskId) != priority) {
+                pqTask.add(new int[]{taskId, mpUser.get(userId).get(taskId)}); // Re-add with updated priority
+            } else {
+                // Execute the task
+                removedTask.add(taskId);
+                mpUser.get(userId).remove(taskId); // Remove task from user's map
+                return userId; // Return the user who owned the executed task
+            }
+        }
+        return -1; // No tasks left to execute
+    }
+
+}
+
+/*
+["TaskManager","execTop"]
+[[[[3,12,11],[6,2,46],[2,1,46],[5,23,21]]],[]]
+*/
+
+/**
+ * Your TaskManager object will be instantiated and called as such:
+ * TaskManager obj = new TaskManager(tasks);
+ * obj.add(userId,taskId,priority);
+ * obj.edit(taskId,newPriority);
+ * obj.rmv(taskId);
+ * int param_4 = obj.execTop();
+ */
