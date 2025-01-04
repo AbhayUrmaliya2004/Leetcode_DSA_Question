@@ -1,0 +1,26 @@
+/*
+* Leetcode :- (3407)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public boolean hasMatch(String s, String p) {
+        int idx=0;
+        
+        for(int i=0 ; i<p.length(); i++){
+            if(p.charAt(i) == '*'){
+                idx = i;
+                break;
+            }
+        }
+        
+        String str1 = p.substring(0, idx);
+        String str2 = p.substring(idx+1);
+        
+        int idx1 = s.indexOf(str1);
+        int idx2 = s.indexOf(str2, idx1+str1.length());
+        
+        if(idx1 == -1 || idx2 == -1) return false;
+        return (idx1 <= idx2) ? true : false;
+    }
+}
