@@ -1,0 +1,53 @@
+/*
+* Leetcode :- (1930)
+* T.C :- O(N)
+* S.C :- O(N)
+* Intuition :- At each index check if a character is present on left and right then 
+* it will make a palindrome and for uniqueness create a set
+*/
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        Set<String> set = new HashSet<>();
+    
+        int n = s.length();
+        boolean[][] preSum = new boolean[n][26];
+        preSum[0][s.charAt(0)-'a'] = true ;
+        for(int i=1 ; i<n ; i++){
+            for(int j=0 ; j<26 ; j++){
+                preSum[i][j] = preSum[i-1][j];
+            }
+            
+            char ch = s.charAt(i);
+            preSum[i][ch-'a'] = true ;
+        }
+
+
+        // suffix sum
+        boolean[][] sufSum = new boolean[n][26];
+        sufSum[n-1][s.charAt(n-1)-'a'] = true;
+
+        for(int i=n-2 ; i>=0 ; i--){
+            for(int j=0 ; j<26 ; j++){
+                sufSum[i][j] = sufSum[i+1][j];
+            }
+            
+            char ch = s.charAt(i);
+            sufSum[i][ch-'a'] = true;
+        }
+
+        // at each index check how many palindrome are possible
+        // and add that to string
+        for(int i=1 ; i<n-1 ; i++){
+
+            char ch = s.charAt(i);
+            for(char ch2='a' ; ch2<='z' ; ch2++){
+                if(preSum[i-1][ch2-'a'] && sufSum[i+1][ch2-'a']){
+                    set.add(""+ch2+ch+ch2);
+                }
+            }           
+        }
+
+//        System.out.println(set);
+        return set.size();
+    }
+}
