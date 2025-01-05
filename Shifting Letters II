@@ -1,0 +1,63 @@
+/*
+* LINE SWEEP ALGORITHM
+* Leetcode :- (2381)
+* T.C :- O(N)
+* S.C :- O(N) for preSum array
+* Intuition ;- Don't just increment and decrement each time to the array but keep a track that
+* at each time 
+* IF increment : mark (st) as 1 and mark (end+1) as -1 as this will be the contribution
+* of increment from st to end as +1
+* ELSE decrement : mark (st) as -1 and (end+1) as +1 
+* then mark for all shifts given
+* and at last calculate PREFIX SUM to know how much to increase or decrease a character
+* at last change the charcter to a new charcter and return the string 
+*/ 
+class Solution {
+    public String shiftingLetters(String s, int[][] shifts) {
+        int n = s.length();
+        int[] preSum = new int[n+1];
+
+        n = shifts.length;
+        int st, end, dir;
+
+        for(int i=0 ; i<n ; i++){
+            st = shifts[i][0];
+            end = shifts[i][1];
+            dir = shifts[i][2];
+
+            // for incrementing and decrementing add the contribution 
+            if(dir == 1){ // increment
+                preSum[st] += 1;
+                preSum[end+1] -= 1;
+            } else { // decrement from st to end
+                preSum[st] -= 1;
+                preSum[end+1] += 1;
+            }
+        }
+
+        // now calculate preSum to know how much to increase or decrease a character
+        // in total
+        n = s.length();
+        for(int i=1 ; i<n ; i++){
+            preSum[i] += preSum[i-1];
+        }
+
+        // increment the character as required
+        char[] arr = s.toCharArray();
+        for(int i=0 ; i<n ; i++){
+            int val = preSum[i]%26;
+            if(val < 0) val = (val+26)%26; // handling -ve cases
+
+            // new char
+            char newChar, cur=arr[i];
+            
+            arr[i] += Math.min(val, ('z'-cur));
+            val -= ('z'-cur);
+
+            if(val > 0){
+                arr[i] = (char)('a'+val-1);
+            }
+        } 
+        return new String(arr);          
+    }
+}
