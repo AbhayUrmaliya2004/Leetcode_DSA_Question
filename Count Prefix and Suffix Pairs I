@@ -1,44 +1,29 @@
-/*
-* LeetCode - (3042)
-* T.C :- O(N^2*M), N->size of array, M->word length
-* S.C :- O(1)
-*/
 class Solution {
     public int countPrefixSuffixPairs(String[] words) {
-        int ans = 0 ;
-        for(int i=0 ; i<words.length-1 ; i++){
-            for(int j=i+1 ; j<words.length ; j++){
-                if(isPrefixAndSuffix(words[i], words[j]))ans++ ;
+        int count = 0, size=words.length;
+
+        for(int j=1 ; j<size ; j++){
+            String str1 = words[j];
+
+            for(int i=0 ; i<j ; i++){
+                String str2 = words[i];
+
+                if(isPrefixAndSuffix(str1, str2)) count++;
             }
         }
-        return ans ;
+
+        return count;
     }
     public boolean isPrefixAndSuffix(String s1, String s2){
-        if(s1.length() > s2.length())return false ;
-        boolean pref = true ;
-        int i=0, j = 0;
-        while(i<s1.length()){
-            if(s1.charAt(i)!=s2.charAt(j)){
-                pref = false ;
-                break ;
-            }
-            i++ ;
-            j++ ;
+        if(s2.length() > s1.length()) return false;
+
+        int n2=s2.length(), n1=s1.length();
+
+        // checking first and last character at the same time with s2
+        for(int i=0 ; i<n2 ; i++){
+            if((s1.charAt(i) != s2.charAt(i)) || (s1.charAt(n1-i-1) != s2.charAt(n2-i-1))) return false;
         }
-        if(!pref)return false ;
-        // check suffix 
-        boolean suff = true ;
-        i = s1.length()-1 ;
-        j = s2.length()-1 ;
-        while(i>=0){
-            if(s1.charAt(i) != s2.charAt(j)){
-                suff = false ;
-                break ;
-            }
-            i-- ;
-            j-- ;
-        }
-        if(!suff)return false ;
-        return true ;
+
+        return true;
     }
 }
