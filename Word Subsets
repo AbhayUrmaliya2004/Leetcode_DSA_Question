@@ -1,0 +1,54 @@
+/*
+* Leetcode :- O(916)
+* T.C :- O(N)
+* S.C :- O(1) at max 26 space 
+* Intuition :- For a word in word1 is universal only if the frequency of character of word in words1
+* is always >= to the maxFre of each words in words2
+*/ 
+class Solution {
+    public List<String> wordSubsets(String[] words1, String[] words2) {
+        int n1=words1.length, n2=words2.length;
+
+        int[] maxFre = new int[26];
+        // fill word2 frequency
+        for(int i=0 ; i<n2 ; i++){
+            String word = words2[i];
+            int[] fre2 = new int[26];
+
+            for(int j=0; j<word.length(); j++){
+                fre2[word.charAt(j)-'a']++;
+            }
+
+            // store the maxFre required in words2 for words in words1 to be universal
+            for(int idx=0 ; idx<26 ; idx++){
+                maxFre[idx] = Math.max(maxFre[idx], fre2[idx]);
+            }
+        }
+        
+        
+        List<String> list = new ArrayList<>();
+
+        // add the universal list from words1 to list
+        for(String word : words1){
+            if(isUniversal(word, maxFre)) list.add(word);            
+        }
+
+        return list;
+    }
+    public boolean isUniversal(String s, int[] maxFre){
+        int[] fre1 = new int[26];
+
+        int n1 = s.length();
+        for(int i=0 ; i<n1 ; i++){
+            fre1[s.charAt(i)-'a']++;
+        }
+
+        // check frequency for universal string
+        // frequency of words in words2 array <= fre of words in words1 array
+        for(int i=0 ; i<26 ; i++){
+            if(fre1[i] < maxFre[i]) return false;
+        }
+
+        return true;
+    }
+}
