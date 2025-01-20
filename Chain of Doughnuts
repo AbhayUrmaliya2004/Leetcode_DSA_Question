@@ -1,0 +1,81 @@
+/*
+ * Codechef - Chain of Doughnuts
+ * Sort the array to get the minimum size array at starting break small chains and join the 
+ * large ones. So if we remove the last element from array it takes time,so to consider the 
+ * current array only update the value at lastIdx+1 when join multiple chains
+ * and increment the left this way from curr to lastIdx is the real present array
+ */
+class Codechef
+{
+    public static void main(String[] args) throws java.lang.Exception
+    {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while (t--> 0) {
+            int n = sc.nextInt();
+            int m = sc.nextInt();
+            List < Long > list = new ArrayList < > ();
+            for (int i = 0; i < m; i++) {
+                list.add((long) sc.nextInt());
+            }
+
+            long ans = helper(n, m, list);
+            System.out.println(ans);
+        }
+    }
+    public static long helper(int n, int m, List < Long > list) {
+        long cuts = 0;
+
+        Collections.sort(list);
+
+        int curr = 0;
+        long left, right = list.size();
+
+        int lastIdx = list.size() - 1;
+
+        while (curr < list.size()) {
+            left = list.get(curr);
+            right = lastIdx - curr;
+
+            //	        System.out.println("curr : "+curr+" : right "+right+" list : "+list);
+            if (left == right - 1) { // right-1 is no. of joints required
+                //	        System.out.println("inside 1");
+                cuts += right - 1;
+                break;
+            } else if (left > right - 1) {
+                //	            System.out.println("inside 2");
+                cuts += right;
+                break;
+            } else { // here left < right
+                //	            System.out.println("inside 3");
+                long total = 0;
+
+                // join the right chain doughnuts
+                long x = left + 1;
+                while (x--> 0) {
+                    total += list.get(lastIdx);
+                    // list.remove(lastIdx);
+                    lastIdx--;
+                }
+
+                list.set(lastIdx + 1, total);
+                curr++;
+                cuts += left;
+                lastIdx++; // to match the correct idx
+            }
+        }
+
+        return cuts;
+    }
+}
+/*
+4
+19 5
+5 5 5 2 2
+11 3
+4 3 4
+6 3
+3 2 1
+1 1
+1
+*/
