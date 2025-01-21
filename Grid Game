@@ -1,0 +1,29 @@
+/*
+* Leetcode :- (2017)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public long gridGame(int[][] grid) {
+        long robot2 = Long.MAX_VALUE;
+
+        int n = grid[0].length;
+        long upperRowSuffix = 0, lowerRowPrefix=0;
+
+        for(int i=0 ; i<n ; i++){
+            upperRowSuffix += grid[0][i];
+        }
+
+        // calculate the score for robot2 
+        for(int i=0 ; i<n ; i++){
+            upperRowSuffix -= grid[0][i];
+            
+            // robot2 can take either suffix at upper row or prefix 
+            // at lower row other cell would be 0
+            robot2 = Math.min(robot2, Math.max(upperRowSuffix, lowerRowPrefix));
+            lowerRowPrefix += grid[1][i];
+        }
+
+        return robot2;
+    }
+}
