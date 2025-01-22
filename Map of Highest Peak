@@ -1,0 +1,70 @@
+/*
+* Leetcode :- (1765)
+* T.C :- O(M*N) 
+* S.C :- O(M*N) for PQ
+* Intuition :- Only traverse to the array with BFS technique and mark the element with 
+* min(all four surrounding element) + 1
+* -1 represent that the cells can be filled with any value and -2 represent that the element
+* is in PriorityQueue to track it as visited array to avoid redundancy 
+*/
+class Solution {
+    public int[][] highestPeak(int[][] isWater) {
+        int m = isWater.length, n = isWater[0].length;
+        int[][] ans = new int[m][n];
+
+        for(int[] arr : ans){
+            Arrays.fill(arr, -1);
+        }
+
+        // do the BFS
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b)-> Integer.compare(a[0], b[0]));
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(isWater[i][j] == 1){
+                    ans[i][j] = 0;
+                    pq.add(new int[]{0, i, j});
+                }
+            }
+        }
+
+
+        int row, col, newr, newc;
+        int[] delx = {-1, 0, +1, 0};
+        int[] dely = {0, +1, 0, -1};
+
+        while(pq.size() > 0){
+//            System.out.println(pq);
+            int[] arr = pq.poll();
+            row = arr[1];
+            col = arr[2];
+//            System.out.println(Arrays.toString(arr));
+
+            int mini = Integer.MAX_VALUE;
+            
+            for(int k=0 ; k<4 ; k++){
+                newr = row+delx[k];
+                newc = col+dely[k];
+
+                if(newr<m && newr>=0 && newc>=0 && newc<n && ans[newr][newc] >=0){
+                    mini = Math.min(mini, ans[newr][newc]);
+                } 
+            }
+
+            if(ans[row][col] < 0) ans[row][col] = mini+1;
+            // new values are expected here
+            for(int k=0 ; k<4 ; k++){
+                newr = row+delx[k];
+                newc = col+dely[k];
+
+                if(newr<m && newr>=0 && newc>=0 && newc<n && ans[newr][newc] == -1){
+                    pq.add(new int[]{ans[row][col]+1, newr, newc});
+                    // for using it as vis array so that more instance does not
+                    // comes with same row and col element 
+                    ans[newr][newc] = -2;
+                } 
+            }
+       }
+
+       return ans;
+    }
+}
