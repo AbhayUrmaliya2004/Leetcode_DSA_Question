@@ -1,0 +1,56 @@
+/*
+* Leetcode :- (2658)
+* Simple BFS Algorithm
+* T.C :- O(M*N)
+* S.C :- O(M*N)
+*/
+class Solution {
+    public int findMaxFish(int[][] grid) {
+        int res = 0;
+        int m = grid.length, n=grid[0].length;
+
+        boolean[][] vis = new boolean[m][n];
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                if(grid[i][j] > 0 && !vis[i][j]) {
+                    int ans = dfs(grid, i, j, vis);
+                    System.out.println(ans);
+                    res = Math.max(res, ans);
+                }
+            }
+        }
+
+        return res;
+    }
+    public int dfs(int[][] grid, int i, int j, boolean[][] vis){
+        Queue<int[]> queue = new LinkedList<>();
+
+        queue.add(new int[]{i, j});
+
+        int x, y, newx, newy, m=grid.length, n=grid[0].length;
+        int[] delx = {-1, 0, +1, 0};
+        int[] dely = {0, +1, 0, -1};
+
+        int ans = 0;
+        vis[i][j] = true;
+        while(queue.size() > 0){
+            int[] arr = queue.poll();
+            x = arr[0];
+            y = arr[1];
+            ans += grid[x][y];
+
+            for(int idx=0 ; idx<4 ; idx++){
+                newx = x+delx[idx];
+                newy = y+dely[idx];
+
+                if(newx>=0 && newx<m && newy>=0 && newy<n &&
+                 grid[newx][newy]>0 && !vis[newx][newy]){
+                    vis[newx][newy] = true;
+                    queue.add(new int[]{newx, newy});
+                 }
+            }
+        }
+
+        return ans;
+    }
+}
