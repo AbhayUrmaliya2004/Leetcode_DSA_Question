@@ -1,0 +1,43 @@
+/*
+* Leetcode :- (889)
+* T.C :- O(N)
+* S.C :- O(N)
+* Approach :- Preorder will have root node at first index and postorder will have root at rightmost
+* index. Make them the root node and then call for left and right but before that need to know about
+* left and right node elements. So for that reason we need to count again.
+* Again we know that after root, the next element in preorder will be root for its left binary tree
+* So similarly find the elements in postorder to find the size of the list of element belong to left and 
+* right binary tree.
+* From the idx in postorder element to its left will belong to left tree then got the size here
+* so give the size to the preorder tree to consider new array for calling its left tree.
+* Call left and right fucntion and join the child to the current node created and return the currentNode  
+*/
+class Solution {
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        int n = preorder.length;
+        return helper(preorder, 0, n-1, postorder, 0, n-1);
+    }
+
+    public TreeNode helper(int[] preorder, int prelow, int prehigh, 
+                           int[] postorder, int postlow, int posthigh){
+        
+        if(prelow > prehigh) return null;
+        if(prelow == prehigh) return new TreeNode(preorder[prelow]);
+        TreeNode newRoot = new TreeNode(preorder[prelow]);
+
+        // searching next left node elements
+        int idx = posthigh;
+        while(idx>=0 && postorder[idx] != preorder[prelow+1]){
+            idx--;
+        }
+
+        int size = idx-postlow+1;
+        TreeNode left = helper(preorder, prelow+1, prelow+size, postorder, postlow, idx);
+        TreeNode right = helper(preorder, prelow+size+1, prehigh, postorder, idx+1, posthigh-1);
+
+        newRoot.left = left;
+        newRoot.right = right;
+
+        return newRoot;
+    }
+}
