@@ -1,0 +1,92 @@
+/*
+* Leetcode :- (2467)
+* Intuition :- First find the path from alice to bob 
+* then mark 0 for half path from bob to alice and half the cost at exactly half distance
+* Later Just do the simple bfs for alice to get the max amount till leaf node 
+*/
+class Solution {
+    public int mostProfitablePath(int[][] edges, int bob, int[] amount) {
+        List<List<Integer>> adj = new ArrayList<>();
+        int n = amount.length;
+
+        // creating graph
+        for(int i=0 ; i<n ; i++){
+            adj.add(new ArrayList<>());
+        }
+
+        n = edges.length;
+        
+        for(int i=0 ; i<n ; i++){
+            int u=edges[i][0], v=edges[i][1];
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+
+        // make the parent list for going upto bob
+        n = amount.length;
+        int[] parent = new int[n];
+        parent[0] = -1;
+
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{0, -1});
+        while(q.size() > 0){
+            int[] arr = q.poll();
+            int node = arr[0];
+            int par = arr[1];
+
+            parent[node] = par;
+            if(node == bob) break;
+
+            for(int next : adj.get(node)){
+                if(next == par) continue;
+                q.add(new int[]{next, node});
+            }
+        }
+
+        // get the parent list for bob to alice
+        List<Integer> path = new ArrayList<>();
+        int curr = bob;
+        path.add(bob);
+
+        while(parent[curr] != -1){
+            path.add(parent[curr]);
+            curr = parent[curr];
+        }
+
+        // now mark the amount from bob to alice to 0 upto half
+        n = path.size();
+        int len = n/2;
+        for(int i=0 ; i<len ; i++){
+            amount[path.get(i)] = 0;
+        }
+//        System.out.println(path);
+        if(n%2 != 0){ // will meet at some point and half the cost at that point
+            amount[path.get(n/2)] /= 2;
+        }
+
+        // do the simple dfs for alice now and find the maximum result
+        q.clear();
+
+        q.add(new int[]{0, -1, 0});
+        int maxi = Integer.MIN_VALUE;
+
+        while(q.size() > 0){
+            int[] arr = q.poll();
+            int node = arr[0];
+            int par = arr[1];
+            int amt = arr[2]+amount[node];
+
+            if(par != -1 && adj.get(node).size() == 1){
+                maxi = Math.max(maxi, amt);
+            }
+
+            for(int next : adj.get(node)){
+                if(next == par) continue;
+                q.add(new int[]{next, node, amt});
+            }
+        }
+
+//        System.out.println(Arrays.toString(amount));
+        return maxi;
+    }
+}
