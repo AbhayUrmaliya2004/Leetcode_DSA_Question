@@ -1,0 +1,30 @@
+/*
+* Leetcode :- (1524)
+* T.C :- O(N)
+* S.C :- O(1)
+* Intuition :- if total prefix sum till now is odd then check how many times it has been even that
+* will give the oddSubarray count and also check for vice versa.
+*/
+class Solution {
+    public int numOfSubarrays(int[] arr) {
+        int M = (int)1e9+7;
+        int sum = 0, evenCount=1, oddCount=0, oddSubarrays = 0;
+
+        int n = arr.length;
+        for(int idx=0 ; idx<n ; idx++){
+            sum += arr[idx];
+
+            if(sum%2 != 0){
+                // sum till here is odd and odd+even = odd
+                oddSubarrays += (evenCount%M); // counting total odd subarrays
+                oddCount++ ;
+            } else {
+                oddSubarrays += (oddCount%M);
+                evenCount++ ;
+            }
+
+            oddSubarrays %= M;
+        }
+        return oddSubarrays;
+    }
+}
