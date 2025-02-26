@@ -1,0 +1,26 @@
+/*
+* Leetcode :- (1749)
+* Intuition :- calculate the prefix sum and thus we need to maximise pref[right]-pref[left] for this
+* to maximise pref[right] should be as more as possible and pref[left] should be as low as possible
+*/
+class Solution {
+    public int maxAbsoluteSum(int[] nums) {
+        int maxi = 0, mini = 0;
+        int presum = 0, ans=0;
+        // calculate sum
+        int n = nums.length;
+        for(int i=0 ; i<n ; i++){
+            presum += nums[i];
+
+            // calculate the prefix array with max absolute sum
+            int res = Math.abs(presum - mini);
+            res = Math.max(res, Math.abs(maxi-presum));
+
+            ans = Math.max(ans, res);
+            maxi = Math.max(maxi, presum);
+            mini = Math.min(mini, presum);
+        }
+
+        return ans;
+    }
+}
