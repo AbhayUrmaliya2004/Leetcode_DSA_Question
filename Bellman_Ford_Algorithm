@@ -1,0 +1,40 @@
+/*
+* GFG :- Bellman Ford Algorithm
+* T.C :- O(V*E)
+* S.C :- O(1) because distance edge is required to return given in question
+*/
+
+class Solution {
+    static int[] bellmanFord(int V, int[][] edges, int src) {
+        int[] dist = new int[V];
+        Arrays.fill(dist, (int)1e8);
+        dist[src] = 0;
+        
+        for(int it=1 ; it<V ; it++){
+            
+            for(int[] arr : edges){
+                int u = arr[0];
+                int v = arr[1];
+                int wt = arr[2];
+                
+                if(dist[u] != (int)1e8 && dist[u]+wt<dist[v]){
+                    dist[v] = dist[u]+wt;
+                }
+            }
+        }
+        
+        // Nth iteration for checking the negative edge weight cycle
+        for(int[] arr : edges){
+            int u = arr[0];
+            int v = arr[1];
+            int wt = arr[2];
+            
+            // updation is still happening means negative weight cycle
+            if(dist[u] != (int)1e8 && dist[u]+wt<dist[v]){
+                return new int[]{-1};
+            }
+        }
+        
+        return dist;
+    }
+}
