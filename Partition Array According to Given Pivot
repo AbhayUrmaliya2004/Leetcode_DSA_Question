@@ -1,6 +1,47 @@
 /*
 * Leetcode :- (2161)
 * T.C :- O(N)
+* S.C :- O(1) Inplace 
+* Intuition :- Firstly Lineup the numbers less than pivot then swap the numbers equal to Pivot and then 
+* if less than pivot and equal to pivot are line up then greater than pivot will be already on place 
+*/
+class Solution {
+    public int[] pivotArray(int[] nums, int pivot) {
+        int n = nums.length;
+
+        // line-up the number less than pivot
+        for(int idx=1 ; idx<n ; idx++){
+            int i = idx;
+            while(i>0 && nums[i] < pivot && nums[i-1] >= pivot){
+                swap(nums, i-1, i);
+                i-- ;
+            }
+        }
+
+        // set the values equal to pivot and now only the unordered values are 
+        // less than or greater to pivot 
+        for(int idx=1 ; idx<n ; idx++){
+            int i = idx;
+            while(i>0 && nums[i]==pivot && nums[i-1] > pivot){
+                swap(nums, i-1, i);
+                i-- ;
+            }
+        }
+    
+        return nums;
+    }
+    private void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+
+
+#################################
+/*
+* Leetcode :- (2161)
+* T.C :- O(N)
 * S.C :- O(N)
 * Intuition :- Brute Force, just store in another list greaterthan pivot and lessthanPivot and countPivot
 * then store all the values in the answer table 
