@@ -1,0 +1,54 @@
+class Solution {
+    public int[] closestPrimes(int left, int right) {
+        if(left == 1) left = 2;
+        if(left == 2 && 3<=right) return new int[]{2, 3};
+        Set<Integer> prime = new HashSet<>(), notPrime = new HashSet<>();
+        
+        int[] arr = {-1, -1};
+        
+        int last = -1, minDiff = (int)1e9;
+        for(int num=left ; num<=right ; num++){
+            if(isPrime(num, prime, notPrime)){
+                if(arr[0] == -1){
+                    arr[0] = num;
+                    last = num;
+                } else if(arr[1] == -1){
+                    arr[1] = num;
+                    last = num;
+                    minDiff = Math.min(minDiff, arr[1] - arr[0]);
+                } else if(num - last < minDiff){
+                    arr[0] = last;
+                    arr[1] = num;
+
+                    minDiff = num-last;
+                    last = arr[1];
+                } else {
+                    last = num;
+                }
+            }
+//            System.out.println(last+" "+num+" "+minDiff+" "+Arrays.toString(arr));
+        }
+
+        if(arr[0] == -1 || arr[1] == -1) return new int[]{-1, -1};
+        return arr;
+    }
+
+    public boolean isPrime(int x, Set<Integer> prime, Set<Integer> notPrime){
+        if(prime.contains(x)) return true;
+        else if(notPrime.contains(x)) return false;
+
+        if(x == 2) return true;
+
+        int limit = (int)Math.sqrt(x);
+        for(int n=2 ; n<=limit ; n++){
+            if(x%n == 0) {
+                notPrime.add(x);
+                return false;
+            }
+        }
+
+        prime.add(x);
+        return true;
+    }
+}
+
