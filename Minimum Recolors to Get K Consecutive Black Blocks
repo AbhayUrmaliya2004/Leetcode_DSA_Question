@@ -1,0 +1,23 @@
+/*
+* Approach :- Sliding Window
+*/
+class Solution {
+    public int minimumRecolors(String s, int k) {
+        int black = 0, white = 0, n = s.length();
+        int ans = (int)1e9;
+        for(int i=0 ; i<n ; i++){
+            char ch = s.charAt(i);
+
+            if(ch == 'B') black++ ;
+            else white++ ;
+            if(i>=k-1){
+                ans = Math.min(ans, white);
+
+                if(s.charAt(i-k+1) == 'B') black-- ;
+                else white-- ;
+            }
+        }
+
+        return ans;
+    }
+}
