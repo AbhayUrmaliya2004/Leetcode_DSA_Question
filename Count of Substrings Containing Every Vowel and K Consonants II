@@ -1,0 +1,68 @@
+/*
+* Leetcode :- (3306)
+* T.C :- O(N)
+* S.C :- O(1) at most 5 characters 
+* Intuition :- Since we need to find the substring where all the character vowels appear and 
+* exactly k consonants are in the substrings.
+* If it has fixed vowel count then the problem would have been reduced to fixed sliding window 
+* but here the count of each vowel can be different thus two pointers approach is required to make 
+* a valid window with required condition 
+* Solution :- if we find the lack in the condition then we expand the window but 
+* if we get more element we reduce the window but when we get the exact condition it's hard to decide 
+* whether to expand the window or to reduce this 
+* thus the solution comes into picture 
+* excatlyKConsonants = atleast K consonants - atleast K+1 Consonnats
+* consnt == k -> (consnt >= k) subarrays  - (consnt >= k+1) subarrays.
+* this will give the exact count {k, k+1, k+2, ....} - {k+1, k+2, ....}
+*/
+class Solution {
+    public long countOfSubstrings(String word, int k) {
+        long atleastK = countOfSubstringWithAtleastK(word, k);
+        long atleastKplus1 = countOfSubstringWithAtleastK(word, k+1);
+
+        long exactlyK = atleastK - atleastKplus1;
+        return exactlyK;
+    }
+
+    public long countOfSubstringWithAtleastK(String word, int k){
+        long subarrays=0;
+        Set<Character> vowel = new HashSet<>();
+        vowel.add('a');
+        vowel.add('e');
+        vowel.add('i');
+        vowel.add('o');
+        vowel.add('u');
+    
+        Map<Character, Integer> count = new HashMap<>();
+
+        int i=0, j=0, consonants=0, n = word.length();
+
+        while(j<n){
+            char ch = word.charAt(j);
+            if(vowel.contains(ch)){
+                count.put(ch, count.getOrDefault(ch, 0)+1);
+            } else {
+                consonants++ ;
+            }
+
+            while(count.size() == 5 && consonants >= k){
+                ch = word.charAt(i);
+                // from i to j is a valid subarray thus adding the elements from j+1 till n
+                // wwill be considered inside <= k and thus will get (n-j) subarrays with condition
+                subarrays += n-j; 
+                if(vowel.contains(ch)){
+                    count.put(ch, count.get(ch)-1);
+                    if(count.get(ch) == 0){
+                        count.remove(ch);
+                    } 
+                } else {
+                    consonants-- ;
+                }
+                i++ ;
+            }
+            j++ ;
+        }
+
+        return subarrays;
+    }
+}
