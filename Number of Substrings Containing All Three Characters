@@ -1,0 +1,43 @@
+/*
+* Leetcode :- (1358)
+* T.C :- O(N)
+* S.C :- O(1)
+* Intuition :- if we meet the required criteria atleast one occurence of a,b,c then we have enough resource
+* then we can shrink the winodow and also at the same time will be counting the substrings
+* witth the conditions because (i to j) has the substring which is ok and then if we add the elements
+* to the substring from j+1 to n element then this will be also valid so we will get 
+* substrings += (n-j) 
+* Type of Question :- atleast wali condition to uske aange ke element jodne me condition fulfill hi rahegi
+*/
+class Solution {
+    public int numberOfSubstrings(String s) {
+        int count = 0, n=s.length();
+
+        Map<Character, Integer> mp = new HashMap<>();
+
+        int i=0, j=0, substrings=0;
+        while(j<n){
+            char ch = s.charAt(j);
+            if(isabc(ch)){
+                mp.put(ch, mp.getOrDefault(ch, 0)+1);
+            }
+
+            while(i<n && mp.size() == 3){
+                char ch1 = s.charAt(i);
+
+                substrings += n-j;
+                if(isabc(ch1)){
+                    mp.put(ch1, mp.get(ch1)-1);
+                    if(mp.get(ch1) == 0) mp.remove(ch1);
+                }
+                i++ ;
+            }
+            j++ ;
+        }
+
+        return substrings ;
+    }
+    public boolean isabc(char ch){
+        return ch=='a' || ch=='b' || ch=='c';
+    }
+}
