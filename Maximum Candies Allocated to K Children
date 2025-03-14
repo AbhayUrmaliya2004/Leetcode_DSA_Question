@@ -1,0 +1,38 @@
+/*
+* Leetcode :- (2226)
+* T.C :- (NlogN), N->candies.length
+* S.C :- O(1)
+* Intuition :- Simple Approach - Check by Binary Search whether is it possible to distribute val candies to k candidate if it 
+* is possible then try for better val
+*/
+
+
+class Solution {
+    public int maximumCandies(int[] candies, long k) {
+        Arrays.sort(candies);
+        
+        int low = 1, high = (int)1e9;
+        while(low <= high){
+            int mid = low+(high-low)/2;
+            
+            if(isPossible(candies, mid, k)){ // is distributing mid candies possible
+                low = mid+1;
+            } else {
+                high = mid-1;
+            }
+        }
+        
+        return low-1;
+    }
+    public boolean isPossible(int[] candies, int val, long k){
+        int n = candies.length;
+        
+        long count = 0;
+        for(int i=0 ; i<n ; i++){
+            count += candies[i]/val;
+        }
+        
+        if(count >= k) return true;
+        return false;
+     }
+}
