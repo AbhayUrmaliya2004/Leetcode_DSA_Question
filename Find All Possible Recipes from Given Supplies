@@ -1,0 +1,98 @@
+/*
+* Leetcode :- (2115)
+* Intuition :- Make a graph to see the interdependency and then check for each recipy as node whether
+* is it possible to make this recipy is yes then add to the list
+* If make a loop then can't get thus made  vis array to see whether it can be made or not 
+* check agar ingredient ki adjacency list ka size 0 hai matlab usko create nahi kar sakte aur 
+* wo unlimited supply me hai nahi iska matlab usse banne wali cheeze hum nahi bana sakte 
+*/
+class Solution {
+    public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        Map<String, Integer> mp = new HashMap<>();
+        int count = 0;
+        // unique values that needed to convert into nodes
+        for(String s : recipes){
+            if(mp.containsKey(s)) continue ;
+            mp.put(s, count++);
+        }
+
+        // these ingredicents also need to be converted in nodes
+        for(var list : ingredients){
+            for(String s : list){
+                if(mp.containsKey(s)) continue;
+                mp.put(s, count++);
+            }
+        }
+
+        // unlimited supply
+        Map<Integer, Boolean> possible = new HashMap<>();
+        for(String s : supplies){
+            possible.put(mp.get(s), true);
+        }
+        // create graph
+        List<List<Integer>> adj = new ArrayList<>();
+        int n = mp.size();
+
+        for(int i=0 ; i<n ; i++){
+            adj.add(new ArrayList<>());
+        }
+
+        n = recipes.length;
+        for(int i=0 ; i<n ; i++){
+            int node = mp.get(recipes[i]);
+            List<Integer> list = adj.get(node);
+
+            for(String temp : ingredients.get(i)){
+                int next = mp.get(temp);
+                list.add(next); // these nodes are required to make the ingridient 
+            }
+        }
+ //       System.out.println(mp+"\n"+adj+"\n"+possible);
+
+        // do the algorithm
+        List<String> ans = new ArrayList<>(); 
+        n = mp.size();
+        boolean[] vis = new boolean[n];
+        for(String recipy : recipes){
+            if(canMakeRecipy(mp.get(recipy), possible, adj, vis)){
+                ans.add(recipy);
+            }
+        }
+
+        return ans;
+    }
+    public boolean canMakeRecipy(int node, Map<Integer, Boolean> possible,
+                                 List<List<Integer>> adj, boolean[] vis){
+        if(vis[node] == true) return false ; // since this is a loop
+        if(possible.containsKey(node)){
+            if(possible.get(node)) return true; // can make this ingridient
+            return false;
+        }
+
+        // do the BFS trversal if can make all the ingridient then true
+        vis[node] = true;
+
+        for(int ingredient : adj.get(node)){
+ //           System.out.println(ingredient);
+            if(possible.containsKey(ingredient)){
+                if(!possible.get(ingredient)) return false; // matlab we can't create this
+            } else if(adj.get(ingredient).size() == 0) {
+                if(!possible.containsKey(ingredient)){
+                    possible.put(ingredient,false);
+                    return false;
+                }
+            } else { // since possible don't contains then need to check can we make this or not
+                boolean res = canMakeRecipy(ingredient, possible, adj, vis);
+                if(res == true) possible.put(ingredient, true); // bana sakte hai is recipy ko
+                else { // form a loop and can't make this
+                    vis[node] = false;
+                    return false ; // can't make the ingridient
+                }
+            }
+        }
+
+        vis[node] = false;
+
+        return true;
+    }
+}
