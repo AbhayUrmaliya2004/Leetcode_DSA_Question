@@ -1,0 +1,46 @@
+class Solution {
+    public int minTimeToReach(int[][] moveTime) {
+        int m = moveTime.length, n = moveTime[0].length;
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<>(){
+            public int compare(int[] a, int[] b){
+                return a[2]-b[2];
+            }
+        });
+        
+        int[][] vis = new int[m][n];
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                vis[i][j] = Integer.MAX_VALUE;
+            }
+        }
+        
+        vis[0][0] = 0;
+        pq.add(new int[]{0, 0, 0}); // i, j, time
+        
+        int[] drow = {-1, 0, +1, 0};
+        int[] dcol = {0, +1, 0, -1};
+        while(pq.size() > 0){
+            int[] arr = pq.poll();
+//            System.out.println(Arrays.toString(arr));
+            int row = arr[0], col = arr[1], time = arr[2];
+            
+            if(row == m-1 && col == n-1) return time ;
+            for(int i=0 ; i<4 ; i++){
+                int newr = row+drow[i];
+                int newc = col+dcol[i];
+                int newTime = time+1;
+                
+                if(newr>=0 && newr<m && newc>=0 && newc<n && vis[newr][newc] > newTime){
+                    if(time < moveTime[newr][newc]) newTime += (moveTime[newr][newc]-time);
+                    
+                    pq.add(new int[]{newr, newc, newTime});
+                    vis[newr][newc] = newTime;
+                }
+            }
+        }
+        
+        return -1;
+    }
+}
+//[[27,85],[22,53]]
