@@ -1,0 +1,48 @@
+class Solution {
+    public int countPaths(int n, int[][] roads) {
+        int M = (int)(1e9 + 7);
+        List<List<int[]>> adj = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        for (int[] road : roads) {
+            int u = road[0], v = road[1], time = road[2];
+            adj.get(u).add(new int[]{v, time});
+            adj.get(v).add(new int[]{u, time});
+        }
+
+        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(a[0], b[0]));
+        pq.add(new long[]{0, 0}); // {time, node}
+
+        long[] minTime = new long[n];
+        Arrays.fill(minTime, Long.MAX_VALUE);
+        minTime[0] = 0;
+
+        int[] ways = new int[n];
+        ways[0] = 1;
+
+        while(pq.size() > 0) {
+            long[] curr = pq.poll();
+            long time = curr[0], node = curr[1];
+
+            if(time > minTime[(int)node]) continue;
+
+            for(int[] next : adj.get((int)node)) {
+                int nextNode = next[0];
+                long newTime = time + next[1];
+
+                if(newTime < minTime[nextNode]) {
+                    minTime[nextNode] = newTime;
+                    ways[nextNode] = ways[(int)node]; 
+                    pq.add(new long[]{newTime, nextNode});
+                }else if(newTime == minTime[nextNode]) {
+                    ways[nextNode] = (ways[nextNode] + ways[(int)node]) % M;
+                }
+            }
+        }
+
+        return ways[n-1];
+    }
+}
