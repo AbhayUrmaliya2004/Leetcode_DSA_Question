@@ -1,0 +1,36 @@
+/*
+* Leetcode :- (2033)
+* Initially check whether these numbers can be made equal or not by check the mod
+* Find the mid point and calculate steps to come to this point.
+*/
+class Solution {
+    public int minOperations(int[][] grid, int x) {
+        int m = grid.length, n=grid[0].length;
+
+        int[] arr = new int[m*n];
+        int rem = -1;
+        for(int i=0 ; i<m ; i++){
+            for(int j=0 ; j<n ; j++){
+                arr[i*n+j] = grid[i][j];
+
+                if(rem == -1) rem = grid[i][j]%x;
+                else if(rem != grid[i][j]%x) return -1; // can't make the same element
+            }
+        }
+
+        Arrays.sort(arr);
+        int mid = (arr.length)/2;
+
+        int steps = 0;
+        for(int i=0 ; i<m*n ; i++){
+            if(i<mid) {
+                steps += ((arr[mid]-arr[i])/x);
+            } else {
+                steps += ((arr[i]-arr[mid])/x);
+            }
+            System.out.println(steps);
+        }
+
+        return steps;
+    }
+}
