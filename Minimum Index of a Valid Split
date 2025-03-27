@@ -1,0 +1,44 @@
+/*
+* Leetcode :- (2780)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public int minimumIndex(List<Integer> nums) {
+        Map<Integer, Integer> mp = new HashMap<>();
+
+        int ele = -1, n = nums.size();
+        for(int num : nums){
+            mp.put(num, mp.getOrDefault(num, 0)+1);
+            if(mp.get(num) > n/2){ 
+                ele = num;
+            }
+        }
+
+        if(ele == -1) return -1;
+
+        // count the dominant in left and right subarray
+        int left = 0, right = mp.get(ele);
+//        System.out.println(mp);
+        for(int i=0 ; i<n-1 ; i++){
+            if(nums.get(i) == ele) { // till idx we are counting to left subarray
+                left++ ;
+                right-- ;
+            }
+
+            if(isValidSplit(left, right, i, n)) return i;
+            System.out.println(i+" "+left+" "+right);
+        }
+
+        return -1;
+    }
+    public boolean isValidSplit(int left, int right, int idx, int len){
+        // if left subarray contains ele more than half of its length
+        if((float)left <= (idx+1)/2.0) return false;
+
+        // right subarray and till index in left and from idx+1 to len in right
+        if((float)right <= (len-idx-1)/2.0) return false;
+
+        return true; // means a valid split
+    }
+}
