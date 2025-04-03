@@ -1,0 +1,35 @@
+/*
+* Leetcode :- (2874)
+* T.C :- O(N)
+* S.C :- O(N)
+* Intuition :- At index 'i', what is the maximum nums[i]-nums[j] we can get 
+* to achieve this we need to find what is the max-min we have before current index
+* and maximum value after index 'i' thus only need to find maximum before and 
+* maximum after i to get the result
+*/
+class Solution {
+    public long maximumTripletValue(int[] nums) {
+        int n = nums.length;
+        int[] preMax = new int[n], suffMax = new int[n];
+
+        int maxi = Integer.MIN_VALUE;
+        for(int i=0 ; i<n ; i++){
+            maxi = Math.max(maxi, nums[i]);
+            preMax[i] = maxi;
+        }
+
+        maxi = Integer.MIN_VALUE;
+        for(int i=n-1; i>=0 ; i--){
+            maxi = Math.max(maxi, nums[i]);
+            suffMax[i] = maxi;
+        }
+
+        // calculating maximum ans we can get 
+        long ans = 0;
+        for(int i=1 ; i<n-1 ; i++){
+            ans = Math.max(ans, (preMax[i-1] - nums[i])*(long)suffMax[i+1]);
+        }
+
+        return ans;
+    }
+}
