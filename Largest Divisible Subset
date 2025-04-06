@@ -1,0 +1,50 @@
+/*
+* Leetcode :- (368)
+* T.C :- O(N^2)
+* S.C :- O(N) for dp and for prev array
+* Intuition :- Same as LIS (Longest Increasing Subsequence) just checking here the divisibilty 
+* test also, at index 'i', what is the maximum length of subset I can get for that we checked by 
+* iterating a loop for j<i 
+* And since we are required to submit a List<Integer> thus it is important to make the prev array
+* which keep the track of the prev index that can give maximum divisible subset members
+*/
+class Solution {
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        int[] prev = new int[n];
+        Arrays.fill(prev, -1);
+
+        // fill the array as per the condition
+        int maxIdx = 0, maxlen=0; 
+        for(int i=1 ; i<n ; i++){
+            for(int j=0 ; j<i ; j++){
+
+                if(nums[i]%nums[j]==0 && dp[i]<dp[j]+1) {
+                    dp[i] = dp[j]+1;
+                    prev[i] = j;
+                }
+
+                // for storing the maximum
+                if(dp[i] > maxlen){
+                    maxlen = dp[i];
+                    maxIdx = i;
+                }
+            }
+        }
+
+        // construct the subset
+        int idx = maxIdx;
+
+        List<Integer> list = new ArrayList<>();
+        while(idx != -1){
+            list.add(nums[idx]);
+            idx = prev[idx];
+        }
+
+        return list;
+    }
+}
