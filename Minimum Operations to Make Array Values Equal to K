@@ -1,0 +1,32 @@
+/*
+* Leetcode :- (3375)
+* T.C :- O(N)
+* S.C :- O(1)
+*/
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        Arrays.sort(nums);
+        if(nums[0] < k) return -1;
+
+        int n = nums.length;
+        int idx = n-1;
+
+        int h = nums[n-1];
+        // agar ek baar me change nahi kar sakte toh count karlo
+        int ans = 0;
+        while(idx>=0){
+            if(nums[idx] >= h) {
+                idx-- ;
+            } else {
+                ans++ ;
+                h = nums[idx];
+                idx-- ;
+            }
+        }
+
+        h = nums[0];
+        if(h > k) ans++ ; // to cover up
+
+        return ans;
+    }
+}
