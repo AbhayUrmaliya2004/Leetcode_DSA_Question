@@ -1,0 +1,35 @@
+/*
+* Leetcode :- (38)
+* T.C :- O(N*(2^N)) each time it can increase the length of string by 2 times
+* thus 1+2+4+....+n and traversing in each of them will also cost n
+* S.C :- O(N)
+*/
+class Solution {
+    public String countAndSay(int n) {
+        if(n == 1) return "1";
+
+        String curr = "1";
+        for(int i=2 ; i<=n ; i++){
+            curr = getNewString(curr);
+        }
+
+        return curr ;
+    }
+
+    public String getNewString(String s){
+        StringBuilder sb = new StringBuilder();
+
+        int idx=1, count = 1, n = s.length();
+        while(idx<=n) {
+            if(idx<n && s.charAt(idx) == s.charAt(idx-1)){
+                count++ ;
+            } else {
+                sb.append(count+""+s.charAt(idx-1));
+                count = 1;
+            }
+            idx++ ;
+        }
+
+        return sb.toString();
+    }
+}
