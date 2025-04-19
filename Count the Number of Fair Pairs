@@ -1,0 +1,50 @@
+/*
+* Leetcode :- (2563)
+* T.C : O(NlogN) find the range of elements that can be added to the current element to make
+* the pair using binary search on sorted array
+* S.C :- O(1)
+*/
+class Solution {
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        long pairs = 0;
+
+        Arrays.sort(nums);
+//        System.out.println(Arrays.toString(nums));
+        int n = nums.length;
+        for(int end=1 ; end<n ; end++){
+            int lowerIdx = findLowerIdx(0, end-1, nums[end], nums, lower);
+            int upperIdx = findUpperIdx(0, end-1, nums[end], nums, upper);
+//            System.out.println(end+" "+lowerIdx+" "+upperIdx);
+            pairs += (upperIdx-lowerIdx);
+        }
+
+        return pairs;
+    }
+    public int findUpperIdx(int st, int end, int sum, int[] nums, int upper){
+        while(st <= end){
+            int mid = st+(end-st)/2;
+
+            if(sum+nums[mid] <= upper){
+                st = mid+1;
+            } else {
+                end = mid-1;
+            }
+        }
+
+        return st;
+    }
+    public int findLowerIdx(int st, int end, int sum, int[] nums, int lower){
+        while(st <= end){
+            int mid = st+(end-st)/2;
+
+            if(sum+nums[mid] >= lower){
+                end = mid-1;
+            } else {
+                st = mid+1;
+            }
+        }
+
+        return st;
+    }
+}
+
