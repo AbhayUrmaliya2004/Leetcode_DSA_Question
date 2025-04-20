@@ -1,0 +1,30 @@
+class Solution {
+    public int numRabbits(int[] answers) {
+        if(answers.length == 1) return answers[0]+1;
+        Arrays.sort(answers);
+        int total = 0, n = answers.length;
+
+        int idx = 0;
+        while(idx<n && answers[idx] == 0){
+            total++;
+            idx++ ;
+        }
+        //System.out.println(idx);
+
+        int i = idx, count = 0;
+        while(i<=n){
+            if(i<n &&(count == 0 || answers[i] == answers[i-1])){
+                count++ ;
+            } else {
+                int val = ((int)Math.ceil((float)count/(answers[i-1]+1)))*(answers[i-1]+1);
+                //System.out.println(i+" "+val);
+                total += val; 
+                count = 1;
+            }
+            i++ ;
+        }
+        
+        return total;
+    }
+}
+
