@@ -1,0 +1,51 @@
+/*
+* Leetcode :- (2415)
+* T.C :- O(N)
+* S.C :- O(N) but can be used without creating array so can be optimised to O(1)
+* Intuition :- Presum will tell at which index min can be achieved and put the minimum there
+* and the create whole array by calculating difference 
+* At last check upper - maxValue that will tell what is the no. of time we can add +1 and then 
+* create another possible array 
+*/
+class Solution {
+    public int numberOfArrays(int[] diff, int lower, int upper) {
+        int n = diff.length;
+        int[] arr = new int[n+1];
+
+        int minIdx = 0, minPreSum = 0, preSum = 0;
+        for(int i=0 ; i<n ; i++){
+            preSum += diff[i];
+            if(preSum < minPreSum){
+                minPreSum = preSum;
+                minIdx = i;
+            }
+        }
+
+//        System.out.println(minIdx);
+
+        if (diff[minIdx] <= 0) {
+            arr[minIdx+1] = lower;
+            arr[minIdx] = lower - diff[minIdx];
+        } else {
+            arr[minIdx] = lower;
+            arr[minIdx+1] = lower + diff[minIdx];
+        }
+
+        int maxi = Math.max(arr[minIdx], arr[minIdx+1]);
+
+        // fill the whole array and also keep track of maximum 
+        for(int i=minIdx+2 ; i<=n ; i++){
+            arr[i] = arr[i-1]+diff[i-1];
+            maxi = Math.max(maxi, arr[i]);
+        }
+
+        for(int i=minIdx-1 ; i>=0 ; i--){
+            arr[i] = arr[i+1]-diff[i];
+            maxi = Math.max(maxi, arr[i]);
+        }
+
+//        System.out.println(maxi+" "+Arrays.toString(arr));
+        return ((maxi<=upper)?upper-maxi+1 : 0);
+    }
+}
+
