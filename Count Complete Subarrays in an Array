@@ -1,0 +1,45 @@
+/*
+* Leetcode :- (2799)
+* T.C :- O(N)
+* S.C :- O(N)
+* Intuition :- Two pointers, just add the element until condition is not satisfied else 
+* decrease the size of subarray by removing the elements, and adding (n-j) to subarray is
+* because the subarray [i......j] is satisfying the condition then the subarray [i...(j+1)] 
+* will also satisfy the condition we just need minimum elements that a subarrays can have 
+* so additional elements will also follows the conditions
+*/
+class Solution {
+    public int countCompleteSubarrays(int[] nums) {
+        boolean[] arr = new boolean[2001]; // max nums[i] <= 2000
+
+        int distinct = 0, n = nums.length;
+
+        for(int i=0 ; i<n ; i++){
+            if(!arr[nums[i]]) distinct++ ;
+            arr[nums[i]] = true;
+        } 
+
+        // now just count the subarrays that follows the condition
+        // count complete subarrays
+
+        int subarrays=0, i=0, j=0;
+        Map<Integer, Integer> mp = new HashMap<>();
+        while(j<n){
+            mp.put(nums[j], mp.getOrDefault(nums[j], 0)+1);
+
+            while(mp.size() >= distinct){ // remove elements from left mp.size() tells distinct
+                subarrays += (n-j);
+
+                if(mp.get(nums[i]) == 1) mp.remove(nums[i]);
+                else mp.put(nums[i], mp.get(nums[i])-1);
+                i++ ;
+            }
+
+
+            j++ ;
+        }
+
+        return subarrays;
+    }
+}
+
