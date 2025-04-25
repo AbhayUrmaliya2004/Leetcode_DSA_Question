@@ -1,0 +1,24 @@
+/*
+* Leetcode :- (2845)
+* T.C :- O(N)
+* S.C :- O(N)
+*/
+class Solution {
+    public long countInterestingSubarrays(List<Integer> nums, int modulo, int k) {
+        Map<Integer, Integer> fre = new HashMap<>();
+
+        int cnt = 0;
+        long subarrays = 0;
+        fre.put(0, 1);
+        for(int num : nums){
+            num %= modulo;
+
+            if(num == k) cnt = (cnt+1)%modulo;
+
+            subarrays += fre.getOrDefault((cnt-k+modulo)%modulo, 0);    
+            fre.put(cnt, fre.getOrDefault(cnt, 0)+1);            
+        }
+
+        return subarrays;
+    }
+}
