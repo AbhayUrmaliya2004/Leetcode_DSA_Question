@@ -1,22 +1,34 @@
 /*
-* Leetcode - (2444)
+* Leetcode :- (2444)
 * T.C :- O(N)
 * S.C :- O(1)
+* Intuition :- Since any element more than maxK or less than minK can't be added to the 
+* subarrays thus mark it as boundary and then when we fulfill both the condition that a
+* subarray has both min and max elements as required then adding the element to the left of
+* the subarray will also satisfy the condition till the boundary (boundary not included)
 */
 class Solution {
-   public long countSubarrays(int[] nums, int minK, int maxK) {
-        int left = -1, right = 0;
-        int minIdx = -1, maxIdx = -1;
-        long res = 0;
-        for (; right < nums.length; right++) {
-            if (nums[right] < minK || nums[right] > maxK)
-                left = right;
+    public long countSubarrays(int[] nums, int minK, int maxK) {
+        int n = nums.length;
 
-            if (nums[right] == minK) minIdx = right;
-            if (nums[right] == maxK) maxIdx = right;
+        int minIdx = -1, maxIdx = -1, leftBound = -1;
+        long subarrays = 0;
 
-            res += Math.max(0L, Math.min(minIdx, maxIdx) - left);
+        for(int i=0 ; i<n ; i++){
+            if(nums[i]<minK || nums[i]>maxK){
+                minIdx = i;
+                maxIdx = i;
+                leftBound = i;
+            }
+
+            if(nums[i] == minK) minIdx = i;
+            if(nums[i] == maxK) maxIdx = i;
+
+            if(minIdx != -1 && maxIdx != -1){ // then we have a correct array
+                subarrays += Math.max(0, Math.min(minIdx, maxIdx) - leftBound);
+            }
         }
-        return res;
-    } 
+
+        return subarrays;
+    }
 }
