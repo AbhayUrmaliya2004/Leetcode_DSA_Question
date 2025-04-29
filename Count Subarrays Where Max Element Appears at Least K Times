@@ -1,4 +1,40 @@
-// LeetCode-()
+/*
+* Leetcode :- (2962)
+* T.C :- O(N)
+* S.C :- O(1)
+* Simple counting of subarrays by checking the required condition and
+* if nums[i....j] fulfill the condition then all the subarrays which we will
+* get by adding the different elements to the end of the array from (j+1 to n-1)
+* will also follow the condition
+*/
+class Solution {
+    public long countSubarrays(int[] nums, int k) {
+        long subarrays = 0;
+
+        int i=0, j=0, n = nums.length;
+        int maxi = nums[0];
+        // find max
+        for(int num : nums) maxi = Math.max(maxi, num);
+
+        int count = 0;
+        while(j<n){
+            if(nums[j] == maxi) count++ ;
+
+            while(count >= k){
+                subarrays += (n-j);
+                if(nums[i] == maxi) count-- ;
+                i++ ;
+            } 
+
+            j++ ;
+        }
+
+        return subarrays;
+    }
+}
+
+
+// LeetCode-(2962) 2nd year solution 
 --> S.C. :- O(n), fater than 100%
 --> T.C. :- O(1), better than 100%
 
