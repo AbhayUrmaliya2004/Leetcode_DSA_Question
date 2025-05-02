@@ -1,0 +1,65 @@
+/*
+* Leetcode :- O(838)
+* T.C :- O(N)
+* S.C :- O(N) but can be done without using space with two pointers
+*/
+class Solution {
+    public String pushDominoes(String s) {
+        List<Integer> list = new ArrayList<>();
+
+        int n = s.length();
+        for(int i=0 ; i<n ; i++){
+            if(s.charAt(i) != '.') list.add(i);
+        }
+
+        char[] arr = s.toCharArray();
+
+        int st, end;
+        n = list.size();
+        if(list.size() == 0) return String.valueOf(arr);
+//        System.out.println(list);
+        for(int i=0 ; i<n-1 ; i++){
+            st = list.get(i);
+            end = list.get(i+1);
+
+            char left = arr[st];
+            char right = arr[end];
+
+            if(left == 'R' && right == 'L'){
+                fillArray(arr, st, end, 'R', 'L');
+            } else if(left == 'L' && right == 'L'){
+                fillArray(arr, st, end, 'L', 'L');
+            } else if(left == 'R' && right == 'R'){
+                fillArray(arr, st, end, 'R', 'R');
+            }
+        }   
+
+        n = arr.length;
+        int idx = list.get(0);
+        if(s.charAt(idx) == 'L'){
+            while(idx>=0) arr[idx--] = 'L';
+        }
+
+        idx = list.get(list.size() - 1);
+        if(s.charAt(idx) == 'R'){
+            while(idx<n) arr[idx++] = 'R';
+        }
+
+
+        return String.valueOf(arr);    
+    }
+
+    public void fillArray(char[] arr, int st, int end, char left, char right){
+        if(left == right && (end - st)%2 == 0){ // need to fill the middle
+            arr[(st + (end-st)/2)] = left;
+        }
+
+        while(st < end){
+            arr[st] = left;
+            arr[end] = right;
+            st++ ;
+            end-- ;
+        }
+    }
+}
+
