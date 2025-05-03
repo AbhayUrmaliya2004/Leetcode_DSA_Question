@@ -1,0 +1,44 @@
+/*
+* Leetcode :- (1007)
+* T.C :- O(N)
+* S.C :- O(1), no auxillary space just function call and no space initialisation under function * call.
+* Intuition :- We need to find the minimum changes so just take the difference n-initFre[i]
+* only if we can complete that much frequency from bottoms means so maintain a fre[i] where if
+* both tops and bottoms are equal then we can use this only once even after flipping but 
+* if different then can use this as frequency of tops[i] ans bottoms[i] which can fulfill the 
+* space to make the tops[i] equal.
+*/
+class Solution {
+    public int minDominoRotations(int[] tops, int[] bottoms) {
+        int ans = Math.min(countOps(tops, bottoms), countOps(bottoms, tops));
+
+        return ans == (int)1e9 ? -1 : ans;
+    }
+    
+    public int countOps(int[] tops, int[] bottoms){
+        int[] fre = new int[7];
+
+        int n = tops.length;
+        int[] initFre = new int[7];
+
+        for(int i=0 ; i<n ; i++){
+            if(tops[i] == bottoms[i]) fre[tops[i]]++ ;
+            else {
+                fre[tops[i]]++ ;
+                fre[bottoms[i]]++ ;
+            }
+
+            initFre[tops[i]]++ ;
+        }
+
+        // check
+        int ans = (int)1e9; 
+        for(int i=0 ; i<7 ; i++){
+            if(fre[i] >= n){
+                ans = Math.min(ans, n-initFre[i]);
+            }
+        }
+
+        return ans;
+    }
+}
