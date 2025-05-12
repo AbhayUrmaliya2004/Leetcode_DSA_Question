@@ -1,0 +1,47 @@
+/*
+* Intuition :- Brute force (recursion)
+* Optimisation to avoid TLE :- just don't go with recursion by adding same words again and again 
+* and avoid using repetition, ex :- [1,2,2,2,3]
+* Once you have checked for 1,2 then again don't check for 1,2 and check for 1,3
+*/
+class Solution {
+    public int[] findEvenNumbers(int[] digits) {
+        int n = digits.length;
+        boolean[] used = new boolean[n];
+        Set<Integer> set = new HashSet<>();
+
+        Arrays.sort(digits);
+        helper(0, digits, used, set);
+
+        n = set.size();
+
+        int[] arr = new int[n];
+
+        int idx = 0;
+        for(int num : set){
+            arr[idx++] = num;
+        }
+
+        Arrays.sort(arr);
+
+        return arr;
+    }
+
+    public void helper(int num, int[] digits, boolean[] used, Set<Integer> set){
+        if(num > 99) {
+            if(num%2 == 0) set.add(num);
+            return ;
+        }
+
+        int n = digits.length;
+        for(int i=0 ; i<n ; i++){
+            if(!used[i]){
+                used[i] = true;
+                helper(num*10+digits[i], digits, used, set);
+                used[i] = false;
+
+                while(i+1<n && digits[i+1]==digits[i]) i++ ;
+            }
+        }
+    }
+}
