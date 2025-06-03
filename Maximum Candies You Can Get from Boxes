@@ -1,0 +1,50 @@
+/*
+* Leetcode :- (1298)
+* Intuition :- Simple BFS just go with the boxes which are open and get keys to open new boxes
+* and continue to open box and collect candies 
+*/
+class Solution {
+    public int maxCandies(int[] status, int[] candies, int[][] keys, int[][] containedBoxes, int[] initialBoxes) {
+        int total = 0;
+
+        Queue<Integer> q = new LinkedList<>();
+        // hasbox only contains the box which need to be processed
+        Set<Integer> hasBox = new HashSet<>(), inQueue = new HashSet<>();
+
+        int n = initialBoxes.length;
+        for(int i=0 ; i<n ; i++){
+            int box = initialBoxes[i];
+
+            if(status[box] == 1){
+                q.add(box);
+                inQueue.add(box);
+            } else { // add only if not in queue to avoid more operations
+                hasBox.add(box); 
+            }
+        }
+
+        while(q.size() > 0){
+            int box = q.poll(); // this box is already open that's why present in queue 
+            hasBox.remove(box);
+            total += candies[box];
+
+            // now you get the box inside the box
+            for(int newbox : containedBoxes[box]){
+                hasBox.add(newbox);
+            }
+
+            for(int key : keys[box]){
+                status[key] = 1;
+            }
+
+            for(int nextbox : hasBox){
+                if(!inQueue.contains(nextbox) && status[nextbox] == 1){
+                    q.add(nextbox); // for usage of next time
+                    inQueue.add(nextbox);
+                }
+            }
+        }
+
+        return total;
+    }
+}
