@@ -1,0 +1,82 @@
+public class DisjointSet{
+    char[] par = new char[26];
+    int[] size = new int[26];
+    char[] smallestChar = new char[26];
+
+    public DisjointSet(){
+        for(char ch='a' ; ch<='z' ; ch++){
+            par[ch-'a'] = ch;
+            size[ch-'a'] = 1;
+            smallestChar[ch-'a'] = ch;
+        }
+    }
+
+    public char findUPar(char ch) {
+        if (ch != par[ch - 'a']) {
+            char parent = findUPar(par[ch - 'a']);
+            if(smallestChar[parent-'a'] > smallestChar[ch-'a']){
+                smallestChar[parent-'a'] = smallestChar[ch-'a'];
+            }
+
+            par[ch - 'a'] = parent;
+            return parent;
+        }
+        return ch;
+    }
+
+
+    public void unionBySize(char u, char v){
+        char ulp_u = findUPar(u);
+        char ulp_v = findUPar(v);
+
+        if(ulp_u == ulp_v) return ;
+
+        if(size[ulp_u-'a'] > size[ulp_v-'a']){
+            par[ulp_v-'a'] = ulp_u;
+            size[ulp_u-'a'] += size[ulp_v-'a'];
+
+            if(smallestChar[ulp_u-'a'] > smallestChar[ulp_v-'a']){
+                smallestChar[ulp_u-'a'] = smallestChar[ulp_v-'a'];
+            }
+
+        } else {
+            par[ulp_u-'a'] = ulp_v;
+            size[ulp_v-'a'] += size[ulp_u-'a'];
+            
+            if(smallestChar[ulp_v-'a'] > smallestChar[ulp_u-'a']){
+                smallestChar[ulp_v-'a'] = smallestChar[ulp_u-'a'];
+            } 
+        }
+    }
+}
+
+class Solution {
+    public String smallestEquivalentString(String s1, String s2, String baseStr) {
+        int n = s1.length();
+
+        DisjointSet ds = new DisjointSet();
+
+        for(int i=0 ; i<n ; i++){
+            char u = s1.charAt(i), v = s2.charAt(i);
+
+            ds.unionBySize(u, v);
+        }
+
+        // now convert the final string to the the lexicographically smallest string
+        // to do this, we will make a array where ulp_node will have smallest char in 
+        // that component to make the group smallest
+
+        n = baseStr.length();
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=0 ; i<n ; i++){
+            char ch = baseStr.charAt(i);
+            char parent = ds.findUPar(ch);
+            char smallest = ds.smallestChar[parent-'a'];
+
+            sb.append(smallest);
+        }
+
+        return sb.toString();
+    }
+}
