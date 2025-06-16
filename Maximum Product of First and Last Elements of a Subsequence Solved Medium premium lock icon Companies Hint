@@ -1,0 +1,24 @@
+/*
+* Leetcode :- (3584)
+* T.C :- O(N)
+* S.C :- O(1)
+* Intuition :- Subsequence have size m so need to update the first elements nums[i-m+1] with 
+* max and min then find max ans 
+*/
+class Solution {
+    public long maximumProduct(int[] nums, int m) {
+        long ans = Long.MIN_VALUE/2;
+
+        int lastmax = nums[m-1], lastmin=nums[m-1], firstmax=nums[0], firstmin=nums[0];
+
+        int n = nums.length;
+        for(int i=m-1 ; i<n ; i++){
+            firstmax = Math.max(firstmax, nums[i-m+1]);
+            firstmin = Math.min(firstmin, nums[i-m+1]);
+
+            ans = Math.max(ans, Math.max((long)firstmax*nums[i], (long)firstmin*nums[i]));
+        }
+
+        return ans;
+    }
+}
