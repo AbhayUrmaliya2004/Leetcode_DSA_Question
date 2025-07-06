@@ -1,0 +1,57 @@
+/*
+* Intuition :- Just iterate in one array and check for tot-nums1[i] in another to make the
+* sum and then multiply cnt1*cnt2 (total pairs)
+* Approach 2 :- thought of binary search but the problem is that, values are changing so 
+* have to sort again and again so this will not work 
+*/
+class FindSumPairs {
+    Map<Integer, Integer> mp1, mp2;
+    int[] arr2;
+    public FindSumPairs(int[] nums1, int[] nums2) {
+        mp1 = new HashMap<>();
+        mp2 = new HashMap<>();
+
+        int n = nums1.length;
+        for(int i=0 ; i<n ; i++){
+            mp1.put(nums1[i], mp1.getOrDefault(nums1[i], 0)+1);
+        }
+
+        n = nums2.length;
+        arr2 = new int[n];
+        for(int i=0 ; i<n ; i++){
+            arr2[i] = nums2[i]; // for accessing with another functions
+            mp2.put(nums2[i], mp2.getOrDefault(nums2[i], 0)+1);
+        }
+    }
+    
+    public void add(int index, int val) {
+        int num = arr2[index];
+        // remove the val from map
+        mp2.put(num, mp2.get(num)-1);
+        if(mp2.get(num) == 0) mp2.remove(num);
+
+        // add new element to arr2
+        arr2[index] = num+val;
+        mp2.put(num+val, mp2.getOrDefault(num+val, 0)+1);
+    }
+    
+    public int count(int tot) {
+        int ans = 0;
+
+        for(int key : mp1.keySet()){
+            int count1 = mp1.get(key);
+            int count2 = mp2.getOrDefault(tot-key, 0);
+
+            ans += (count1*count2);
+        }
+
+        return ans;
+    }
+}
+
+/**
+ * Your FindSumPairs object will be instantiated and called as such:
+ * FindSumPairs obj = new FindSumPairs(nums1, nums2);
+ * obj.add(index,val);
+ * int param_2 = obj.count(tot);
+ */
