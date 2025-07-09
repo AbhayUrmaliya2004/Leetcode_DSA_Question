@@ -1,0 +1,35 @@
+
+class Solution {
+    public int maxFreeTime(int eventTime, int k, int[] startTime, int[] endTime) {
+        List<Integer> gap = new ArrayList<>();
+
+        int n = startTime.length;
+        if(startTime[0] > 0) gap.add(startTime[0]);
+
+        for(int i=1 ; i<n ; i++){
+            gap.add(startTime[i]-endTime[i-1]);
+        }
+
+        if(eventTime-endTime[n-1] > 0) gap.add(eventTime-endTime[n-1]);
+
+        // do the operations
+        //System.out.println(gap);
+        int maxi = 0;
+        int left = 0, right = 0, sum = 0;
+        n = gap.size();
+
+        while(right < n) {
+            if(right-left < k+1){
+                sum += gap.get(right);
+                right++ ;
+            } else {
+                sum -= gap.get(left);
+                left++ ;
+            }
+
+            maxi = Math.max(maxi, sum);
+        } 
+
+        return maxi;
+    }
+}
