@@ -1,0 +1,42 @@
+class Solution {
+    public long numOfSubsequences(String s) {
+        int n = s.length();
+
+        int l=0, t=0, c=0;
+        int cntt = 0, cntc=0, cntl = 0;
+        long ans = 0, extra = 0;
+
+        for(int i=0 ; i<n ; i++){
+            if(s.charAt(i) == 'T') cntt++ ;
+            else if(s.charAt(i) == 'C') cntc++ ;
+            else if(s.charAt(i) == 'L') cntl++ ;
+        }
+
+        long extraC = 0, extraT = 0, extraL = 0;
+        t = cntt;
+        for(int i=0 ; i<n ; i++){
+            char ch = s.charAt(i);
+
+            if(ch == 'L'){
+                l++;
+                
+                extraC = Math.max(extraC, (long)l*t); // placing extra C 
+            } else if(ch == 'C') {
+                extraL += (long)(l+1)*t; // considering put the extra L on left
+                extraT += (long)l*(t+1); // T on right most
+
+                ans += (long)l*t;
+            } else if(ch == 'T'){
+                extraC = Math.max(extraC, (long)l*t); // placing extra C at current idx
+                t-- ;
+            } else {
+                extraC = Math.max(extraC, (long)l*t); // placing extra C at current idx
+            }
+        }
+
+        ans = ans + extraC; // what is the maximum we can get if we place one C at some idx
+        ans = Math.max(ans, Math.max(extraL, extraT));
+
+        return ans;
+    }
+}
