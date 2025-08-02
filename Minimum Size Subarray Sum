@@ -1,0 +1,27 @@
+/*
+* Intuition :- simple sliding window approach but it worked only because it have positive  
+* values but if I add some negative values then it will become a hard question like 
+* problem no. 862.
+*/
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length, left = 0, right = 0;
+
+        int sum = 0, ans = (int)1e9;
+
+        while(right < n){
+            sum += nums[right++];
+
+            while(left < right && sum > target){
+                ans = Math.min(ans, right-left);
+                sum -= nums[left];
+                left++ ;
+            }
+
+            if(sum >= target) ans = Math.min(ans, right-left);
+            //System.out.println(left+" "+right+" "+sum+" "+ans);
+        }
+
+        return ans == (int)1e9 ? 0 : ans;
+    }
+}
