@@ -1,0 +1,45 @@
+// need to make sure they takes only n-1 moves and don't intersect each others path 
+// to get maximum (0, 0) first can go only diagonally
+class Solution {
+    public int maxCollectedFruits(int[][] fruits) {
+        int first = 0, sec = 0, third = 0;
+        int n = fruits.length;
+
+        // fruits collected by first person
+        for(int i=0 ; i<n ; i++) first += fruits[i][i];
+
+        int[][] dp = new int[n][n];
+        for(int i=0 ; i<n ; i++){
+            Arrays.fill(dp[i], -1);
+        }
+
+        int val1 = second(n, n-1, 0, fruits, dp); 
+        int val2 = third(n, 0, n-1, fruits, dp);
+        //System.out.println(val1+" "+val2);
+        return first + val1 + val2;
+    }
+
+    public int third(int n, int row, int col, int[][] fruits, int[][] dp){
+        if(row>=col || col>=n) return 0; // going beyond requirement
+        if(row==n-1 && col==n-1) return 0;
+        if(dp[row][col] != -1) return dp[row][col];
+
+        int maxi = fruits[row][col]+third(n, row+1, col-1, fruits, dp);
+        maxi = Math.max(maxi, fruits[row][col]+third(n, row+1, col, fruits, dp));
+        maxi = Math.max(maxi, fruits[row][col]+third(n, row+1, col+1, fruits, dp));
+
+        return dp[row][col] = maxi;
+    }
+
+    public int second(int n, int row, int col, int[][] fruits, int[][] dp){
+        if(col >= row || row>=n) return 0; // going beyond index
+        if(row==n-1 && col==n-1) return 0;
+        if(dp[row][col] != -1) return dp[row][col];
+
+        int maxi = fruits[row][col]+second(n, row-1, col+1, fruits, dp);
+        maxi = Math.max(maxi, fruits[row][col]+second(n, row, col+1, fruits, dp));
+        maxi = Math.max(maxi, fruits[row][col]+second(n, row+1, col+1, fruits, dp));
+
+        return dp[row][col] = maxi;
+    }
+}
