@@ -1,0 +1,27 @@
+class Solution:
+    def lexSmallestNegatedPerm(self, n: int, target: int) -> List[int]:
+        
+        total:long = (n*(n+1))/2
+        # this much sum is required
+        req = total-target
+
+        if (req%2 != 0) or (target< -1*total) or (target > total):
+            return [] # sum can't be achieved
+
+        # now create the answer array
+        arr = [i for i in range(1,n+1)]
+
+        # we need to create a permutation lexicographically smaller thus
+        # will try to make the largest number negative if possible
+        req = req/2
+
+        for i in range(n-1, -1, -1):
+
+            if req >= arr[i]:
+                req -= arr[i]
+                arr[i] = -1*arr[i]
+            
+        # just return the lexicographically smallest array
+        arr.sort()
+
+        return arr
