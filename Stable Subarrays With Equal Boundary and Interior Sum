@@ -1,0 +1,45 @@
+class Solution:
+    def countStableSubarrays(self, arr: List[int]) -> int:
+        
+        psum = 0
+        n = len(arr)
+        # this is dict
+        mp = {}
+        #mp['0#0'] = [1] # count
+
+        ans: int = 0 
+
+        for i in range(n):
+
+            psum += arr[i]
+
+            check_key = str(arr[i])+"#"+str(psum-2*arr[i])
+            arr1 = mp.get(check_key, None)
+
+            if arr1 is not None:
+                ans += self.getSubarrayCount(arr1, i)
+            
+
+            # this to be added in mp for future use
+            key = str(arr[i])+"#"+str(psum)
+            if key not in mp:
+                mp[key] = [] # empty list
+            
+            # this is the list 
+            arr2 = mp.get(key)
+            arr2.append(i) # now the current key is added
+            
+        #print(mp)
+        return ans
+
+
+
+    def getSubarrayCount(self, arr, idx):
+        #print(idx," ",arr)
+        # get the max length of the array
+        ansIdx = len(arr)-1
+
+        while ((ansIdx>=0) and ((idx-arr[ansIdx]) < 2)):
+            ansIdx -= 1
+
+        return ansIdx+1
