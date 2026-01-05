@@ -1,0 +1,78 @@
+/*
+* Leetcode 1975
+* T.C :- O(M*N)
+* S.C :- O(M*N)
+*/
+class Solution {
+    public long maxMatrixSum(int[][] matrix) {
+        long ans = 0;
+
+        boolean[][] vis = new boolean[matrix.length][matrix[0].length];
+
+        for(int i=0 ; i<matrix.length ; i++){
+            for(int j=0 ; j<matrix[0].length ; j++){
+
+                if((!vis[i][j]) && (matrix[i][j] != 0)){
+                    vis[i][j] = true;
+                    // System.out.println("Call : "+i+" "+j);
+                    ans += getMaxResult(matrix, vis, i, j);              
+                }
+            }
+        }
+
+        return ans;
+    }
+    public long getMaxResult(int[][] matrix, boolean[][] vis, int i, int j){
+        long sum  = 0;
+        int neg = 0, mini = Integer.MAX_VALUE;
+
+        vis[i][j] = true;
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{i, j});       
+
+        int m = matrix.length, n = matrix[0].length;
+
+        int[] drow = {-1, 0, +1, 0};
+        int[] dcol = {0, +1, 0, -1};
+
+        boolean hasBoundaryZero = false;
+        while(q.size() > 0){
+            int[] arr = q.poll();
+            
+            int row = arr[0], col = arr[1];
+
+            // System.out.println("Inside Queue : "+row+" "+col);
+            if(matrix[row][col] < 0) neg++ ;
+
+            sum += Math.abs(matrix[row][col]);
+            mini = Math.min(Math.abs(matrix[row][col]), mini);
+
+            // now iterate in all 4 direction
+            for(int k=0 ; k<4 ; k++){
+                int newr = row+drow[k];
+                int newc = col+dcol[k];
+
+                if((newr>=0) && (newr<m) && (newc>=0) && (newc<n)){
+                    // System.out.println("Inside Condition ");
+                    if(matrix[newr][newc] == 0) {
+                        hasBoundaryZero = true;
+
+                    } else if(!vis[newr][newc]){
+                        q.add(new int[]{newr, newc});
+                        vis[newr][newc] = true;
+                    }
+                }
+            }        
+        }
+
+        // if there are even no of negative they can do the multiplication to become 
+        // possitive else if odd no of neg then have to remove
+        // if there is boundary zero then can multiply to get 0
+        // else atleast one element would be negative
+        //System.out.println(neg+" "+sum);
+        if(neg%2 == 0) return sum;
+        if(!hasBoundaryZero) sum -= 2*mini;
+
+        return sum;
+    }
+}
