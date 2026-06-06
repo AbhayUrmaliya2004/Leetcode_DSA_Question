@@ -1,0 +1,77 @@
+// Leetcode - 3942
+// solution - check if the array we have is k sorted array 
+// if it is k sorted then it can be sorted in k operation
+// and if it is reverse k sorted then it can be sorted in k+1
+// there can just be two types 
+// inc - inc arr, [4,5,1,2,3] // rotated by 2
+// dec - dec arr, [5, 4, 9, 8, 7] 2 steps + 1 step for reverse = 3 steps
+
+class Solution {
+    public int minOperations(int[] nums) {
+        int[] preinc = getPrefixInc(nums);
+        int[] predec = getPrefixDec(nums);
+
+        // check strictly increasing or decreasing
+        int n = nums.length, ans = Integer.MAX_VALUE;
+
+        if(preinc[n-1] == n) return 0;
+        if(predec[n-1] == n) return 1; // just reverse the array
+
+        // now just check as per the conditions 
+        // System.out.println(Arrays.toString(preinc));
+        // System.out.println(Arrays.toString(predec));
+
+        // there can just be two type of 
+        for(int i=1 ; i<n ; i++) {
+
+            // check inc - inc
+            // ex - [4, 5, 1, 2, 3]
+            if((preinc[i-1] == i) && (preinc[n-1] == n-i) && (nums[n-1] < nums[0])) {
+                // either k steps as per 1st ops 
+                // or 1,2,3,4,0 then just 3 ops as (no of elements + 2 time for reversing)
+                // so 1,2,3,4,0 will take only 3 steps 
+
+                int ops = Math.min(i, n-i+2);
+                ans = Math.min(ans, ops);
+            } 
+
+            // check dec dec 
+            // ex - [5,4,9,8,7]
+            if((predec[i-1] == i) && (predec[n-1] == n-i) && (nums[n-1] > nums[0])) {
+                int ops = Math.min(i+1, n-i+1);
+                ans = Math.min(ans, ops);
+            }
+        }
+
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+
+    public int[] getPrefixInc(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+
+        // take the prefix inc
+        ans[0] = 1;
+        for(int i=1 ; i<n ; i++) {
+
+            if(nums[i-1] < nums[i]) ans[i] += ans[i-1]+1;
+            else ans[i] = 1; 
+        }       
+
+        return ans;
+    }
+    public int[] getPrefixDec(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+
+        // take the prefix inc
+        ans[0] = 1;
+        for(int i=1 ; i<n ; i++) {
+
+            if(nums[i-1] > nums[i]) ans[i] += ans[i-1]+1;
+            else ans[i] = 1; 
+        }       
+
+        return ans;
+    }
+}
